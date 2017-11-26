@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "A JSON Schema for JavaScript API specification",
+  "type": "object",
+  "required": [
+    "spec",
+    "info",
+    "entries"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec": {
+      "type": "object",
+      "description": "Info about the specification version the document uses",
+      "properties": {
+        "version": { "$ref": "#/definitions/version" }
+      },
+      "required": ["version"],
+      "additionalProperties": false
+    },
+    "info": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "A description of the API"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the API"
+        },
+        "version": { "$ref": "#/definitions/version" },
+        "license": {
+          "type": "string",
+          "description": "SPDX license identifier"
+        }
+      },
+      "required": ["name", "version"],
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+.[0-9]+.[0-9]+$"
+    }
+  }
+}
