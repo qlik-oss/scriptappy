@@ -1,0 +1,23 @@
+{
+  "name": "js-api-spec",
+  "version": "0.0.1",
+  "description": "JavaScript API Specification",
+  "main": "schema/schema.json",
+  "files": [
+    "/schema"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miralemd/js-api-spec.git"
+  },
+  "keywords": [],
+  "author": "Miralem Drek",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/miralemd/js-api-spec/issues"
+  },
+  "homepage": "https://github.com/miralemd/js-api-spec#readme"
+}
