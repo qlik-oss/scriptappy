@@ -1,0 +1,23 @@
+{
+  "name": "jsdoc2spec",
+  "version": "0.1.0",
+  "description": "",
+  "main": "publish.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jsdoc",
+    "api",
+    "spec",
+    "specification"
+  ],
+  "author": "Miralem Drek",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "jsdoc": "^3.5.5"
+  }
+}
