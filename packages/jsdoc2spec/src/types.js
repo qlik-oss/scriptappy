@@ -66,32 +66,32 @@ function collectAndNest(params, isParams = false) {
         parent[subName] = {};
       }
       parent = parent[subName];
-      if (!parent.typedef) {
-        parent.typedef = isParentArray ? { kind: 'array' } : { kind: 'object' };
+      if (!parent.kind) {
+        parent.kind = isParentArray ? 'array' : 'struct';
       }
-      if (isParentArray && !parent.typedef.items) {
-        parent.typedef.items = {
-          kind: 'object',
+      if (isParentArray && !parent.items) {
+        parent.items = {
+          kind: 'struct',
           entries: {},
         };
-      } else if (isParentArray && !parent.typedef.items.entries) {
-        parent.typedef.items.entries = {};
-        if (!parent.typedef.items.kind) {
-          parent.typedef.items.kind = 'object';
-          delete parent.typedef.items.type;
+      } else if (isParentArray && !parent.items.entries) {
+        parent.items.entries = {};
+        if (!parent.items.kind) {
+          parent.items.kind = 'struct';
+          delete parent.items.type;
         }
-      } else if (!isParentArray && !parent.typedef.entries) {
-        if (!parent.typedef.kind) {
-          parent.typedef.kind = 'object';
-          delete parent.typedef.type;
+      } else if (!isParentArray && !parent.entries) {
+        if (!parent.kind) {
+          parent.kind = 'struct';
+          delete parent.type;
         }
-        parent.typedef.entries = {};
+        parent.entries = {};
       }
       // const parentDef = isParentArray ? parent.typedef.items : parent.typedef;
       // if (parentDef.kind !== 'object') {
       //   parentDef.kind = 'object';
       // }
-      parent = isParentArray ? parent.typedef.items.entries : parent.typedef.entries;
+      parent = isParentArray ? parent.items.entries : parent.entries;
     }
     // parent[s[i]] = param(par, i ? {skipName: true, includeId: false } : undefined);
     parent[s[i]] = entity(par, { includeName: isParams && i === 0 });
@@ -202,7 +202,7 @@ function getTypedef(doc) {
   if (type === 'object') {
     const entries = collectProps(doc.properties);
     if (doc.kind || Object.keys(entries).length) {
-      typedef.kind = 'object';
+      typedef.kind = doc.kind === 'typedef' ? 'struct' : 'object';
       typedef.entries = entries;
     }
   }
@@ -221,18 +221,16 @@ function getTypedef(doc) {
 function kindFunction(doc) {
   const f = {
     kind: 'function',
-    signatures: [{
-      params: [],
-    }],
+    params: [],
   };
 
-  f.signatures[0].params.push(...collectParams(doc.params || []));
+  f.params.push(...collectParams(doc.params || []));
 
   if (doc.returns) {
     if (doc.returns.length > 1) {
       console.warn('Multiple returns from ', doc.longname);
     }
-    f.signatures[0].returns = entity(doc.returns[0]);
+    f.returns = entity(doc.returns[0]);
   }
 
   if (doc.async) {
@@ -323,7 +321,12 @@ function entity(doc, opts = {}) {
     ent.defaultValue = doc.defaultvalue;
   }
 
-  ent.typedef = getTypedef(doc);
+  const typedef = getTypedef(doc);
+  Object.assign(ent, typedef);
+
+  if (doc.examples) {
+    ent.examples = doc.examples;
+  }
 
   return ent;
 }

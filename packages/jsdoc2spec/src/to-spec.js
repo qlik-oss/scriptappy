@@ -1,20 +1,22 @@
-const fs = require("fs");
-const types = require("./types");
+const fs = require('fs');
+const types = require('./types');
 
 function filterDoclets(data) {
   return data().get().filter(doc => !doc.undocumented && !doc.ignore);
 }
 
+/* eslint no-underscore-dangle: 0 */
+
 function collect(doclets) {
-  const ids = {};
-  let priv = {};
-  let package;
+  const ids = {};
+  const priv = {};
+  let pack;
 
   doclets.forEach(doc => {
     let d;
-    if (doc.meta && doc.meta.code.name === "module.exports") {
+    if (doc.meta && doc.meta.code.name === 'module.exports') {
       if (doc.longname.indexOf('module.exports') === 0) {
-        console.warn('WARN: Default export without module name:', doc.meta.path + '/' + doc.meta.filename);
+        console.warn('WARN: Default export without module name:', `${doc.meta.path}/${doc.meta.filename}`);
         return;
       }
     }
@@ -29,10 +31,10 @@ function collect(doclets) {
     // module
     // namespace
     // typedef
-    switch(doc.kind) {
+    switch (doc.kind) {
       case 'package':
-        package = doc;
-      break;
+        pack = doc;
+        break;
       case 'typedef':
       case 'member':
       case 'constant':
@@ -43,10 +45,10 @@ function collect(doclets) {
       case 'class':
       case 'interface':
         d = types.entity(doc);
-      break;
+        break;
       default:
         console.warn('WARN: Untreated kind:', doc.kind);
-      break;
+        break;
     }
 
     if (d) {
@@ -56,15 +58,16 @@ function collect(doclets) {
       d.__memberScope = doc.scope;
       d.__meta = doc.meta;
       d.__access = doc.access;
-      d.__isDefinition = (doc.tags || []).filter(tag => tag.originalTitle === 'definition').length > 0;
+      d.__isDefinition = (doc.tags || []).filter(tag => tag.originalTitle === 'definition').length > 0;
 
       if (ids[d.__id] && ids[d.__id].kind === 'module') { // 'd' is a default export from a module
         d.__memberOf = d.__id;
         d.__memberScope = 'static';
         d.__scopeName = '@default';
-        d.__id = d.__id + '@default';
+        d.__id += '@default';
       }
-      // TODO - check if id already exists and do something about it (in order to support e.g. multiple method signatures)
+      // TODO - check if id already exists and do something about it
+      // (in order to support e.g. multiple method signatures)
       ids[d.__id] = {};
       priv[d.__id] = {};
       Object.keys(d).forEach(key => {
@@ -78,55 +81,51 @@ function collect(doclets) {
   });
 
   return {
-    package,
+    pack,
     ids,
-    priv
-  }
+    priv,
+  };
 }
 
-function transform({ids, priv}) {
+function transform({ ids, priv }) {
   const entries = {};
-  const definitions = {};
+  const definitions = {};
   Object.keys(ids).forEach(longname => {
     const d = ids[longname];
     const pr = priv[longname];
-    let memberOf = pr.__memberOf;
-    let memberScope = pr.__memberScope;
-    let scopeName = pr.__scopeName;
+    const memberOf = pr.__memberOf;
+    const memberDefault = `${memberOf}@default`;
+    const memberScope = pr.__memberScope;
+    const scopeName = pr.__scopeName;
     let parent = ids[memberOf];
-    let access = pr.__access;
+    const access = pr.__access;
     const isDefinition = pr.__isDefinition;
 
-    let parentMaybeDefault = ids[memberOf + '@default'];
+    const parentMaybeDefault = ids[memberDefault];
     if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
       if (!/^exports/.test(pr.__meta.code.name)) {
-        parent = ids[memberOf + '@default'];
-        pr.__id = pr.__id.replace(memberOf, memberOf + '@default');
+        parent = ids[memberDefault];
+        pr.__id = pr.__id.replace(memberOf, memberDefault);
       }
     }
 
     let memberProperty;
 
-    if (access === "private") {
+    if (access === 'private') {
       return;
     }
 
     if (parent) {
-      if (d.typedef.kind === 'event') {
+      if (d.kind === 'event') {
         memberProperty = 'events';
-        parent = parent.typedef;
-      } else if (memberScope === 'static' && parent.typedef && parent.typedef.kind === 'class') {
-        memberProperty = 'staticEntries'
-        parent = parent.typedef;
-      } else if (memberScope === 'static' && parent.typedef && parent.typedef.kind === 'module') {
-        memberProperty = 'entries'
-        parent = parent.typedef;
+      } else if (memberScope === 'static' && parent && parent.kind === 'class') {
+        memberProperty = 'staticEntries';
+      } else if (memberScope === 'static' && parent && parent.kind === 'module') {
+        memberProperty = 'entries';
       } else if (memberScope === 'inner' || isDefinition) {
-        parent = parent.typedef;
         memberProperty = 'definitions';
       } else {
         memberProperty = 'entries';
-        parent = parent.typedef;
       }
 
       if (memberProperty && parent) {
@@ -145,30 +144,26 @@ function transform({ids, priv}) {
 
   return {
     entries,
-    definitions
+    definitions,
   };
 }
 
-function specification({ entries = {}, definitions = {}, package = {}} = {}) {
+function specification({ entries = {}, definitions = {}, pack = {} } = {}) {
   const spec = {
     spec: {
       version: '0.1.0',
     },
     info: {
-      name: package.name,
-      description: package.description,
-      version: package.version,
-      license: package.licenses ? package.licenses[0].type : undefined
+      name: pack.name,
+      description: pack.description,
+      version: pack.version,
+      license: pack.licenses ? pack.licenses[0].type : undefined,
     },
-    entries: entries,
-    definitions: definitions
+    entries,
+    definitions,
   };
 
   return JSON.stringify(spec, null, 2);
-}
-
-function validate() {
-
 }
 
 function write(JSONSpec, destination) {
@@ -189,7 +184,7 @@ function publish(data, opts) {
   const spec = specification({
     entries,
     definitions,
-    package: collected.package
+    pack: collected.package,
   });
 
   // validate spec against schema
@@ -202,5 +197,5 @@ function publish(data, opts) {
 module.exports = {
   filterDoclets,
   collect,
-  publish
+  publish,
 };
