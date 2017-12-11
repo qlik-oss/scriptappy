@@ -1,0 +1,164 @@
+{
+  "spec": {
+    "version": "0.1.0"
+  },
+  "info": {
+    "name": "nodejs",
+    "version": "8.0.0"
+  },
+  "entries": {
+    "module:net": {
+      "stability": 2,
+      "kind": "module",
+      "entries": {
+        "Server": {
+          "description": "This class is used to create a TCP or ICP server",
+          "kind": "class",
+          "constructor": {
+            "typedef": {
+              "kind": "function",
+              "params": []
+            }
+          },
+          "entries": {
+            "address": {
+              "description": "Returns the bound address.",
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "type": "module:net.Server~address"
+              }
+            },
+            "close": {
+              "description": "Stops the server from accepting new connections and keeps existing connections",
+              "kind": "function",
+              "params": []
+            }
+          },
+          "definitions": {
+            "address": {
+              "kind": "struct",
+              "entries": {
+                "port": {
+                  "type": "number"
+                },
+                "family": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "events": {
+            "close": {
+              "description": "Emitted when the server closes",
+              "kind": "event",
+              "params": []
+            },
+            "connect": {
+              "description": "Emitted when a new connection is made.",
+              "kind": "event",
+              "params": [
+                {
+                  "name": "socket",
+                  "description": "The connection object",
+                  "type": "module:net.Socket"
+                }
+              ]
+            }
+          }
+        },
+        "createServer": {
+          "description": "Creates a new TCP or ICP server.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "options",
+              "optional": true,
+              "type": "object",
+              "kind": "struct",
+              "entries": {
+                "allowHalfOpen": {
+                  "description": "Indicates whether half-opened TCP connections are allowed.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
+                "pauseOnConnect": {
+                  "description": "Indicates whether the socket should be paused on incoming connections.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "name": "connectionsListener",
+              "description": "Automatically sets a listener for the `connection` event.",
+              "optional": true,
+              "type": "function"
+            }
+          ],
+          "returns": {
+            "type": "module:net.Server"
+          }
+        }
+      },
+      "definitions": {
+        "NumberLike": {
+          "description": "A number, or a string containing a number.",
+          "kind": "union",
+          "union": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    "module:path": {
+      "stability": 2,
+      "kind": "module",
+      "entries": {
+        "dirname": {
+          "description": "Returns the directory name of a `path`",
+          "kind": "function",
+          "params": [
+            {
+              "name": "path",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "extname": {
+          "description": "Returns the extension of the `path`",
+          "kind": "function",
+          "params": [
+            {
+              "name": "path",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "win32": {
+          "description": "Provides acces to Window-specific implementations of the `path` methods",
+          "kind": "object",
+          "entries": {}
+        }
+      }
+    }
+  },
+  "definitions": {}
+}
