@@ -28,7 +28,7 @@ function tags(doc) {
 
 const SINCE_RX = /^(?:Deprecated\s)?since\s(\d+\.\d+.\d+)/;
 
-function availability(doc) {
+function availability(doc /* opts */) {
   const o = {};
   if (doc.deprecated || doc.since) {
     o.availability = {};
@@ -51,7 +51,7 @@ function availability(doc) {
 }
 
 
-function collectAndNest(params, isParams = false) {
+function collectAndNest(params, opts, isParams = false) {
   const paramMap = {};
   const res = [];
   (params || []).forEach(par => {
@@ -87,14 +87,14 @@ function collectAndNest(params, isParams = false) {
         }
         parent.entries = {};
       }
-      // const parentDef = isParentArray ? parent.typedef.items : parent.typedef;
-      // if (parentDef.kind !== 'object') {
-      //   parentDef.kind = 'object';
-      // }
       parent = isParentArray ? parent.items.entries : parent.entries;
     }
-    // parent[s[i]] = param(par, i ? {skipName: true, includeId: false } : undefined);
-    parent[s[i]] = entity(par, { includeName: isParams && i === 0 });
+    const obj = {};
+    if (isParams && i === 0 && par.name) {
+      obj.name = par.name;
+    }
+    parent[s[i]] = Object.assign(obj, entity(par, opts));
+
     if (i === 0) {
       res.push(parent[s[i]]);
     }
@@ -103,16 +103,16 @@ function collectAndNest(params, isParams = false) {
   return isParams ? res : paramMap;
 }
 
-function collectParams(params) {
-  return collectAndNest(params, true);
+function collectParams(params, opts) {
+  return collectAndNest(params, opts, true);
 }
 
 // collect nested properties
-function collectProps(props) {
-  return collectAndNest(props);
+function collectProps(props, opts) {
+  return collectAndNest(props, opts);
 }
 
-function getTypeFromCodeMeta(doc) {
+function getTypeFromCodeMeta(doc /* opts */) {
   const o = {};
   if (!doc.meta || !doc.meta.code) {
     console.warn('--UNKNOWN--', doc.longname);
@@ -136,7 +136,7 @@ function simpleType(type) {
   return t;
 }
 
-function unwrapArrayGeneric(type) {
+function unwrapArrayGeneric(type, opts) {
   const typedef = {};
   let itemtype = type.match(/<(.+)>/);
   if (itemtype) {
@@ -151,31 +151,31 @@ function unwrapArrayGeneric(type) {
   } else {
     typedef.items = getTypedef({
       type: { names: [itemtype] },
-    });
+    }, opts);
   }
 
   return typedef;
 }
 
-function getTypedef(doc) {
+function getTypedef(doc, opts) {
   let type;
   const typedef = {};
   if (doc.kind === 'module') {
-    return kindModule(doc);
+    return kindModule(doc, opts);
   } else if (doc.kind === 'namespace') {
-    return kindNamespace(doc);
+    return kindNamespace(doc, opts);
   } else if (doc.kind === 'function') {
-    return kindFunction(doc);
+    return kindFunction(doc, opts);
   } else if (doc.kind === 'event') {
-    const t = kindFunction(doc);
+    const t = kindFunction(doc, opts);
     t.kind = 'event';
     return t;
   } else if (doc.kind === 'class') {
-    return kindClass(doc);
+    return kindClass(doc, opts);
   } else if (doc.kind === 'interface') {
-    return kindInterface(doc);
+    return kindInterface(doc, opts);
   } else if (!doc.type || !doc.type.names) {
-    const t = getTypeFromCodeMeta(doc);
+    const t = getTypeFromCodeMeta(doc, opts);
     if (!t.kind) {
       console.warn('WARN: unknown type', doc.kind, doc.longname || doc.name);
       type = 'any';
@@ -190,7 +190,7 @@ function getTypedef(doc) {
   } else if (doc.type.names.length === 1) {
     [type] = doc.type.names;
     if (type === 'function') {
-      return doc.kind === 'typedef' ? kindFunction(doc) : {
+      return doc.kind === 'typedef' ? kindFunction(doc, opts) : {
         type: 'function',
       };
     }
@@ -200,7 +200,7 @@ function getTypedef(doc) {
   }
 
   if (type === 'object') {
-    const entries = collectProps(doc.properties);
+    const entries = collectProps(doc.properties, opts);
     if (doc.kind || Object.keys(entries).length) {
       typedef.kind = doc.kind === 'typedef' ? 'struct' : 'object';
       typedef.entries = entries;
@@ -208,7 +208,7 @@ function getTypedef(doc) {
   }
 
   if (/Array\.</.test(type) || type === 'array') {
-    return unwrapArrayGeneric(type);
+    return unwrapArrayGeneric(type, opts);
   } else if (/\.</.test(type)) { // generic
     typedef.type = type.replace(/\.</g, '<');
   } else if (type && type !== (typedef.kind || !typedef.kind)) {
@@ -218,19 +218,19 @@ function getTypedef(doc) {
   return typedef;
 }
 
-function kindFunction(doc) {
+function kindFunction(doc, opts) {
   const f = {
     kind: 'function',
     params: [],
   };
 
-  f.params.push(...collectParams(doc.params || []));
+  f.params.push(...collectParams(doc.params || [], opts));
 
   if (doc.returns) {
     if (doc.returns.length > 1) {
       console.warn('Multiple returns from ', doc.longname);
     }
-    f.returns = entity(doc.returns[0]);
+    f.returns = entity(doc.returns[0], opts);
   }
 
   if (doc.async) {
@@ -242,10 +242,10 @@ function kindFunction(doc) {
     if (doc.yields && doc.yields.length > 1) {
       f.yields = {
         kind: 'union',
-        union: doc.yields.map(y => entity(y)),
+        union: doc.yields.map(y => entity(y, opts)),
       };
     } else if (doc.yields) {
-      f.yields = entity(doc.yields[0]);
+      f.yields = entity(doc.yields[0], opts);
     }
   }
 
@@ -270,19 +270,19 @@ function kindNamespace() {
   };
 }
 
-function kindClass(doc) {
+function kindClass(doc, opts) {
   return {
     kind: 'class',
     constructor: {
       description: doc.description,
-      typedef: kindFunction(doc),
+      typedef: kindFunction(doc, opts),
     },
     entries: {},
   };
 }
 
-function kindInterface(doc) {
-  const fn = kindFunction(doc);
+function kindInterface(doc, opts) {
+  const fn = kindFunction(doc, opts);
   const obj = {
     kind: 'interface',
   };
@@ -306,6 +306,10 @@ function entity(doc, opts = {}) {
 
   Object.assign(ent, tags(doc), availability(doc));
 
+  if (typeof ent.stability === 'undefined' && typeof opts.stability.default) {
+    ent.stability = opts.stability.default;
+  }
+
   if (doc.optional) {
     ent.optional = true;
   }
@@ -321,7 +325,7 @@ function entity(doc, opts = {}) {
     ent.defaultValue = doc.defaultvalue;
   }
 
-  const typedef = getTypedef(doc);
+  const typedef = getTypedef(doc, opts);
   Object.assign(ent, typedef);
 
   if (doc.examples) {

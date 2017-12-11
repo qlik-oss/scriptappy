@@ -7,7 +7,7 @@ function filterDoclets(data) {
 
 /* eslint no-underscore-dangle: 0 */
 
-function collect(doclets) {
+function collect(doclets, opts) {
   const ids = {};
   const priv = {};
   let pack;
@@ -44,7 +44,7 @@ function collect(doclets) {
       case 'namespace':
       case 'class':
       case 'interface':
-        d = types.entity(doc);
+        d = types.entity(doc, opts);
         break;
       default:
         console.warn('WARN: Untreated kind:', doc.kind);
@@ -148,16 +148,16 @@ function transform({ ids, priv }) {
   };
 }
 
-function specification({ entries = {}, definitions = {}, pack = {} } = {}) {
+function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts) {
   const spec = {
     spec: {
       version: '0.1.0',
     },
     info: {
-      name: pack.name,
-      description: pack.description,
-      version: pack.version,
-      license: pack.licenses ? pack.licenses[0].type : undefined,
+      name: typeof opts.name !== 'undefined' ? opts.name : pack.name,
+      description: typeof opts.description !== 'undefined' ? opts.description : pack.description,
+      version: typeof opts.version !== 'undefined' ? opts.version : pack.version,
+      license: typeof opts.license !== 'undefined' ? opts.license : (pack.licenses ? pack.licenses[0].type : undefined), // eslint-disable-line
     },
     entries,
     definitions,
@@ -170,32 +170,48 @@ function write(JSONSpec, destination) {
   fs.writeFileSync(destination, JSONSpec);
 }
 
-function publish(data, opts) {
+function generate({
+  taffydata,
+  jsdocopts,
+  opts,
+}) {
   // filter doclets
-  const doclets = filterDoclets(data);
+  const doclets = filterDoclets(taffydata);
 
   // collect doclets based on longname
-  const collected = collect(doclets, types);
+  const collected = collect(doclets, opts);
 
   // transform
-  const { entries, definitions } = transform(collected);
+  const { entries, definitions } = transform(collected, opts);
 
   // create spec
   const spec = specification({
     entries,
     definitions,
-    pack: collected.package,
-  });
+    pack: collected.pack,
+  }, opts);
 
   // validate spec against schema
   // validateSpec(JSON.parse(JSONSpec), schema);
 
   // write
-  write(spec, opts.destination);
+  write(spec, jsdocopts.destination);
+}
+
+function jsdocpublish(taffydata, jsdocopts) {
+  const opts = {
+    stability: {},
+  };
+  generate({
+    taffydata,
+    jsdocopts,
+    opts,
+  });
 }
 
 module.exports = {
   filterDoclets,
   collect,
-  publish,
+  generate,
+  jsdocpublish,
 };
