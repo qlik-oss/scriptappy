@@ -1,13 +1,12 @@
 {
   "name": "jsdoc2spec",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "",
   "main": "publish.js",
   "files": [
     "/src"
   ],
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [
     "jsdoc",
     "api",
