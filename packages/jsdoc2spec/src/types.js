@@ -9,6 +9,7 @@
 // resolve type schema reference
 
 const EXCLUDE_TAGS = ['definition'];
+const VENDOR_TAG_RX = /^x-/;
 
 function tags(doc) {
   const o = {};
@@ -18,6 +19,8 @@ function tags(doc) {
       // do nothing
     } else if (tag.title === 'stability') {
       o.stability = +tag.value;
+    } else if (VENDOR_TAG_RX.test(tag.title)) {
+      o[tag.title] = tag.value;
     } else {
       o[`x-${tag.title}`] = tag.value;
     }
@@ -62,12 +65,13 @@ function collectAndNest(params, opts, isParams = false) {
       const subNameType = s[i];
       const isParentArray = /\[\]$/.test(subNameType);
       const subName = isParentArray ? subNameType.replace(/\[\]$/, '') : subNameType;
-      if (!parent[subName]) {
-        parent[subName] = {};
-      }
+      // if (!parent[subName]) {
+      //   parent[subName] = {};
+      // }
       parent = parent[subName];
       if (!parent.kind) {
         parent.kind = isParentArray ? 'array' : 'struct';
+        delete parent.type;
       }
       if (isParentArray && !parent.items) {
         parent.items = {
@@ -81,12 +85,13 @@ function collectAndNest(params, opts, isParams = false) {
           delete parent.items.type;
         }
       } else if (!isParentArray && !parent.entries) {
-        if (!parent.kind) {
-          parent.kind = 'struct';
-          delete parent.type;
-        }
+        // if (!parent.kind) {
+        //   parent.kind = 'struct';
+        //   delete parent.type;
+        // }
         parent.entries = {};
       }
+      delete parent.type;
       parent = isParentArray ? parent.items.entries : parent.entries;
     }
     const obj = {};
@@ -115,7 +120,7 @@ function collectProps(props, opts) {
 function getTypeFromCodeMeta(doc /* opts */) {
   const o = {};
   if (!doc.meta || !doc.meta.code) {
-    console.warn('--UNKNOWN--', doc.longname);
+    // console.warn('--UNKNOWN--', doc.longname);
     return o;
   }
   if (doc.meta.code.type === 'ObjectExpression') {
@@ -147,7 +152,7 @@ function unwrapArrayGeneric(type, opts) {
   const isTuple = /,/.test(itemtype);
   typedef.kind = 'array';
   if (isTuple) {
-    typedef.items = itemtype.split(',').map(t => getTypedef({ type: { names: [t] } }));
+    typedef.items = itemtype.split(',').map(t => getTypedef({ type: { names: [t.replace(/\s+/g, '')] } }));
   } else {
     typedef.items = getTypedef({
       type: { names: [itemtype] },
@@ -177,10 +182,11 @@ function getTypedef(doc, opts) {
   } else if (!doc.type || !doc.type.names) {
     const t = getTypeFromCodeMeta(doc, opts);
     if (!t.kind) {
-      console.warn('WARN: unknown type', doc.kind, doc.longname || doc.name);
+      // console.warn('WARN: unknown type', doc.kind, doc.longname || doc.name);
       type = 'any';
     } else {
       type = t.kind;
+      typedef.kind = type;
       if (type === 'literal' && 'value' in t) {
         typedef.value = t.value;
         typedef.kind = t.kind;
@@ -196,7 +202,7 @@ function getTypedef(doc, opts) {
     }
   } else {
     typedef.kind = 'union';
-    typedef.union = doc.type.names.map(simpleType);
+    typedef.items = doc.type.names.map(simpleType);
   }
 
   if (type === 'object') {
@@ -211,7 +217,7 @@ function getTypedef(doc, opts) {
     return unwrapArrayGeneric(type, opts);
   } else if (/\.</.test(type)) { // generic
     typedef.type = type.replace(/\.</g, '<');
-  } else if (type && type !== (typedef.kind || !typedef.kind)) {
+  } else if (type && ((type !== typedef.kind) || !typedef.kind)) {
     typedef.type = type;
   }
 
@@ -227,9 +233,9 @@ function kindFunction(doc, opts) {
   f.params.push(...collectParams(doc.params || [], opts));
 
   if (doc.returns) {
-    if (doc.returns.length > 1) {
-      console.warn('Multiple returns from ', doc.longname);
-    }
+    // if (doc.returns.length > 1) {
+    //   console.warn('Multiple returns from ', doc.longname);
+    // }
     f.returns = entity(doc.returns[0], opts);
   }
 
@@ -242,7 +248,7 @@ function kindFunction(doc, opts) {
     if (doc.yields && doc.yields.length > 1) {
       f.yields = {
         kind: 'union',
-        union: doc.yields.map(y => entity(y, opts)),
+        items: doc.yields.map(y => entity(y, opts)),
       };
     } else if (doc.yields) {
       f.yields = entity(doc.yields[0], opts);
@@ -271,11 +277,12 @@ function kindNamespace() {
 }
 
 function kindClass(doc, opts) {
+  const constr = kindFunction(doc, opts);
   return {
     kind: 'class',
     constructor: {
       description: doc.description,
-      typedef: kindFunction(doc, opts),
+      params: constr.params,
     },
     entries: {},
   };
@@ -306,9 +313,9 @@ function entity(doc, opts = {}) {
 
   Object.assign(ent, tags(doc), availability(doc));
 
-  if (typeof ent.stability === 'undefined' && typeof opts.stability.default) {
-    ent.stability = opts.stability.default;
-  }
+  // if (typeof ent.stability === 'undefined' && typeof opts.stability.default) {
+  //   ent.stability = opts.stability.default;
+  // }
 
   if (doc.optional) {
     ent.optional = true;

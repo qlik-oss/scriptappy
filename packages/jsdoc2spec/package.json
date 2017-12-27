@@ -6,7 +6,11 @@
   "files": [
     "/src"
   ],
-  "scripts": {},
+  "scripts": {
+    "test": "aw -c aw.config.js",
+    "test:watch": "aw -c aw.config.js -w",
+    "test:coverage": "aw -c aw.config.js --coverage"
+  },
   "keywords": [
     "jsdoc",
     "api",
@@ -24,6 +28,9 @@
   },
   "homepage": "https://github.com/miralemd/jsdoc2spec#readme",
   "devDependencies": {
+    "after-work.js": "^4.0.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-istanbul": "^4.1.5",
     "eslint": "^4.12.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",

@@ -1,6 +1,13 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "expect": false
+  },
+  "parserOptions": {
+    "sourceType": "module"
   },
   "extends": "airbnb-base",
   "rules": {
