@@ -1,5 +1,12 @@
 const types = require('../src/types');
 
+const logger = {
+  error: () => {},
+  warn: () => {},
+  info: () => {},
+  verbose: () => {},
+};
+
 describe('availability', () => {
   it('should support "since" only', () => {
     const a = types.availability({
@@ -204,7 +211,7 @@ describe('collect props', () => {
 describe('type', () => {
   it('any', () => {
     const o = types.typedef({
-    });
+    }, { logger });
 
     expect(o).to.eql({
       type: 'any',
@@ -516,7 +523,7 @@ describe('entity', () => {
       nullable: true,
       variable: true,
       examples: 'ex',
-    }, {}, { includeName: true });
+    }, { logger }, { includeName: true });
 
     expect(o).to.eql({
       name: 'Person',

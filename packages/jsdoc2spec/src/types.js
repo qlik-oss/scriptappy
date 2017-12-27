@@ -1,4 +1,5 @@
 /* eslint no-use-before-define: 0 */
+/* eslint no-param-reassign: 0 */
 
 // TODO
 // get/set
@@ -65,9 +66,9 @@ function collectAndNest(params, cfg, opts, isParams = false) {
       const subNameType = s[i];
       const isParentArray = /\[\]$/.test(subNameType);
       const subName = isParentArray ? subNameType.replace(/\[\]$/, '') : subNameType;
-      // if (!parent[subName]) {
-      //   parent[subName] = {};
-      // }
+      if (!parent[subName]) {
+        parent[subName] = {};
+      }
       parent = parent[subName];
       if (!parent.kind) {
         parent.kind = isParentArray ? 'array' : 'struct';
@@ -182,7 +183,9 @@ function getTypedef(doc, cfg, opts) {
   } else if (!doc.type || !doc.type.names) {
     const t = getTypeFromCodeMeta(doc, cfg, opts);
     if (!t.kind) {
-      // console.warn('WARN: unknown type', doc.kind, doc.longname || doc.name);
+      if (!cfg.__private) {
+        cfg.logger.warn(`Unknown type on '${doc.longname || doc.name}' in ${cfg.__path}`);
+      }
       type = 'any';
     } else {
       type = t.kind;
@@ -233,9 +236,9 @@ function kindFunction(doc, cfg, opts) {
   f.params.push(...collectParams(doc.params || [], cfg, opts));
 
   if (doc.returns) {
-    // if (doc.returns.length > 1) {
-    //   console.warn('Multiple returns from ', doc.longname);
-    // }
+    if (doc.returns.length > 1) {
+      cfg.logger.warn('Multiple returns from ', doc.longname);
+    }
     f.returns = entity(doc.returns[0], cfg, opts);
   }
 
@@ -343,6 +346,8 @@ function entity(doc, cfg = {}, opts = {}) {
 }
 
 function doclet(doc, cfg) {
+  cfg.__path = `${doc.meta.path}/${doc.meta.filename}`;
+  cfg.__private = doc.access === 'private';
   return entity(doc, cfg);
 }
 

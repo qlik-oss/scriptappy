@@ -1,13 +1,12 @@
 const fs = require('fs');
+const winston = require('winston');
 const types = require('./types');
 
 function filterDoclets(data) {
   return data().get().filter(doc => !doc.undocumented && !doc.ignore);
 }
 
-/* eslint no-underscore-dangle: 0 */
-
-function collect(doclets, opts) {
+function collect(doclets, cfg) {
   const ids = {};
   const priv = {};
   let pack;
@@ -16,7 +15,7 @@ function collect(doclets, opts) {
     let d;
     if (doc.meta && doc.meta.code.name === 'module.exports') {
       if (doc.longname.indexOf('module.exports') === 0) {
-        console.warn('WARN: Default export without module name:', `${doc.meta.path}/${doc.meta.filename}`);
+        cfg.logger.warn('Default export without module name:', `${doc.meta.path}/${doc.meta.filename}`);
         return;
       }
     }
@@ -44,10 +43,10 @@ function collect(doclets, opts) {
       case 'namespace':
       case 'class':
       case 'interface':
-        d = types.doclet(doc, opts);
+        d = types.doclet(doc, cfg);
         break;
       default:
-        console.warn('WARN: Untreated kind:', doc.kind);
+        cfg.logger.warn('Untreated kind:', doc.kind);
         break;
     }
 
@@ -87,7 +86,7 @@ function collect(doclets, opts) {
   };
 }
 
-function transform({ ids, priv }) {
+function transform({ ids, priv }, cfg) {
   const entries = {};
   const definitions = {};
   Object.keys(ids).forEach(longname => {
@@ -131,7 +130,7 @@ function transform({ ids, priv }) {
       if (memberProperty && parent) {
         parent[memberProperty] = parent[memberProperty] || {};
         if (parent[memberProperty][scopeName]) {
-          console.log('exists?', longname, scopeName, parent[memberProperty][scopeName]);
+          cfg.logger.verbose('exists?', longname, scopeName, parent[memberProperty][scopeName]);
         }
         parent[memberProperty][scopeName] = d;
       }
@@ -198,9 +197,20 @@ function generate({
   write(spec, jsdocopts.destination);
 }
 
+const wlogger = new winston.Logger({
+  level: 'info',
+  transports: [
+    new winston.transports.Console({
+      colorize: true,
+      prettyPrint: true,
+    }),
+  ],
+});
+
 function jsdocpublish(taffydata, jsdocopts) {
   const opts = {
     stability: {},
+    logger: wlogger,
   };
   generate({
     taffydata,

@@ -11,6 +11,7 @@
   },
   "extends": "airbnb-base",
   "rules": {
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "no-underscore-dangle": "off"
   }
 }

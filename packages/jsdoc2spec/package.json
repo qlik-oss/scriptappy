@@ -36,5 +36,8 @@
     "eslint-plugin-import": "^2.8.0",
     "jsdoc": "^3.5.5",
     "jsdoc-json": "^2.0.2"
+  },
+  "dependencies": {
+    "winston": "^2.4.0"
   }
 }
