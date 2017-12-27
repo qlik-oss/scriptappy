@@ -516,7 +516,7 @@ describe('entity', () => {
       nullable: true,
       variable: true,
       examples: 'ex',
-    }, { includeName: true });
+    }, {}, { includeName: true });
 
     expect(o).to.eql({
       name: 'Person',

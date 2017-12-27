@@ -44,7 +44,7 @@ function collect(doclets, opts) {
       case 'namespace':
       case 'class':
       case 'interface':
-        d = types.entity(doc, opts);
+        d = types.doclet(doc, opts);
         break;
       default:
         console.warn('WARN: Untreated kind:', doc.kind);
