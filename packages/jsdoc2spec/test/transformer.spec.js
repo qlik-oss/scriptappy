@@ -332,4 +332,45 @@ describe('generate', () => {
       },
     });
   });
+
+  it('refs', () => {
+    const doclets = [{
+      meta: { code: { name: '' } },
+      kind: 'typedef',
+      type: { names: ['object'] },
+      longname: 'data-source',
+    }, {
+      meta: { code: { name: '' } },
+      kind: 'typedef',
+      type: { names: ['object'] },
+      longname: 'chart-definition',
+    }, {
+      meta: { code: { name: '' } },
+      kind: 'typedef',
+      type: { names: ['Array.<data-source>'] },
+      name: 'data',
+      memberof: 'chart-definition',
+      longname: 'chart-definition.data',
+    }];
+    const spec = JSON.parse(t.generate({
+      taffydata: () => ({ get: () => doclets }),
+      opts: cfg,
+    }));
+
+    expect(spec.entries).to.eql({
+      'data-source': { entries: {}, kind: 'struct', type: 'object' },
+      'chart-definition': {
+        kind: 'struct',
+        type: 'object',
+        entries: {
+          data: {
+            kind: 'array',
+            items: {
+              type: '#/entries/data-source',
+            },
+          },
+        },
+      },
+    });
+  });
 });

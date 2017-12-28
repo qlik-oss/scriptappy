@@ -93,7 +93,37 @@ function collect(doclets, cfg, entity = types.doclet) {
   };
 }
 
-function transform({ ids, priv } /* , cfg */) {
+const BASIC_TYPES = [
+  'boolean',
+  'number',
+  'string',
+  'function',
+  'object',
+  'array',
+  'any',
+  'null',
+];
+
+function traverse(obj, priv, cfg) {
+  let prop;
+  Object.keys(obj).forEach(key => {
+    prop = obj[key];
+    if (prop == null || typeof prop !== 'object') {
+      return;
+    }
+    if (typeof prop.type === 'string') {
+      if (priv[prop.type] && priv[prop.type][0].__ref) {
+        prop.type = priv[prop.type][0].__ref;
+      } else if (BASIC_TYPES.indexOf(prop.type) === -1) {
+        cfg.logger.warn(`Unknown type '${prop.type}'`);
+      }
+    }
+
+    traverse(prop, priv, cfg);
+  });
+}
+
+function transform({ ids, priv }, cfg) {
   const entries = {};
   const definitions = {};
   Object.keys(ids).forEach(longname => {
@@ -134,21 +164,30 @@ function transform({ ids, priv } /* , cfg */) {
         }
 
         parent[memberProperty] = parent[memberProperty] || {};
+        const ref = `${priv[memberOf][0].__ref}/${memberProperty}/${scopeName}`;
         if (parent[memberProperty][scopeName]) {
           // TODO - add multiple signatures if kind === 'function' ?
           parent[memberProperty][scopeName] = parent[memberProperty][scopeName] || {};
           extend(true, parent[memberProperty][scopeName], d);
           ids[longname][idx] = parent[memberProperty][scopeName]; // eslint-disable-line no-param-reassign
+          pr.__ref = ref;
         } else {
           parent[memberProperty][scopeName] = d;
+          pr.__ref = ref;
         }
       } else if (memberScope === 'inner' || isDefinition) {
         definitions[pr.__id] = d;
+        pr.__ref = `#/definitions/${pr.__id}`;
       } else {
         entries[pr.__id] = d;
+        pr.__ref = `#/entries/${pr.__id}`;
       }
     });
   });
+
+  // console.log(priv);
+  traverse(entries, priv, cfg);
+  traverse(definitions, priv, cfg);
 
   return {
     entries,

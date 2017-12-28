@@ -7,7 +7,6 @@
 // symbols
 // errors
 // meta - examples, see, links, inline tags
-// resolve type schema reference
 
 const EXCLUDE_TAGS = ['definition'];
 const VENDOR_TAG_RX = /^x-/;
@@ -205,7 +204,7 @@ function getTypedef(doc, cfg, opts) {
     }
   } else {
     typedef.kind = 'union';
-    typedef.items = doc.type.names.map(simpleType);
+    typedef.items = doc.type.names.map(t => simpleType(t, cfg, opts));
   }
 
   if (type === 'object') {
@@ -259,7 +258,7 @@ function kindFunction(doc, cfg, opts) {
   }
 
   if (doc.fires && doc.fires.length) {
-    f.emits = doc.fires.map(simpleType);
+    f.emits = doc.fires.map(t => simpleType(t, cfg));
   }
 
   return f;
