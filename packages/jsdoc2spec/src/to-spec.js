@@ -1,12 +1,13 @@
 const fs = require('fs');
 const winston = require('winston');
+const extend = require('extend');
 const types = require('./types');
 
 function filterDoclets(data) {
   return data().get().filter(doc => !doc.undocumented && !doc.ignore);
 }
 
-function collect(doclets, cfg) {
+function collect(doclets, cfg, entity = types.doclet) {
   const ids = {};
   const priv = {};
   let pack;
@@ -43,7 +44,7 @@ function collect(doclets, cfg) {
       case 'namespace':
       case 'class':
       case 'interface':
-        d = types.doclet(doc, cfg);
+        d = entity(doc, cfg);
         break;
       default:
         cfg.logger.warn('Untreated kind:', doc.kind);
@@ -59,21 +60,27 @@ function collect(doclets, cfg) {
       d.__access = doc.access;
       d.__isDefinition = (doc.tags || []).filter(tag => tag.originalTitle === 'definition').length > 0;
 
-      if (ids[d.__id] && ids[d.__id].kind === 'module') { // 'd' is a default export from a module
+      if (ids[d.__id] && ids[d.__id][0] && ids[d.__id][0].kind === 'module') { // 'd' is a default export from a module
         d.__memberOf = d.__id;
         d.__memberScope = 'static';
         d.__scopeName = '@default';
         d.__id += '@default';
       }
-      // TODO - check if id already exists and do something about it
-      // (in order to support e.g. multiple method signatures)
-      ids[d.__id] = {};
-      priv[d.__id] = {};
+
+      if (ids[d.__id]) {
+        cfg.logger.warn(`'${doc.longname}' already exists`);
+      }
+      const idObj = {};
+      const privObj = {};
+      ids[d.__id] = ids[d.__id] || [];
+      priv[d.__id] = priv[d.__id] || [];
+      ids[d.__id].push(idObj);
+      priv[d.__id].push(privObj);
       Object.keys(d).forEach(key => {
         if (/^__/.test(key)) {
-          priv[d.__id][key] = d[key];
+          privObj[key] = d[key];
         } else {
-          ids[d.__id][key] = d[key];
+          idObj[key] = d[key];
         }
       });
     }
@@ -86,59 +93,61 @@ function collect(doclets, cfg) {
   };
 }
 
-function transform({ ids, priv }, cfg) {
+function transform({ ids, priv } /* , cfg */) {
   const entries = {};
   const definitions = {};
   Object.keys(ids).forEach(longname => {
-    const d = ids[longname];
-    const pr = priv[longname];
-    const memberOf = pr.__memberOf;
-    const memberDefault = `${memberOf}@default`;
-    const memberScope = pr.__memberScope;
-    const scopeName = pr.__scopeName;
-    let parent = ids[memberOf];
-    const access = pr.__access;
-    const isDefinition = pr.__isDefinition;
+    ids[longname].forEach((d, idx) => {
+      // const d = ids[longname];
+      const pr = priv[longname][idx];
+      const memberOf = pr.__memberOf;
+      const memberDefault = `${memberOf}@default`;
+      const memberScope = pr.__memberScope;
+      const scopeName = pr.__scopeName;
+      let parent = ids[memberOf] && ids[memberOf][0];
+      const access = pr.__access;
+      const isDefinition = pr.__isDefinition;
 
-    const parentMaybeDefault = ids[memberDefault];
-    if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
-      if (!/^exports/.test(pr.__meta.code.name)) {
-        parent = ids[memberDefault];
-        pr.__id = pr.__id.replace(memberOf, memberDefault);
-      }
-    }
-
-    let memberProperty;
-
-    if (access === 'private') {
-      return;
-    }
-
-    if (parent) {
-      if (d.kind === 'event') {
-        memberProperty = 'events';
-      } else if (memberScope === 'static' && parent && parent.kind === 'class') {
-        memberProperty = 'staticEntries';
-      } else if (memberScope === 'static' && parent && parent.kind === 'module') {
-        memberProperty = 'entries';
-      } else if (memberScope === 'inner' || isDefinition) {
-        memberProperty = 'definitions';
-      } else {
-        memberProperty = 'entries';
+      const parentMaybeDefault = ids[memberDefault] && ids[memberDefault][0];
+      if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
+        if (!/^exports/.test(pr.__meta.code.name)) {
+          [parent] = ids[memberDefault];
+          pr.__id = pr.__id.replace(memberOf, memberDefault);
+        }
       }
 
-      if (memberProperty && parent) {
+      let memberProperty;
+
+      if (access === 'private') {
+        return;
+      }
+
+      if (parent) {
+        if (d.kind === 'event') {
+          memberProperty = 'events';
+        } else if (memberScope === 'static' && parent && parent.kind === 'class') {
+          memberProperty = 'staticEntries';
+        } else if (memberScope === 'inner' || isDefinition) {
+          memberProperty = 'definitions';
+        } else {
+          memberProperty = 'entries';
+        }
+
         parent[memberProperty] = parent[memberProperty] || {};
         if (parent[memberProperty][scopeName]) {
-          cfg.logger.verbose('exists?', longname, scopeName, parent[memberProperty][scopeName]);
+          // TODO - add multiple signatures if kind === 'function' ?
+          parent[memberProperty][scopeName] = parent[memberProperty][scopeName] || {};
+          extend(true, parent[memberProperty][scopeName], d);
+          ids[longname][idx] = parent[memberProperty][scopeName]; // eslint-disable-line no-param-reassign
+        } else {
+          parent[memberProperty][scopeName] = d;
         }
-        parent[memberProperty][scopeName] = d;
+      } else if (memberScope === 'inner' || isDefinition) {
+        definitions[pr.__id] = d;
+      } else {
+        entries[pr.__id] = d;
       }
-    } else if (memberScope === 'inner' || isDefinition) {
-      definitions[pr.__id] = d;
-    } else {
-      entries[pr.__id] = d;
-    }
+    });
   });
 
   return {
@@ -171,7 +180,6 @@ function write(JSONSpec, destination) {
 
 function generate({
   taffydata,
-  jsdocopts,
   opts,
 }) {
   // filter doclets
@@ -193,12 +201,11 @@ function generate({
   // validate spec against schema
   // validateSpec(JSON.parse(JSONSpec), schema);
 
-  // write
-  write(spec, jsdocopts.destination);
+  return spec;
 }
 
 const wlogger = new winston.Logger({
-  level: 'info',
+  level: 'verbose',
   transports: [
     new winston.transports.Console({
       colorize: true,
@@ -212,16 +219,21 @@ function jsdocpublish(taffydata, jsdocopts) {
     stability: {},
     logger: wlogger,
   };
-  generate({
+
+  const spec = generate({
     taffydata,
     jsdocopts,
     opts,
   });
+
+  // write
+  write(spec, jsdocopts.destination);
 }
 
 module.exports = {
   filterDoclets,
   collect,
   generate,
+  transform,
   jsdocpublish,
 };

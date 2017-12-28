@@ -38,6 +38,7 @@
     "jsdoc-json": "^2.0.2"
   },
   "dependencies": {
+    "extend": "^3.0.1",
     "winston": "^2.4.0"
   }
 }
