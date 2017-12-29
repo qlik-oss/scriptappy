@@ -46,15 +46,48 @@ describe('availability', () => {
 });
 
 describe('tags', () => {
-  it('stability', () => {
+  it('stability - locked', () => {
+    const a = types.tags({
+      tags: [{
+        title: 'locked',
+      }],
+    }, { logger });
+    expect(a).to.eql({
+      stability: 'locked',
+    });
+  });
+
+  it('stability - stable', () => {
+    const a = types.tags({
+      tags: [{
+        title: 'stable',
+      }],
+    }, { logger });
+    expect(a).to.eql({
+      stability: 'stable',
+    });
+  });
+
+  it('stability - experimental', () => {
+    const a = types.tags({
+      tags: [{
+        title: 'experimental',
+      }],
+    }, { logger });
+    expect(a).to.eql({
+      stability: 'experimental',
+    });
+  });
+
+  it('stability - by value', () => {
     const a = types.tags({
       tags: [{
         title: 'stability',
-        value: '2',
+        value: 'stable',
       }],
-    });
+    }, { logger });
     expect(a).to.eql({
-      stability: 2,
+      stability: 'stable',
     });
   });
 

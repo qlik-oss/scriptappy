@@ -10,14 +10,22 @@
 const EXCLUDE_TAGS = ['definition'];
 const VENDOR_TAG_RX = /^x-/;
 
-function tags(doc) {
+const STABILITY = ['experimental', 'stable', 'locked'];
+
+function tags(doc, cfg) {
   const o = {};
 
   (doc.tags || []).forEach(tag => {
     if (EXCLUDE_TAGS.indexOf(tag.title) !== -1) {
       // do nothing
     } else if (tag.title === 'stability') {
-      o.stability = +tag.value;
+      if (STABILITY.indexOf(tag.value) !== -1) {
+        o.stability = tag.value;
+      } else {
+        cfg.logger.warn(`Unknown stability '${tag.value}'`);
+      }
+    } else if (STABILITY.indexOf(tag.title) !== -1) {
+      o.stability = tag.title;
     } else if (VENDOR_TAG_RX.test(tag.title)) {
       o[tag.title] = tag.value;
     } else {
@@ -312,7 +320,7 @@ function entity(doc, cfg = {}, opts = {}) {
     ent.description = doc.description;
   }
 
-  Object.assign(ent, tags(doc), availability(doc));
+  Object.assign(ent, tags(doc, cfg), availability(doc));
 
   // if (typeof ent.stability === 'undefined' && typeof opts.stability.default) {
   //   ent.stability = opts.stability.default;
