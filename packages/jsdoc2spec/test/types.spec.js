@@ -406,6 +406,55 @@ describe('type', () => {
     });
   });
 
+  it('generator function', () => {
+    const o = types.typedef({
+      name: 'generate',
+      kind: 'function',
+      generator: true,
+    });
+
+    expect(o).to.eql({
+      kind: 'function',
+      params: [],
+      generator: true,
+    });
+
+    const o2 = types.typedef({
+      name: 'generate',
+      kind: 'function',
+      yields: [{ type: { names: ['number'] }, description: 'descr' }],
+    });
+
+    expect(o2).to.eql({
+      kind: 'function',
+      params: [],
+      generator: true,
+      yields: {
+        type: 'number',
+        description: 'descr',
+      },
+    });
+
+    const o3 = types.typedef({
+      name: 'generate',
+      kind: 'function',
+      yields: [{ type: { names: ['number'] } }, { type: { names: ['string'] } }],
+    });
+
+    expect(o3).to.eql({
+      kind: 'function',
+      params: [],
+      generator: true,
+      yields: {
+        kind: 'union',
+        items: [
+          { type: 'number' },
+          { type: 'string' },
+        ],
+      },
+    });
+  });
+
 
   it('event', () => {
     const o = types.typedef({
