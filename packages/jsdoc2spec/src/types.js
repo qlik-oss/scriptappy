@@ -3,7 +3,6 @@
 
 // TODO
 // get/set
-// implements, extends?
 // symbols
 // errors
 // meta - examples, see, links, inline tags
@@ -332,6 +331,12 @@ function entity(doc, cfg = {}, opts = {}) {
     ent.defaultValue = doc.meta.code.value;
   } else if ('defaultvalue' in doc) { // note - small 'v' is used in jsdoc
     ent.defaultValue = doc.defaultvalue;
+  }
+  if (doc.implements) {
+    ent.implements = doc.implements.map(simpleType);
+  }
+  if (doc.augments) {
+    ent.extends = doc.augments.map(simpleType);
   }
 
   const typedef = getTypedef(doc, cfg, opts);

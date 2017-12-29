@@ -523,6 +523,8 @@ describe('entity', () => {
       nullable: true,
       variable: true,
       examples: 'ex',
+      implements: ['Iterable'],
+      augments: ['Dummy'],
     }, { logger }, { includeName: true });
 
     expect(o).to.eql({
@@ -533,6 +535,8 @@ describe('entity', () => {
       nullable: true,
       rest: true,
       examples: 'ex',
+      implements: [{ type: 'Iterable' }],
+      extends: [{ type: 'Dummy' }],
     });
   });
 
