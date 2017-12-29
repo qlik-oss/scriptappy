@@ -2,6 +2,7 @@ const fs = require('fs');
 const winston = require('winston');
 const extend = require('extend');
 const types = require('./types');
+const defaultConfig = require('../spec.config.js');
 
 function filterDoclets(data) {
   return data().get().filter(doc => !doc.undocumented && !doc.ignore);
@@ -104,6 +105,16 @@ const BASIC_TYPES = [
   'null',
 ];
 
+function logRule(cfg, rule, ...args) {
+  const r = cfg.rules[rule];
+  const severity = +r;
+  if (severity === 2) {
+    cfg.logger.error(...args);
+  } else if (severity === 1) {
+    cfg.logger.warn(...args);
+  }
+}
+
 function traverse(obj, priv, cfg) {
   let prop;
   Object.keys(obj).forEach(key => {
@@ -112,10 +123,16 @@ function traverse(obj, priv, cfg) {
       return;
     }
     if (typeof prop.type === 'string') {
+      const generic = prop.type.match((/<.*>/)); // find generic
+      const t = prop.type.replace(/<.*>/, ''); // strip generic
       if (priv[prop.type] && priv[prop.type][0].__ref) {
         prop.type = priv[prop.type][0].__ref;
+      } else if (cfg.types[t]) {
+        if (cfg.types[t].rewrite) {
+          prop.type = `${cfg.types[t].rewrite}${generic ? generic[0] : ''}`;
+        }
       } else if (BASIC_TYPES.indexOf(prop.type) === -1) {
-        cfg.logger.warn(`Unknown type '${prop.type}'`);
+        logRule(cfg, 'type-unknown', `Unknown type '${prop.type}'`);
       }
     }
 
@@ -221,21 +238,22 @@ function generate({
   taffydata,
   opts,
 }) {
+  const config = extend(true, {}, defaultConfig, opts);
   // filter doclets
   const doclets = filterDoclets(taffydata);
 
   // collect doclets based on longname
-  const collected = collect(doclets, opts);
+  const collected = collect(doclets, config);
 
   // transform
-  const { entries, definitions } = transform(collected, opts);
+  const { entries, definitions } = transform(collected, config);
 
   // create spec
   const spec = specification({
     entries,
     definitions,
     pack: collected.pack,
-  }, opts);
+  }, config);
 
   // validate spec against schema
   // validateSpec(JSON.parse(JSONSpec), schema);
@@ -275,4 +293,5 @@ module.exports = {
   generate,
   transform,
   jsdocpublish,
+  logRule,
 };

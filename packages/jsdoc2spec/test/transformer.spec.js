@@ -4,10 +4,15 @@ const logger = {
   error: () => {},
   warn: () => {},
   info: () => {},
-  verbose: (...args) => { console.log(...args); },
+  verbose: () => {},
 };
 
 const cfg = {
+  types: {
+    Carr: {
+      rewrite: 'car',
+    },
+  },
   logger,
 };
 
@@ -83,6 +88,38 @@ describe('collect', () => {
       kind: 'function',
       longname: 'module:mod',
     });
+  });
+});
+
+describe('log rule', () => {
+  it('should log error', () => {
+    const spy = sinon.spy();
+    t.logRule({
+      logger: {
+        error: spy,
+      },
+      types: {},
+      rules: {
+        'my-rule': 2,
+      },
+    }, 'my-rule', 'oops');
+
+    expect(spy).to.have.been.calledWith('oops');
+  });
+
+  it('should log warn', () => {
+    const spy = sinon.spy();
+    t.logRule({
+      logger: {
+        warn: spy,
+      },
+      types: {},
+      rules: {
+        'my-rule': 1,
+      },
+    }, 'my-rule', 'oops');
+
+    expect(spy).to.have.been.calledWith('oops');
   });
 });
 
@@ -253,6 +290,21 @@ describe('transform', () => {
     expect(transformed).to.eql({
       entries: {},
       definitions: {},
+    });
+  });
+
+  it('should rewrite types', () => {
+    const transformed = t.transform({
+      ids: {
+        c: [{ type: 'Carr' }],
+      },
+      priv: {
+        c: [{ __id: 'cc' }],
+      },
+    }, cfg);
+
+    expect(transformed.entries.cc).to.eql({
+      type: 'car',
     });
   });
 
