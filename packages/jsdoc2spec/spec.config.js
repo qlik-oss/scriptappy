@@ -11,6 +11,7 @@ module.exports = {
   jsdoc: undefined,
   spec: {
     version: '',
+    validate: true,
   },
   parse: {
     types: {

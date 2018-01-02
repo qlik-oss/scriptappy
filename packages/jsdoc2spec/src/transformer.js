@@ -1,6 +1,7 @@
 const fs = require('fs');
 const winston = require('winston');
 const extend = require('extend');
+const jsAPISpec = require('js-api-spec');
 const types = require('./types');
 const defaultConfig = require('../spec.config.js');
 
@@ -13,6 +14,8 @@ const wlogger = new winston.Logger({
     }),
   ],
 });
+
+wlogger.cli();
 
 function filterDoclets(data) {
   return data.filter(doc => !doc.undocumented && !doc.ignore);
@@ -225,7 +228,7 @@ function transform({ ids, priv }, cfg) {
 function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts) {
   const spec = {
     spec: {
-      version: '0.1.0',
+      version: '0.x',
     },
     info: {
       name: typeof opts.api.name !== 'undefined' ? opts.api.name : pack.name,
@@ -251,7 +254,7 @@ function generate({
   // filter doclets
   const doclets = filterDoclets(data);
 
-  config.logger = wlogger;
+  config.logger = wlogger; // eslint-disable-line
 
   // collect doclets based on longname
   const collected = collect(doclets, config);
@@ -267,7 +270,9 @@ function generate({
   }, config);
 
   // validate spec against schema
-  // validateSpec(JSON.parse(JSONSpec), schema);
+  if (config.spec.validate !== false) {
+    jsAPISpec.validate(JSON.parse(spec));
+  }
 
   return spec;
 }
