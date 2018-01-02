@@ -1,6 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "title": "A JSON Schema for JavaScript API specification",
+  "description": "API specification",
   "type": "object",
   "required": [
     "spec",
@@ -13,9 +14,13 @@
       "type": "object",
       "description": "Info about the specification version the document uses",
       "properties": {
-        "version": { "$ref": "#/definitions/version" }
+        "version": {
+          "$ref": "#/definitions/version"
+        }
       },
-      "required": ["version"],
+      "required": [
+        "version"
+      ],
       "additionalProperties": false
     },
     "info": {
@@ -29,20 +34,754 @@
           "type": "string",
           "description": "Name of the API"
         },
-        "version": { "$ref": "#/definitions/version" },
+        "version": {
+          "$ref": "#/definitions/version"
+        },
         "license": {
           "type": "string",
           "description": "SPDX license identifier"
         }
       },
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "additionalProperties": false
+    },
+    "entries": {
+      "$ref": "#/definitions/entry"
+    },
+    "definitions": {
+      "$ref": "#/definitions/entry"
     }
   },
   "definitions": {
     "version": {
       "type": "string",
       "pattern": "^[0-9]+.[0-9]+.[0-9]+$"
+    },
+    "vendor": {
+      "additionalProperties": true,
+      "additionalItems": true
+    },
+    "availability": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "$ref": "#/definitions/version"
+        },
+        "deprecated": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "$ref": "#/definitions/version"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "since"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "stability": {
+      "description": "Stability of the entity",
+      "type": "string",
+      "enum": [
+        "experimental",
+        "stable",
+        "locked"
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/type"
+        },
+        {
+          "$ref": "#/definitions/kind.literal"
+        },
+        {
+          "$ref": "#/definitions/kind.module"
+        },
+        {
+          "$ref": "#/definitions/kind.function"
+        },
+        {
+          "$ref": "#/definitions/kind.object"
+        },
+        {
+          "$ref": "#/definitions/kind.struct"
+        },
+        {
+          "$ref": "#/definitions/kind.class"
+        },
+        {
+          "$ref": "#/definitions/kind.interface"
+        },
+        {
+          "$ref": "#/definitions/kind.event"
+        },
+        {
+          "$ref": "#/definitions/kind.array"
+        },
+        {
+          "$ref": "#/definitions/kind.union"
+        }
+      ]
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/entity"
+      }
+    },
+    "kind": {
+      "type": "object",
+      "properties": {
+        "extends": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entity"
+          }
+        },
+        "implements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entity"
+          }
+        },
+        "entries": {
+          "$ref": "#/definitions/entry"
+        },
+        "definitions": {
+          "$ref": "#/definitions/entry"
+        },
+        "events": {
+          "$ref": "#/definitions/entry"
+        }
+      }
+    },
+    "common": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "stability": {
+          "$ref": "#/definitions/stability"
+        },
+        "availability": {
+          "$ref": "#/definitions/availability"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "nullable": {
+          "type": "boolean"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultValue": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "patternProperties": {
+        "^x-": {
+          "$ref": "#/definitions/vendor"
+        }
+      }
+    },
+    "type": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": true,
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true
+          },
+          "required": [
+            "type"
+          ],
+          "not": {
+            "required": [
+              "kind"
+            ]
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "kind.literal": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "literal"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        }
+      ]
+    },
+    "kind.module": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "module"
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "kind.function": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "function"
+            },
+            "params": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/entity"
+                  }
+                ]
+              }
+            },
+            "returns": {
+              "$ref": "#/definitions/entity"
+            },
+            "async": {
+              "type": "boolean"
+            },
+            "generator": {
+              "type": "boolean"
+            },
+            "yields": {
+              "$ref": "#/definitions/entity"
+            },
+            "emits": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "kind.object": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "object"
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "kind.struct": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "struct"
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "kind.class": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "class"
+            },
+            "constructor": {
+              "properties": {
+                "params": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/entity"
+                      }
+                    ]
+                  }
+                },
+                "returns": {
+                  "$ref": "#/definitions/entity"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "params"
+              ]
+            },
+            "staticEntries": {
+              "$ref": "#/definitions/entry"
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "kind.interface": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "interface"
+            },
+            "params": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/entity"
+                  }
+                ]
+              }
+            },
+            "returns": {
+              "$ref": "#/definitions/entity"
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "params"
+          ]
+        }
+      ]
+    },
+    "kind.event": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "event"
+            },
+            "params": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/entity"
+                  }
+                ]
+              }
+            },
+            "returns": {
+              "$ref": "#/definitions/entity"
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind",
+            "params"
+          ]
+        }
+      ]
+    },
+    "kind.array": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "array"
+            },
+            "items": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/entity"
+                  }
+                },
+                {
+                  "$ref": "#/definitions/entity"
+                }
+              ]
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "kind.union": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "$ref": "#/definitions/kind"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "union"
+            },
+            "items": {
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/entity"
+                  }
+                },
+                {
+                  "$ref": "#/definitions/entity"
+                }
+              ]
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "name": true,
+            "type": true,
+            "optional": true,
+            "nullable": true,
+            "examples": true,
+            "defaultValue": true,
+            "extends": true,
+            "implements": true,
+            "entries": true,
+            "definitions": true,
+            "events": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
     }
   }
 }

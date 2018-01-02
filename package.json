@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/miralemd/js-api-spec/issues"
   },
-  "homepage": "https://github.com/miralemd/js-api-spec#readme"
+  "homepage": "https://github.com/miralemd/js-api-spec#readme",
+  "devDependencies": {
+    "ajv": "^5.5.2",
+    "extend": "^3.0.1"
+  }
 }
