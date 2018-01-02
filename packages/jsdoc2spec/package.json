@@ -23,6 +23,9 @@
     "type": "git",
     "url": "git+https://github.com/miralemd/jsdoc2spec.git"
   },
+  "bin": {
+    "jsdoc2spec": "./src/cli.js"
+  },
   "bugs": {
     "url": "https://github.com/miralemd/jsdoc2spec/issues"
   },
@@ -39,6 +42,7 @@
   },
   "dependencies": {
     "extend": "^3.0.1",
-    "winston": "^2.4.0"
+    "winston": "^2.4.0",
+    "yargs": "^10.0.3"
   }
 }

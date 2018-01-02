@@ -1,3 +1,3 @@
-const { jsdocpublish } = require('./src/to-spec.js');
+const { jsdocpublish } = require('./src/transformer.js');
 
 exports.publish = jsdocpublish;

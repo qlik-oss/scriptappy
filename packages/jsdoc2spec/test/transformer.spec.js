@@ -1,4 +1,4 @@
-const t = require('../src/to-spec');
+const t = require('../src/transformer');
 
 const logger = {
   error: () => {},
@@ -8,9 +8,12 @@ const logger = {
 };
 
 const cfg = {
-  types: {
-    Carr: {
-      rewrite: 'car',
+  api: {},
+  parse: {
+    types: {
+      Carr: {
+        rewrite: 'car',
+      },
     },
   },
   logger,
@@ -98,9 +101,11 @@ describe('log rule', () => {
       logger: {
         error: spy,
       },
-      types: {},
-      rules: {
-        'my-rule': 2,
+      parse: {
+        types: {},
+        rules: {
+          'my-rule': 2,
+        },
       },
     }, 'my-rule', 'oops');
 
@@ -113,9 +118,11 @@ describe('log rule', () => {
       logger: {
         warn: spy,
       },
-      types: {},
-      rules: {
-        'my-rule': 1,
+      parse: {
+        types: {},
+        rules: {
+          'my-rule': 1,
+        },
       },
     }, 'my-rule', 'oops');
 
@@ -365,8 +372,8 @@ describe('generate', () => {
       licenses: [{ type: 'yes' }],
     }];
     const spec = JSON.parse(t.generate({
-      taffydata: () => ({ get: () => doclets }),
-      opts: cfg,
+      data: doclets,
+      config: cfg,
     }));
 
     expect(spec).to.eql({
@@ -405,8 +412,8 @@ describe('generate', () => {
       longname: 'chart-definition.data',
     }];
     const spec = JSON.parse(t.generate({
-      taffydata: () => ({ get: () => doclets }),
-      opts: cfg,
+      data: doclets,
+      config: cfg,
     }));
 
     expect(spec.entries).to.eql({

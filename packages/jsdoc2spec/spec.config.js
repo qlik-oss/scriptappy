@@ -1,23 +1,39 @@
 module.exports = {
-  types: {
-    String: {
-      rewrite: 'string',
-    },
-    Number: {
-      rewrite: 'number',
-    },
-    Boolean: {
-      rewrite: 'boolean',
-    },
-    Object: {
-      rewrite: 'object',
-    },
-    Array: {
-      rewrite: 'array',
-    },
-    Promise: {},
+  api: {
+    name: undefined,
+    description: undefined,
+    version: undefined,
+    license: undefined,
   },
-  rules: {
-    'type-unknown': 1,
+  output: {
+    file: 'spec.json',
+  },
+  jsdoc: undefined,
+  spec: {
+    version: '',
+  },
+  parse: {
+    types: {
+      String: {
+        rewrite: 'string',
+      },
+      Number: {
+        rewrite: 'number',
+      },
+      Boolean: {
+        rewrite: 'boolean',
+      },
+      Object: {
+        rewrite: 'object',
+      },
+      Array: {
+        rewrite: 'array',
+      },
+      Promise: {},
+      HTMLElement: {},
+    },
+    rules: {
+      'type-unknown': 1,
+    },
   },
 };

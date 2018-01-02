@@ -4,8 +4,18 @@ const extend = require('extend');
 const types = require('./types');
 const defaultConfig = require('../spec.config.js');
 
+const wlogger = new winston.Logger({
+  level: 'verbose',
+  transports: [
+    new winston.transports.Console({
+      colorize: true,
+      prettyPrint: true,
+    }),
+  ],
+});
+
 function filterDoclets(data) {
-  return data().get().filter(doc => !doc.undocumented && !doc.ignore);
+  return data.filter(doc => !doc.undocumented && !doc.ignore);
 }
 
 function collect(doclets, cfg, entity = types.doclet) {
@@ -106,7 +116,7 @@ const BASIC_TYPES = [
 ];
 
 function logRule(cfg, rule, ...args) {
-  const r = cfg.rules[rule];
+  const r = cfg.parse.rules[rule];
   const severity = +r;
   if (severity === 2) {
     cfg.logger.error(...args);
@@ -127,9 +137,9 @@ function traverse(obj, priv, cfg) {
       const t = prop.type.replace(/<.*>/, ''); // strip generic
       if (priv[prop.type] && priv[prop.type][0].__ref) {
         prop.type = priv[prop.type][0].__ref;
-      } else if (cfg.types[t]) {
-        if (cfg.types[t].rewrite) {
-          prop.type = `${cfg.types[t].rewrite}${generic ? generic[0] : ''}`;
+      } else if (cfg.parse.types[t]) {
+        if (cfg.parse.types[t].rewrite) {
+          prop.type = `${cfg.parse.types[t].rewrite}${generic ? generic[0] : ''}`;
         }
       } else if (BASIC_TYPES.indexOf(prop.type) === -1) {
         logRule(cfg, 'type-unknown', `Unknown type '${prop.type}'`);
@@ -218,10 +228,10 @@ function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts)
       version: '0.1.0',
     },
     info: {
-      name: typeof opts.name !== 'undefined' ? opts.name : pack.name,
-      description: typeof opts.description !== 'undefined' ? opts.description : pack.description,
-      version: typeof opts.version !== 'undefined' ? opts.version : pack.version,
-      license: typeof opts.license !== 'undefined' ? opts.license : (pack.licenses ? pack.licenses[0].type : undefined), // eslint-disable-line
+      name: typeof opts.api.name !== 'undefined' ? opts.api.name : pack.name,
+      description: typeof opts.api.description !== 'undefined' ? opts.api.description : pack.description,
+      version: typeof opts.api.version !== 'undefined' ? opts.api.version : pack.version,
+      license: typeof opts.api.license !== 'undefined' ? opts.api.license : (pack.licenses ? pack.licenses[0].type : undefined), // eslint-disable-line
     },
     entries,
     definitions,
@@ -235,12 +245,13 @@ function write(JSONSpec, destination) {
 }
 
 function generate({
-  taffydata,
-  opts,
+  data,
+  config,
 }) {
-  const config = extend(true, {}, defaultConfig, opts);
   // filter doclets
-  const doclets = filterDoclets(taffydata);
+  const doclets = filterDoclets(data);
+
+  config.logger = wlogger;
 
   // collect doclets based on longname
   const collected = collect(doclets, config);
@@ -261,30 +272,19 @@ function generate({
   return spec;
 }
 
-const wlogger = new winston.Logger({
-  level: 'verbose',
-  transports: [
-    new winston.transports.Console({
-      colorize: true,
-      prettyPrint: true,
-    }),
-  ],
-});
-
 function jsdocpublish(taffydata, jsdocopts) {
-  const opts = {
-    stability: {},
-    logger: wlogger,
-  };
+  const config = defaultConfig;
+  if (jsdocopts.destination) {
+    config.output.file = jsdocopts.destination;
+  }
 
   const spec = generate({
-    taffydata,
-    jsdocopts,
-    opts,
+    data: taffydata().get(),
+    config,
   });
 
   // write
-  write(spec, jsdocopts.destination);
+  write(spec, config.output.file);
 }
 
 module.exports = {
@@ -294,4 +294,5 @@ module.exports = {
   transform,
   jsdocpublish,
   logRule,
+  write,
 };
