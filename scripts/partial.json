@@ -14,7 +14,7 @@
       "type": "object",
       "description": "Info about the specification version the document uses",
       "properties": {
-        "version": { "$ref": "#/definitions/version" }
+        "version": { "type": "string", "enum": ["0.x"]}
       },
       "required": ["version"],
       "additionalProperties": false
