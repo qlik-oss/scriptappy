@@ -2,9 +2,11 @@
   "name": "js-api-spec",
   "version": "0.0.1",
   "description": "JavaScript API Specification",
-  "main": "schema/schema.json",
+  "main": "lib/index.js",
   "files": [
-    "/schema"
+    "/lib",
+    "/schema",
+    "/tools"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +23,15 @@
   },
   "homepage": "https://github.com/miralemd/js-api-spec#readme",
   "devDependencies": {
-    "ajv": "^5.5.2",
+    "eslint": "^4.14.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "extend": "^3.0.1"
+  },
+  "dependencies": {
+    "ajv": "^5.5.2",
+    "chalk": "^2.3.0",
+    "fast-json-patch": "^2.0.6",
+    "yargs": "^10.0.3"
   }
 }

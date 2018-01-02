@@ -1,0 +1,14 @@
+{
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": "airbnb-base",
+  "rules": {
+    "arrow-parens": "off",
+    "no-underscore-dangle": "off",
+    "max-len": "off"
+  }
+}
