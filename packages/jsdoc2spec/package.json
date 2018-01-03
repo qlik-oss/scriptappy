@@ -4,7 +4,8 @@
   "description": "",
   "main": "publish.js",
   "files": [
-    "/src"
+    "/src",
+    "spec.config.js"
   ],
   "scripts": {
     "test": "aw -c aw.config.js",
