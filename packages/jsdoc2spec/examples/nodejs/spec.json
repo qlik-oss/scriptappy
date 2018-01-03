@@ -1,6 +1,6 @@
 {
   "spec": {
-    "version": "0.1.0"
+    "version": "0.x"
   },
   "info": {
     "name": "nodejs",
@@ -8,17 +8,14 @@
   },
   "entries": {
     "module:net": {
-      "stability": 2,
+      "stability": "stable",
       "kind": "module",
       "entries": {
         "Server": {
           "description": "This class is used to create a TCP or ICP server",
           "kind": "class",
           "constructor": {
-            "typedef": {
-              "kind": "function",
-              "params": []
-            }
+            "params": []
           },
           "entries": {
             "address": {
@@ -26,7 +23,7 @@
               "kind": "function",
               "params": [],
               "returns": {
-                "type": "module:net.Server~address"
+                "type": "#/entries/module:net/entries/Server/definitions/address"
               }
             },
             "close": {
@@ -78,7 +75,6 @@
             {
               "name": "options",
               "optional": true,
-              "type": "object",
               "kind": "struct",
               "entries": {
                 "allowHalfOpen": {
@@ -103,7 +99,7 @@
             }
           ],
           "returns": {
-            "type": "module:net.Server"
+            "type": "#/entries/module:net/entries/Server"
           }
         }
       },
@@ -111,7 +107,7 @@
         "NumberLike": {
           "description": "A number, or a string containing a number.",
           "kind": "union",
-          "union": [
+          "items": [
             {
               "type": "number"
             },
@@ -123,7 +119,7 @@
       }
     },
     "module:path": {
-      "stability": 2,
+      "stability": "stable",
       "kind": "module",
       "entries": {
         "dirname": {

@@ -1,6 +1,6 @@
 /**
  * @module net
- * @stability 2
+ * @stability stable
  */
 
 /**

@@ -2,6 +2,7 @@
   "name": "nodejs",
   "version": "8.0.0",
   "scripts": {
-    "spec": "node ../../node_modules/.bin/jsdoc ./src -r -d ./spec.json -t ../../ -p ./package.json"
+    "spec": "node ../../node_modules/.bin/jsdoc ./src -r -p ./package.json -X | ../../src/cli.js",
+    "jsd": "node ../../node_modules/.bin/jsdoc ./src -r -d ./jsdoc.json -t ../../node_modules/jsdoc-json -p ./package.json"
   }
 }

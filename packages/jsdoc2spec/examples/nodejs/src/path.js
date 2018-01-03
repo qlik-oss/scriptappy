@@ -1,6 +1,6 @@
 /**
  * @module path
- * @stability 2
+ * @stability stable
  */
 
 /**
