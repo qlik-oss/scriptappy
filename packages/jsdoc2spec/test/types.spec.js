@@ -407,6 +407,28 @@ describe('type', () => {
     });
   });
 
+  it('object - setter', () => {
+    const o = types.typedef({
+      meta: {
+        code: { paramnames: ['v'] },
+      },
+      kind: 'member',
+      params: [
+        {
+          type: {
+            names: ['string'],
+          },
+          description: 'the nam',
+          name: 'v',
+        },
+      ],
+    }, { logger });
+
+    expect(o).to.eql({
+      type: 'string',
+    });
+  });
+
   it('function', () => {
     const o = types.typedef({
       name: 'generate',

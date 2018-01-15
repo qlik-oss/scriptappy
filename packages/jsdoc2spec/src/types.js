@@ -1,5 +1,6 @@
 /* eslint no-use-before-define: 0 */
 /* eslint no-param-reassign: 0 */
+/* eslint prefer-destructuring: 0 */
 
 // TODO
 // get/set
@@ -169,6 +170,19 @@ function unwrapArrayGeneric(type, cfg, opts) {
   return typedef;
 }
 
+function typeOrKind(names, cfg, opts) {
+  if (names.length === 0) {
+    throw new Error('ooops');
+  }
+  if (names.length === 1) {
+    return simpleType(names[0]);
+  }
+  return {
+    kind: 'union',
+    items: names.map(t => simpleType(t, cfg, opts)),
+  };
+}
+
 function getTypedef(doc, cfg, opts) {
   let type;
   const typedef = {};
@@ -189,10 +203,20 @@ function getTypedef(doc, cfg, opts) {
   } else if (!doc.type || !doc.type.names) {
     const t = getTypeFromCodeMeta(doc, cfg, opts);
     if (!t.kind) {
-      if (!cfg.__private) {
-        cfg.logger.warn(`Unknown type on '${doc.longname || doc.name}' in ${cfg.__path}`);
+      if (doc.kind === 'member' && doc.params && doc.meta && doc.meta.code && doc.meta.code.paramnames && doc.meta.code.paramnames.length === 1) { // property setter
+        const something = typeOrKind(doc.params[0].type.names);
+        if (something.kind) {
+          typedef.kind = something.kind;
+          typedef.items = something.items;
+        } else if (something.type) {
+          type = something.type;
+        }
+      } else {
+        if (!cfg.__private) {
+          cfg.logger.warn(`Missing type on '${doc.longname || doc.name}' in ${cfg.__path}:${doc.meta.lineno}`);
+        }
+        type = 'any';
       }
-      type = 'any';
     } else {
       type = t.kind;
       typedef.kind = type;
@@ -210,8 +234,9 @@ function getTypedef(doc, cfg, opts) {
       };
     }
   } else {
-    typedef.kind = 'union';
-    typedef.items = doc.type.names.map(t => simpleType(t, cfg, opts));
+    const something = typeOrKind(doc.type.names, cfg, opts);
+    typedef.kind = something.kind;
+    typedef.items = something.items;
   }
 
   if (type === 'object') {
