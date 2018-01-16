@@ -1,3 +1,5 @@
+/* eslint no-param-reassign: 0 */
+
 const fs = require('fs');
 const winston = require('winston');
 const extend = require('extend');
@@ -17,6 +19,52 @@ const wlogger = new winston.Logger({
 
 wlogger.cli();
 
+// const ruleViolations = {};
+
+function printViolations(violations, logger = console) {
+  // formatting kinda ripped from https://github.com/eslint/eslint/blob/master/lib/formatters/stylish.js
+  // let warnings = 0;
+  let errs = 0;
+  Object.keys(violations).forEach(file => {
+    const vs = violations[file];
+    if (file) {
+      logger.log(`\n\x1b[4m${file}\x1b[0m`);
+    } else {
+      logger.log('\nType check\x1b[0m');
+    }
+    vs.forEach(violation => {
+      const position = violation.doc && violation.doc.meta ? `\x1b[2m${violation.doc.meta.lineno}:${violation.doc.meta.columnno}\x1b[0m` : '';
+      const rule = `\x1b[2m${violation.rule}\x1b[0m`;
+      const severity = violation.severity === 2 ? '\x1b[31merror\x1b[0m' : '\x1b[33mwarn\x1b[0m';
+      const message = `  ${position}\t${severity}\t${violation.message}\t${rule}`;
+      logger.log(message);
+      if (violation.severity === 2) {
+        errs += 1;
+      }
+    });
+  });
+
+  return errs;
+}
+
+function logRule(cfg, doc, rule, message, violations) {
+  const r = cfg.parse.rules[rule];
+  const severity = +r;
+  if (severity <= 0) {
+    return;
+  }
+
+  const id = doc && doc.meta ? `${doc.meta.path}/${doc.meta.filename}` : '';
+  violations[id] = violations[id] || [];
+  const fileViolations = violations[id];
+  fileViolations.push({
+    rule,
+    severity,
+    doc,
+    message,
+  });
+}
+
 function filterDoclets(data) {
   return data.filter(doc => !doc.undocumented && !doc.ignore);
 }
@@ -30,7 +78,7 @@ function collect(doclets, cfg, entity = types.doclet) {
     let d;
     if (doc.meta && doc.meta.code.name === 'module.exports') {
       if (doc.longname.indexOf('module.exports') === 0) {
-        cfg.logger.warn('Default export without module name:', `${doc.meta.path}/${doc.meta.filename}`);
+        cfg.logRule(doc, 'no-default-exports-wo-name', 'Default export without module name');
         return;
       }
     }
@@ -61,7 +109,7 @@ function collect(doclets, cfg, entity = types.doclet) {
         d = entity(doc, cfg);
         break;
       default:
-        cfg.logger.warn('Untreated kind:', doc.kind);
+        cfg.logRule(doc, 'no-untreated-kinds', `Untreated kind '${doc.kind}`);
         break;
     }
 
@@ -81,8 +129,8 @@ function collect(doclets, cfg, entity = types.doclet) {
         d.__id += '@default';
       }
 
-      if (ids[d.__id]) {
-        cfg.logger.warn(`'${doc.longname}' already exists`);
+      if (ids[d.__id && d.__access !== 'private']) {
+        cfg.logRule(doc, 'no-duplicate-references', `'${doc.longname}' already exists`);
       }
       const idObj = {};
       const privObj = {};
@@ -118,16 +166,6 @@ const BASIC_TYPES = [
   'null',
 ];
 
-function logRule(cfg, rule, ...args) {
-  const r = cfg.parse.rules[rule];
-  const severity = +r;
-  if (severity === 2) {
-    cfg.logger.error(...args);
-  } else if (severity === 1) {
-    cfg.logger.warn(...args);
-  }
-}
-
 function traverse(obj, priv, cfg) {
   let prop;
   Object.keys(obj).forEach(key => {
@@ -145,7 +183,7 @@ function traverse(obj, priv, cfg) {
           prop.type = `${cfg.parse.types[t].rewrite}${generic ? generic[0] : ''}`;
         }
       } else if (BASIC_TYPES.indexOf(prop.type) === -1) {
-        logRule(cfg, 'type-unknown', `Unknown type '${prop.type}'`);
+        cfg.logRule(null, 'no-unknown-types', `Type unknown: '${prop.type}'`);
       }
     }
 
@@ -255,6 +293,8 @@ function generate({
   const doclets = filterDoclets(data);
 
   config.logger = wlogger; // eslint-disable-line
+  const violations = {};
+  config.logRule = (doc, rule, message) => logRule(config, doc, rule, message, violations);
 
   // collect doclets based on longname
   const collected = collect(doclets, config);
@@ -269,9 +309,15 @@ function generate({
     pack: collected.pack,
   }, config);
 
+  const errors = printViolations(violations);
+
   // validate spec against schema
   if (config.spec.validate !== false) {
     jsAPISpec.validate(JSON.parse(spec));
+  }
+
+  if (errors > 0) {
+    process.exitCode = 1;
   }
 
   return spec;

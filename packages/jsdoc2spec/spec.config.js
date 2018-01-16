@@ -34,7 +34,13 @@ module.exports = {
       HTMLElement: {},
     },
     rules: {
-      'type-unknown': 1,
+      'no-unknown-types': 1,
+      'no-missing-types': 1,
+      'no-multi-return': 1,
+      'no-unknown-stability': 2,
+      'no-duplicate-references': 1,
+      'no-untreated-kinds': 1,
+      'no-default-exports-wo-name': 1,
     },
   },
 };

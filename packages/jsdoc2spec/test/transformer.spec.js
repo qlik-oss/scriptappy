@@ -9,14 +9,19 @@ const logger = {
 
 const cfg = {
   api: {},
+  spec: {
+    validate: false,
+  },
   parse: {
     types: {
       Carr: {
         rewrite: 'car',
       },
     },
+    rules: {},
   },
   logger,
+  logRule: () => {},
 };
 
 describe('collect', () => {
@@ -96,37 +101,41 @@ describe('collect', () => {
 
 describe('log rule', () => {
   it('should log error', () => {
-    const spy = sinon.spy();
+    const violations = {};
+    const doc = { meta: { path: 'a', filename: 'b' } };
     t.logRule({
-      logger: {
-        error: spy,
-      },
+      logger: {},
       parse: {
         types: {},
         rules: {
           'my-rule': 2,
         },
       },
-    }, 'my-rule', 'oops');
+    }, doc, 'my-rule', 'oops', violations);
 
-    expect(spy).to.have.been.calledWith('oops');
+    expect(violations).eql({
+      'a/b': [{
+        doc,
+        message: 'oops',
+        rule: 'my-rule',
+        severity: 2,
+      }],
+    });
   });
 
-  it('should log warn', () => {
-    const spy = sinon.spy();
+  it('should not log with severity <= 0', () => {
+    const violations = {};
     t.logRule({
-      logger: {
-        warn: spy,
-      },
+      logger: {},
       parse: {
         types: {},
         rules: {
-          'my-rule': 1,
+          'my-rule': 0,
         },
       },
-    }, 'my-rule', 'oops');
+    }, {}, 'my-rule', 'oops', violations);
 
-    expect(spy).to.have.been.calledWith('oops');
+    expect(violations).to.eql({});
   });
 });
 
@@ -377,7 +386,7 @@ describe('generate', () => {
     }));
 
     expect(spec).to.eql({
-      spec: { version: '0.1.0' },
+      spec: { version: '0.x' },
       info: {
         name: 'api',
         version: '3.7.0',

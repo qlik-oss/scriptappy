@@ -23,7 +23,7 @@ function tags(doc, cfg) {
       if (STABILITY.indexOf(tag.value) !== -1) {
         o.stability = tag.value;
       } else {
-        cfg.logger.warn(`Unknown stability '${tag.value}'`);
+        cfg.logRule(doc, 'no-unknown-stability', `Stability unknown: '${tag.value}'`);
       }
     } else if (STABILITY.indexOf(tag.title) !== -1) {
       o.stability = tag.title;
@@ -213,7 +213,7 @@ function getTypedef(doc, cfg, opts) {
         }
       } else {
         if (!cfg.__private) {
-          cfg.logger.warn(`Missing type on '${doc.longname || doc.name}' in ${cfg.__path}:${doc.meta.lineno}`);
+          cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
         }
         type = 'any';
       }
@@ -268,7 +268,7 @@ function kindFunction(doc, cfg, opts) {
 
   if (doc.returns) {
     if (doc.returns.length > 1) {
-      cfg.logger.warn('Multiple returns from ', doc.longname);
+      cfg.logRule(doc, 'no-multi-return', 'Multiple returns from function');
     }
     f.returns = entity(doc.returns[0], cfg, opts);
   }

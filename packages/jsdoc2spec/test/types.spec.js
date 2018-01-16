@@ -7,6 +7,11 @@ const logger = {
   verbose: () => {},
 };
 
+const cfg = {
+  logger,
+  logRule: () => {},
+};
+
 describe('availability', () => {
   it('should support "since" only', () => {
     const a = types.availability({
@@ -244,7 +249,7 @@ describe('collect props', () => {
 describe('type', () => {
   it('any', () => {
     const o = types.typedef({
-    }, { logger });
+    }, cfg);
 
     expect(o).to.eql({
       type: 'any',
@@ -629,7 +634,7 @@ describe('entity', () => {
       examples: 'ex',
       implements: ['Iterable'],
       augments: ['Dummy'],
-    }, { logger }, { includeName: true });
+    }, cfg, { includeName: true });
 
     expect(o).to.eql({
       name: 'Person',
