@@ -182,7 +182,7 @@ function traverse(obj, priv, cfg) {
         if (cfg.parse.types[t].rewrite) {
           prop.type = `${cfg.parse.types[t].rewrite}${generic ? generic[0] : ''}`;
         }
-      } else if (BASIC_TYPES.indexOf(prop.type) === -1) {
+      } else if (BASIC_TYPES.indexOf(t) === -1) {
         cfg.logRule(null, 'no-unknown-types', `Type unknown: '${prop.type}'`);
       }
     }
