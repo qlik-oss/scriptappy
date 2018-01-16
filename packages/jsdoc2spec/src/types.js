@@ -3,15 +3,15 @@
 /* eslint prefer-destructuring: 0 */
 
 // TODO
-// get/set
 // symbols
-// errors
 // meta - examples, see, links, inline tags
 
 const EXCLUDE_TAGS = ['definition'];
 const VENDOR_TAG_RX = /^x-/;
 
 const STABILITY = ['experimental', 'stable', 'locked'];
+
+let currentMetaDoc;
 
 function tags(doc, cfg) {
   const o = {};
@@ -213,7 +213,11 @@ function getTypedef(doc, cfg, opts) {
         }
       } else {
         if (!cfg.__private) {
-          cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
+          if (doc && doc.meta && doc.name) {
+            cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
+          } else {
+            cfg.logRule(currentMetaDoc, 'no-missing-types', 'Missing type');
+          }
         }
         type = 'any';
       }
@@ -289,6 +293,10 @@ function kindFunction(doc, cfg, opts) {
     }
   }
 
+  if (doc.exceptions) {
+    f.throws = doc.exceptions.map(xc => entity(xc, cfg, opts));
+  }
+
   if (doc.fires && doc.fires.length) {
     f.emits = doc.fires.map(t => simpleType(t, cfg));
   }
@@ -334,6 +342,9 @@ function kindInterface(doc, cfg, opts) {
 
 function entity(doc, cfg = {}, opts = {}) {
   const ent = {};
+  if (doc && doc.meta) {
+    currentMetaDoc = doc;
+  }
   if (opts.includeName && doc.name) {
     ent.name = doc.name;
   }

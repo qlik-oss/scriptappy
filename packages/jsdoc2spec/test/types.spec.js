@@ -444,6 +444,10 @@ describe('type', () => {
       fires: [
         'generate#event:start',
       ],
+      exceptions: [{
+        type: { names: ['NullPointerException'] },
+        description: 'oops',
+      }],
       returns: [{
         type: {
           names: ['Promise.<string>'],
@@ -456,6 +460,10 @@ describe('type', () => {
       kind: 'function',
       emits: [{
         type: 'generate#event:start',
+      }],
+      throws: [{
+        description: 'oops',
+        type: 'NullPointerException',
       }],
       params: [],
       returns: {
