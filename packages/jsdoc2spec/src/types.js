@@ -78,23 +78,23 @@ function collectAndNest(params, cfg, opts, isParams = false) {
       }
       parent = parent[subName];
       if (!parent.kind) {
-        parent.kind = isParentArray ? 'array' : 'struct';
+        parent.kind = isParentArray ? 'array' : 'object';
         delete parent.type;
       }
       if (isParentArray && !parent.items) {
         parent.items = {
-          kind: 'struct',
+          kind: 'object',
           entries: {},
         };
       } else if (isParentArray && !parent.items.entries) {
         parent.items.entries = {};
         if (!parent.items.kind) {
-          parent.items.kind = 'struct';
+          parent.items.kind = 'object';
           delete parent.items.type;
         }
       } else if (!isParentArray && !parent.entries) {
         // if (!parent.kind) {
-        //   parent.kind = 'struct';
+        //   parent.kind = 'object';
         //   delete parent.type;
         // }
         parent.entries = {};
@@ -246,7 +246,7 @@ function getTypedef(doc, cfg, opts) {
   if (type === 'object') {
     const entries = collectProps(doc.properties, cfg, opts);
     if (doc.kind || Object.keys(entries).length) {
-      typedef.kind = doc.kind === 'typedef' ? 'struct' : 'object';
+      typedef.kind = 'object';
       typedef.entries = entries;
     }
   }

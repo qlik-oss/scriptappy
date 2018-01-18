@@ -164,7 +164,7 @@ describe('collect params', () => {
       name: 'options',
       description: 'descr',
       nullable: true,
-      kind: 'struct',
+      kind: 'object',
       entries: {
         model: {
           optional: true,
@@ -197,7 +197,7 @@ describe('collect params', () => {
       description: 'descr',
       kind: 'array',
       items: {
-        kind: 'struct',
+        kind: 'object',
         entries: {
           model: {
             description: 'descript',
@@ -233,7 +233,7 @@ describe('collect props', () => {
         description: 'descr',
         kind: 'array',
         items: {
-          kind: 'struct',
+          kind: 'object',
           entries: {
             model: {
               description: 'descript',
@@ -337,7 +337,7 @@ describe('type', () => {
       entries: {
         first: {
           nullable: true,
-          kind: 'struct',
+          kind: 'object',
           entries: {
             sub: {
               optional: true,

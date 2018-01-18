@@ -426,10 +426,9 @@ describe('generate', () => {
     }));
 
     expect(spec.entries).to.eql({
-      'data-source': { entries: {}, kind: 'struct', type: 'object' },
+      'data-source': { entries: {}, kind: 'object' },
       'chart-definition': {
-        kind: 'struct',
-        type: 'object',
+        kind: 'object',
         entries: {
           data: {
             kind: 'array',
