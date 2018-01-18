@@ -159,7 +159,11 @@ addKind('literal', {
   },
   required: ['kind', 'value'],
 });
+
 addKind('module');
+addKind('object');
+addKind('namespace');
+addKind('struct');
 
 addKind('function', signature, {
   properties: {
@@ -177,9 +181,6 @@ addKind('function', signature, {
   },
   required: ['kind'],
 });
-
-addKind('object');
-addKind('struct');
 
 addKind('class', {
   properties: {
