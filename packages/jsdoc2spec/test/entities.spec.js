@@ -1,4 +1,4 @@
-const types = require('../src/types');
+const types = require('../src/entities');
 
 const logger = {
   error: () => {},

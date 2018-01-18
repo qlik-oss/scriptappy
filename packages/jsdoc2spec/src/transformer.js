@@ -3,7 +3,7 @@
 const fs = require('fs');
 const extend = require('extend');
 const jsAPISpec = require('js-api-spec');
-const types = require('./types');
+const types = require('./entities');
 const defaultConfig = require('../spec.config.js');
 
 function printViolations(violations, logger = console) {
