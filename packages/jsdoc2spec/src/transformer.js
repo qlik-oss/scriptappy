@@ -3,7 +3,8 @@
 const fs = require('fs');
 const extend = require('extend');
 const jsAPISpec = require('js-api-spec');
-const types = require('./entities');
+const entities = require('./entities');
+const types = require('./types');
 const defaultConfig = require('../spec.config.js');
 
 function printViolations(violations, logger = console) {
@@ -54,7 +55,7 @@ function filterDoclets(data) {
   return data.filter(doc => !doc.undocumented && !doc.ignore);
 }
 
-function collect(doclets, cfg, entity = types.doclet) {
+function collect(doclets, cfg, entity = entities.doclet) {
   const ids = {};
   const priv = {};
   let pack;
@@ -149,9 +150,11 @@ const BASIC_TYPES = [
   'array',
   'any',
   'null',
-];
+].concat(types);
 
-function traverse(obj, priv, cfg) {
+const GLOB = global;
+
+function checkTypes(obj, priv, cfg) {
   let prop;
   Object.keys(obj).forEach(key => {
     prop = obj[key];
@@ -167,12 +170,12 @@ function traverse(obj, priv, cfg) {
         if (cfg.parse.types[t].rewrite) {
           prop.type = `${cfg.parse.types[t].rewrite}${generic ? generic[0] : ''}`;
         }
-      } else if (BASIC_TYPES.indexOf(t) === -1) {
+      } else if (BASIC_TYPES.indexOf(t) === -1 && typeof GLOB[t] === 'undefined') {
         cfg.logRule(null, 'no-unknown-types', `Type unknown: '${prop.type}'`);
       }
     }
 
-    traverse(prop, priv, cfg);
+    checkTypes(prop, priv, cfg);
   });
 }
 
@@ -239,8 +242,8 @@ function transform({ ids, priv }, cfg) {
   });
 
   // console.log(priv);
-  traverse(entries, priv, cfg);
-  traverse(definitions, priv, cfg);
+  checkTypes(entries, priv, cfg);
+  checkTypes(definitions, priv, cfg);
 
   return {
     entries,

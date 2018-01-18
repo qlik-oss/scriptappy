@@ -30,8 +30,6 @@ module.exports = {
       Array: {
         rewrite: 'array',
       },
-      Promise: {},
-      HTMLElement: {},
     },
     rules: {
       'no-unknown-types': 1,
