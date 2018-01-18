@@ -1,25 +1,10 @@
 /* eslint no-param-reassign: 0 */
 
 const fs = require('fs');
-const winston = require('winston');
 const extend = require('extend');
 const jsAPISpec = require('js-api-spec');
 const types = require('./types');
 const defaultConfig = require('../spec.config.js');
-
-const wlogger = new winston.Logger({
-  level: 'verbose',
-  transports: [
-    new winston.transports.Console({
-      colorize: true,
-      prettyPrint: true,
-    }),
-  ],
-});
-
-wlogger.cli();
-
-// const ruleViolations = {};
 
 function printViolations(violations, logger = console) {
   // formatting kinda ripped from https://github.com/eslint/eslint/blob/master/lib/formatters/stylish.js
@@ -292,7 +277,6 @@ function generate({
   // filter doclets
   const doclets = filterDoclets(data);
 
-  config.logger = wlogger; // eslint-disable-line
   const violations = {};
   config.logRule = (doc, rule, message) => logRule(config, doc, rule, message, violations);
 
