@@ -1,0 +1,16 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "chai": false,
+    "expect": false,
+    "sinon": false
+  },
+  "plugins": [
+    "mocha"
+  ],
+  "rules": {
+    "mocha/no-exclusive-tests": "error"
+  }
+}
