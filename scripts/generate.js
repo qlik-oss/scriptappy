@@ -11,14 +11,14 @@ const common = {
     description: { type: 'string' },
     stability: { $ref: '#/definitions/stability' },
     availability: { $ref: '#/definitions/availability' },
-    name: { type: 'string' },
-    type: { type: 'string' },
-    optional: { type: 'boolean' },
-    nullable: { type: 'boolean' },
     examples: {
       type: 'array',
       items: { type: 'string' },
     },
+    type: { type: 'string' },
+    name: { type: 'string' },
+    optional: { type: 'boolean' },
+    nullable: { type: 'boolean' },
     defaultValue: {
       oneOf: [
         { type: 'number' },
@@ -34,56 +34,67 @@ const common = {
   },
 };
 
+const extendable = {
+  properties: {
+    extends: {
+      type: 'array',
+      items: {
+        $ref: '#/definitions/type',
+      },
+    },
+    implements: {
+      type: 'array',
+      items: {
+        $ref: '#/definitions/type',
+      },
+    },
+  },
+};
+
 const signature = {
   properties: {
     params: {
       type: 'array',
       items: {
         allOf: [{
-          $ref: '#/definitions/entity',
+          $ref: '#/definitions/entity-tier3',
         }],
       },
     },
     returns: {
-      $ref: '#/definitions/entity',
+      $ref: '#/definitions/entity-tier3',
     },
   },
   additionalProperties: false,
   required: ['params'],
 };
 
-schema.definitions.kind = {
-  type: 'object',
-  properties: {
-    extends: {
-      type: 'array',
-      items: {
-        $ref: '#/definitions/entity',
-      },
-    },
-    implements: {
-      type: 'array',
-      items: {
-        $ref: '#/definitions/entity',
-      },
-    },
-    entries: {
-      $ref: '#/definitions/entry',
-    },
-    definitions: {
-      $ref: '#/definitions/entry',
-    },
-    events: {
-      $ref: '#/definitions/entry',
-    },
-  },
-};
-
 schema.definitions.common = extend(true, {}, common, {});
 
-// schema.definitions.entity.oneOf = [];
+function addTier(t) {
+  const tier = `entity-tier${t}`;
+  if (!schema.definitions[tier]) {
+    schema.definitions[tier] = {
+      type: 'object',
+      oneOf: [],
+    };
+  }
+  return schema.definitions[tier];
+}
 
-function type() {
+addTier(0);
+addTier(1);
+addTier(2);
+addTier(3);
+addTier(4);
+
+function addToTier(ref, tier) {
+  addTier(tier).oneOf.push({
+    $ref: `#/definitions/${ref}`,
+  });
+}
+
+(() => {
   const def = extend(true, {
     type: 'object',
     properties: {
@@ -106,22 +117,39 @@ function type() {
       def,
     ],
   };
+  addToTier('type', 3);
+})();
 
-  schema.definitions.entity.oneOf.push({
-    $ref: '#/definitions/type',
-  });
+// kinds
+
+function entries(lowestTier) {
+  const max = 3;
+  const obj = {
+    additionalProperties: {
+      type: 'object',
+      oneOf: [],
+    },
+  };
+  for (let i = lowestTier; i <= max; i += 1) {
+    obj.additionalProperties.oneOf.push({
+      $ref: `#/definitions/entity-tier${i}`,
+    });
+  }
+  return obj;
 }
 
-type();
-
-function addKind(k, ...props) {
-  const def = extend(true, {
-    type: 'object',
-    properties: {
-      kind: {
-        const: k,
-      },
+function entry(t) {
+  return {
+    additionalProperties: {
+      $ref: `#/definitions/kind.${t}`,
     },
+  };
+}
+
+function addKind(k, tier, ...props) {
+  const entityProps = {
+    type: 'object',
+    properties: {},
     additionalProperties: false,
     patternProperties: {
       '^x-': {
@@ -129,25 +157,30 @@ function addKind(k, ...props) {
       },
     },
     required: ['kind'],
-  }, ...props);
+  };
+
+  const def = extend(true, {
+    type: 'object',
+    properties: {
+      kind: {
+        const: k,
+      },
+    },
+  }, entityProps, ...props);
 
   Object.keys(common.properties).forEach(key => { def.properties[key] = true; });
-  Object.keys(schema.definitions.kind.properties).forEach(key => { def.properties[key] = true; });
 
   schema.definitions[`kind.${k}`] = {
     allOf: [
       { $ref: '#/definitions/common' },
-      { $ref: '#/definitions/kind' },
       def,
     ],
   };
 
-  schema.definitions.entity.oneOf.push({
-    $ref: `#/definitions/kind.${k}`,
-  });
+  addToTier(`kind.${k}`, tier);
 }
 
-addKind('literal', {
+addKind('literal', 3, {
   properties: {
     value: {
       oneOf: [
@@ -160,17 +193,35 @@ addKind('literal', {
   required: ['kind', 'value'],
 });
 
-addKind('module');
-addKind('object');
-addKind('namespace');
-addKind('struct');
+addKind('module', 0, {
+  properties: {
+    entries: entries(1),
+    definitions: entries(1),
+    events: entry('event'),
+  },
+});
+addKind('object', 3, extendable, {
+  properties: {
+    entries: entries(3),
+    definitions: entries(3),
+    events: entry('event'),
+  },
+});
+addKind('namespace', 1, {
+  properties: {
+    entries: entries(1),
+    definitions: entries(1),
+    events: entry('event'),
+  },
+});
 
-addKind('function', signature, {
+addKind('function', 3, signature, {
   properties: {
     async: { type: 'boolean' },
     generator: { type: 'boolean' },
     yields: {
-      $ref: '#/definitions/entity',
+      type: 'array',
+      items: { $ref: '#/definitions/entity-tier3' },
     },
     emits: {
       type: 'array',
@@ -178,66 +229,77 @@ addKind('function', signature, {
         $ref: '#/definitions/type',
       },
     },
+    entries: entries(3),
+    definitions: entries(3),
+    events: entry('event'),
   },
   required: ['kind'],
 });
 
-addKind('class', {
+addKind('class', 2, extendable, {
   properties: {
     constructor: signature,
-    staticEntries: {
-      $ref: '#/definitions/entry',
-    },
+    staticEntries: entries(3),
+    entries: entries(3),
+    definitions: entries(2),
+    events: entry('event'),
   },
 });
-addKind('interface', signature);
-addKind('event', signature, {
+
+addKind('interface', 2, signature, extendable, {
+  properties: {
+    entries: entries(3),
+    definitions: entries(2),
+    events: entry('event'),
+  },
+  required: ['kind'],
+});
+
+addKind('event', 4, signature, {
+  properties: {
+    entries: entries(3),
+    definitions: entries(3),
+  },
   required: ['kind', 'params'],
 });
 
-addKind('array', {
+addKind('array', 3, {
   properties: {
     items: {
       oneOf: [
         {
           type: 'array', // tuple
-          items: { $ref: '#/definitions/entity' },
+          items: { $ref: '#/definitions/entity-tier3' },
         },
         {
-          $ref: '#/definitions/entity',
+          $ref: '#/definitions/entity-tier3',
         },
       ],
     },
+    definitions: entries(3),
   },
 });
 
-addKind('union', {
+addKind('union', 3, {
   properties: {
     items: {
-      oneOf: [
-        {
-          type: 'array', // tuple
-          items: { $ref: '#/definitions/entity' },
-        },
-        {
-          $ref: '#/definitions/entity',
-        },
-      ],
+      type: 'array',
+      items: { $ref: '#/definitions/entity-tier3' },
     },
+    definitions: entries(3),
   },
 });
 
 const ajv = new Ajv({
   allErrors: true,
-  verbose: true
+  verbose: true,
 });
 
 const isValid = ajv.validateSchema(schema);
 
 if (!isValid) {
-  throw new Error("Invalid schema");
+  throw new Error('Invalid schema');
 } else {
   const JSONSpec = JSON.stringify(schema, null, 2);
   fs.writeFileSync(`${__dirname}/../schema/schema.json`, JSONSpec);
-  console.log("Generated schema!");
 }

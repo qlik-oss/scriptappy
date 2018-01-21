@@ -9,6 +9,11 @@
     "entries"
   ],
   "additionalProperties": false,
+  "patternProperties": {
+    "^x-": {
+      "$ref": "#/definitions/vendor"
+    }
+  },
   "properties": {
     "spec": {
       "type": "object",
@@ -34,16 +39,53 @@
         "license": {
           "type": "string",
           "description": "SPDX license identifier"
+        },
+        "stability": {
+          "$ref": "#/definitions/stability"
         }
       },
       "required": ["name", "version"],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {
+          "$ref": "#/definitions/vendor"
+        }
+      }
     },
     "entries": {
-      "$ref": "#/definitions/entry"
+      "additionalProperties": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/entity-tier0"
+          },
+          {
+            "$ref": "#/definitions/entity-tier1"
+          },
+          {
+            "$ref": "#/definitions/entity-tier2"
+          },
+          {
+            "$ref": "#/definitions/entity-tier3"
+          }
+        ]
+      }
     },
     "definitions": {
-      "$ref": "#/definitions/entry"
+      "additionalProperties": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/entity-tier1"
+          },
+          {
+            "$ref": "#/definitions/entity-tier2"
+          },
+          {
+            "$ref": "#/definitions/entity-tier3"
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -82,16 +124,6 @@
       "description": "Stability of the entity",
       "type": "string",
       "enum": ["experimental", "stable", "locked"]
-    },
-    "entity": {
-      "type": "object",
-      "oneOf": []
-    },
-    "entry": {
-      "type": "object",
-      "additionalProperties": {
-        "$ref": "#/definitions/entity"
-      }
     }
   }
 }

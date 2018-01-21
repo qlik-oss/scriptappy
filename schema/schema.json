@@ -9,6 +9,11 @@
     "entries"
   ],
   "additionalProperties": false,
+  "patternProperties": {
+    "^x-": {
+      "$ref": "#/definitions/vendor"
+    }
+  },
   "properties": {
     "spec": {
       "type": "object",
@@ -43,19 +48,56 @@
         "license": {
           "type": "string",
           "description": "SPDX license identifier"
+        },
+        "stability": {
+          "$ref": "#/definitions/stability"
         }
       },
       "required": [
         "name",
         "version"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "patternProperties": {
+        "^x-": {
+          "$ref": "#/definitions/vendor"
+        }
+      }
     },
     "entries": {
-      "$ref": "#/definitions/entry"
+      "additionalProperties": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/entity-tier0"
+          },
+          {
+            "$ref": "#/definitions/entity-tier1"
+          },
+          {
+            "$ref": "#/definitions/entity-tier2"
+          },
+          {
+            "$ref": "#/definitions/entity-tier3"
+          }
+        ]
+      }
     },
     "definitions": {
-      "$ref": "#/definitions/entry"
+      "additionalProperties": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/definitions/entity-tier1"
+          },
+          {
+            "$ref": "#/definitions/entity-tier2"
+          },
+          {
+            "$ref": "#/definitions/entity-tier3"
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -107,79 +149,6 @@
         "locked"
       ]
     },
-    "entity": {
-      "type": "object",
-      "oneOf": [
-        {
-          "$ref": "#/definitions/type"
-        },
-        {
-          "$ref": "#/definitions/kind.literal"
-        },
-        {
-          "$ref": "#/definitions/kind.module"
-        },
-        {
-          "$ref": "#/definitions/kind.object"
-        },
-        {
-          "$ref": "#/definitions/kind.namespace"
-        },
-        {
-          "$ref": "#/definitions/kind.struct"
-        },
-        {
-          "$ref": "#/definitions/kind.function"
-        },
-        {
-          "$ref": "#/definitions/kind.class"
-        },
-        {
-          "$ref": "#/definitions/kind.interface"
-        },
-        {
-          "$ref": "#/definitions/kind.event"
-        },
-        {
-          "$ref": "#/definitions/kind.array"
-        },
-        {
-          "$ref": "#/definitions/kind.union"
-        }
-      ]
-    },
-    "entry": {
-      "type": "object",
-      "additionalProperties": {
-        "$ref": "#/definitions/entity"
-      }
-    },
-    "kind": {
-      "type": "object",
-      "properties": {
-        "extends": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/entity"
-          }
-        },
-        "implements": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/entity"
-          }
-        },
-        "entries": {
-          "$ref": "#/definitions/entry"
-        },
-        "definitions": {
-          "$ref": "#/definitions/entry"
-        },
-        "events": {
-          "$ref": "#/definitions/entry"
-        }
-      }
-    },
     "common": {
       "type": "object",
       "properties": {
@@ -192,10 +161,16 @@
         "availability": {
           "$ref": "#/definitions/availability"
         },
-        "name": {
-          "type": "string"
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "type": {
+          "type": "string"
+        },
+        "name": {
           "type": "string"
         },
         "optional": {
@@ -203,12 +178,6 @@
         },
         "nullable": {
           "type": "boolean"
-        },
-        "examples": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         },
         "defaultValue": {
           "oneOf": [
@@ -230,6 +199,64 @@
         }
       }
     },
+    "entity-tier0": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/kind.module"
+        }
+      ]
+    },
+    "entity-tier1": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/kind.namespace"
+        }
+      ]
+    },
+    "entity-tier2": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/kind.class"
+        },
+        {
+          "$ref": "#/definitions/kind.interface"
+        }
+      ]
+    },
+    "entity-tier3": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/type"
+        },
+        {
+          "$ref": "#/definitions/kind.literal"
+        },
+        {
+          "$ref": "#/definitions/kind.object"
+        },
+        {
+          "$ref": "#/definitions/kind.function"
+        },
+        {
+          "$ref": "#/definitions/kind.array"
+        },
+        {
+          "$ref": "#/definitions/kind.union"
+        }
+      ]
+    },
+    "entity-tier4": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/kind.event"
+        }
+      ]
+    },
     "type": {
       "allOf": [
         {
@@ -242,10 +269,10 @@
             "description": true,
             "stability": true,
             "availability": true,
+            "examples": true,
             "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
             "defaultValue": true
           },
           "required": [
@@ -264,9 +291,6 @@
       "allOf": [
         {
           "$ref": "#/definitions/common"
-        },
-        {
-          "$ref": "#/definitions/kind"
         },
         {
           "type": "object",
@@ -290,17 +314,12 @@
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -321,28 +340,57 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
               "const": "module"
             },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier1"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier1"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              }
+            },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -362,28 +410,57 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
               "const": "object"
             },
+            "extends": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "implements": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              }
+            },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -403,69 +480,57 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
               "const": "namespace"
             },
-            "description": true,
-            "stability": true,
-            "availability": true,
-            "name": true,
-            "type": true,
-            "optional": true,
-            "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^x-": {
-              "$ref": "#/definitions/vendor"
-            }
-          },
-          "required": [
-            "kind"
-          ]
-        }
-      ]
-    },
-    "kind.struct": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/common"
-        },
-        {
-          "$ref": "#/definitions/kind"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "struct"
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier1"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier1"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              }
             },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -485,9 +550,6 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
@@ -498,13 +560,13 @@
               "items": {
                 "allOf": [
                   {
-                    "$ref": "#/definitions/entity"
+                    "$ref": "#/definitions/entity-tier3"
                   }
                 ]
               }
             },
             "returns": {
-              "$ref": "#/definitions/entity"
+              "$ref": "#/definitions/entity-tier3"
             },
             "async": {
               "type": "boolean"
@@ -513,7 +575,10 @@
               "type": "boolean"
             },
             "yields": {
-              "$ref": "#/definitions/entity"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity-tier3"
+              }
             },
             "emits": {
               "type": "array",
@@ -521,20 +586,40 @@
                 "$ref": "#/definitions/type"
               }
             },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              }
+            },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -554,13 +639,22 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
               "const": "class"
+            },
+            "extends": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "implements": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
             },
             "constructor": {
               "properties": {
@@ -569,13 +663,13 @@
                   "items": {
                     "allOf": [
                       {
-                        "$ref": "#/definitions/entity"
+                        "$ref": "#/definitions/entity-tier3"
                       }
                     ]
                   }
                 },
                 "returns": {
-                  "$ref": "#/definitions/entity"
+                  "$ref": "#/definitions/entity-tier3"
                 }
               },
               "additionalProperties": false,
@@ -584,22 +678,52 @@
               ]
             },
             "staticEntries": {
-              "$ref": "#/definitions/entry"
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              }
             },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -619,9 +743,6 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
@@ -632,28 +753,63 @@
               "items": {
                 "allOf": [
                   {
-                    "$ref": "#/definitions/entity"
+                    "$ref": "#/definitions/entity-tier3"
                   }
                 ]
               }
             },
             "returns": {
-              "$ref": "#/definitions/entity"
+              "$ref": "#/definitions/entity-tier3"
+            },
+            "extends": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "implements": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              }
             },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -662,7 +818,7 @@
             }
           },
           "required": [
-            "params"
+            "kind"
           ]
         }
       ]
@@ -671,9 +827,6 @@
       "allOf": [
         {
           "$ref": "#/definitions/common"
-        },
-        {
-          "$ref": "#/definitions/kind"
         },
         {
           "type": "object",
@@ -686,28 +839,43 @@
               "items": {
                 "allOf": [
                   {
-                    "$ref": "#/definitions/entity"
+                    "$ref": "#/definitions/entity-tier3"
                   }
                 ]
               }
             },
             "returns": {
-              "$ref": "#/definitions/entity"
+              "$ref": "#/definitions/entity-tier3"
+            },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
             },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -728,9 +896,6 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
@@ -741,28 +906,33 @@
                 {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/entity"
+                    "$ref": "#/definitions/entity-tier3"
                   }
                 },
                 {
-                  "$ref": "#/definitions/entity"
+                  "$ref": "#/definitions/entity-tier3"
                 }
               ]
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
             },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -782,41 +952,36 @@
           "$ref": "#/definitions/common"
         },
         {
-          "$ref": "#/definitions/kind"
-        },
-        {
           "type": "object",
           "properties": {
             "kind": {
               "const": "union"
             },
             "items": {
-              "oneOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/entity"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entity-tier3"
+              }
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
                   }
-                },
-                {
-                  "$ref": "#/definitions/entity"
-                }
-              ]
+                ]
+              }
             },
             "description": true,
             "stability": true,
             "availability": true,
-            "name": true,
+            "examples": true,
             "type": true,
+            "name": true,
             "optional": true,
             "nullable": true,
-            "examples": true,
-            "defaultValue": true,
-            "extends": true,
-            "implements": true,
-            "entries": true,
-            "definitions": true,
-            "events": true
+            "defaultValue": true
           },
           "additionalProperties": false,
           "patternProperties": {
