@@ -79,9 +79,9 @@ function validateSpec(spec, schema) {
       sorted.slice(0, 1).forEach(err => console.log(message(err.e)));
       console.log(chalk.red(`\n  ${sorted.length} violation${sorted.length > 1 ? 's' : ''} found`));
     }
-  } else {
-    console.log(chalk.green.bold('SUCCESS!'));
+    return 1;
   }
+  return 0;
 }
 
 module.exports = (spec) => validateSpec(spec, schemaFile);
