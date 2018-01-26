@@ -1,0 +1,171 @@
+{
+  "spec": {
+    "version": "0.x"
+  },
+  "info": {
+    "name": "nodejs",
+    "version": "8.0.0"
+  },
+  "entries": {
+    "module:net": {
+      "stability": "stable",
+      "kind": "module",
+      "entries": {
+        "Server": {
+          "description": "This class is used to create a TCP or ICP server",
+          "kind": "class",
+          "constructor": {
+            "params": []
+          },
+          "entries": {
+            "address": {
+              "description": "Returns the bound address.",
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "type": "#/entries/module:net/entries/Server/definitions/address"
+              }
+            },
+            "close": {
+              "description": "Stops the server from accepting new connections and keeps existing connections",
+              "kind": "function",
+              "params": []
+            },
+            "connections": {
+              "description": "The number of concurrent connections on the server.",
+              "availability": {
+                "since": "0.2.0",
+                "deprecated": {
+                  "description": "since 0.9.7. Use {@link module:net.Server#getConnection()} instead",
+                  "since": "0.9.7"
+                }
+              },
+              "type": "any"
+            },
+            "getConnections": {
+              "availability": {
+                "since": "0.9.7"
+              },
+              "kind": "function",
+              "params": [
+                {
+                  "name": "callback",
+                  "type": "function"
+                }
+              ],
+              "returns": {
+                "type": "#/entries/module:net/entries/Server"
+              }
+            }
+          },
+          "definitions": {
+            "address": {
+              "kind": "object",
+              "entries": {
+                "port": {
+                  "type": "number"
+                },
+                "family": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "events": {
+            "close": {
+              "description": "Emitted when the server closes",
+              "kind": "event",
+              "params": []
+            },
+            "connect": {
+              "description": "Emitted when a new connection is made.",
+              "kind": "event",
+              "params": [
+                {
+                  "name": "socket",
+                  "description": "The connection object",
+                  "type": "module:net.Socket"
+                }
+              ]
+            }
+          }
+        },
+        "createServer": {
+          "description": "Creates a new TCP or ICP server.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "options",
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "allowHalfOpen": {
+                  "description": "Indicates whether half-opened TCP connections are allowed.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
+                "pauseOnConnect": {
+                  "description": "Indicates whether the socket should be paused on incoming connections.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "name": "connectionsListener",
+              "description": "Automatically sets a listener for the `connection` event.",
+              "optional": true,
+              "type": "function"
+            }
+          ],
+          "returns": {
+            "type": "#/entries/module:net/entries/Server"
+          }
+        }
+      }
+    },
+    "module:path": {
+      "stability": "stable",
+      "kind": "module",
+      "entries": {
+        "dirname": {
+          "description": "Returns the directory name of a `path`",
+          "kind": "function",
+          "params": [
+            {
+              "name": "path",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "extname": {
+          "description": "Returns the extension of the `path`",
+          "kind": "function",
+          "params": [
+            {
+              "name": "path",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "win32": {
+          "description": "Provides acces to Window-specific implementations of the `path` methods",
+          "kind": "object",
+          "entries": {}
+        }
+      }
+    }
+  },
+  "definitions": {}
+}
