@@ -17,6 +17,20 @@ export class Server {
    * Stops the server from accepting new connections and keeps existing connections
    */
   close() {}
+
+  /**
+   * The number of concurrent connections on the server.
+   * @since 0.2.0
+   * @deprecated since 0.9.7. Use {@link module:net.Server#getConnection()} instead
+   */
+  get connections() {}
+
+  /**
+   * @param {function} callback
+   * @returns {module:net.Server}
+   * @since 0.9.7
+   */
+  getConnections() {}
 }
 
 /**

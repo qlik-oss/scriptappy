@@ -30,6 +30,32 @@
               "description": "Stops the server from accepting new connections and keeps existing connections",
               "kind": "function",
               "params": []
+            },
+            "connections": {
+              "description": "The number of concurrent connections on the server.",
+              "availability": {
+                "since": "0.2.0",
+                "deprecated": {
+                  "description": "since 0.9.7. Use {@link module:net.Server#getConnection()} instead",
+                  "since": "0.9.7"
+                }
+              },
+              "type": "any"
+            },
+            "getConnections": {
+              "availability": {
+                "since": "0.9.7"
+              },
+              "kind": "function",
+              "params": [
+                {
+                  "name": "callback",
+                  "type": "function"
+                }
+              ],
+              "returns": {
+                "type": "#/entries/module:net/entries/Server"
+              }
             }
           },
           "definitions": {
