@@ -4,7 +4,8 @@
 
 // TODO
 // symbols
-// meta - examples, see, links, inline tags
+// generic templates
+// meta - see, links, inline tags
 
 const EXCLUDE_TAGS = ['definition'];
 const VENDOR_TAG_RX = /^x-/;
@@ -27,6 +28,9 @@ function tags(doc, cfg) {
       }
     } else if (STABILITY.indexOf(tag.title) !== -1) {
       o.stability = tag.title;
+    } else if (tag.title === 'template') {
+      // reserve for later - TODO
+      // o.templates = tag.value.split(/,\s*/);
     } else if (VENDOR_TAG_RX.test(tag.title)) {
       o[tag.title] = tag.value;
     } else {
