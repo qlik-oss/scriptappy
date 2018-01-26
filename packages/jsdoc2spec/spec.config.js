@@ -4,6 +4,7 @@ module.exports = {
     description: undefined,
     version: undefined,
     license: undefined,
+    stability: undefined,
   },
   output: {
     file: 'spec.json',

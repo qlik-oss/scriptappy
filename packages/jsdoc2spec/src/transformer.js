@@ -261,10 +261,15 @@ function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts)
       description: typeof opts.api.description !== 'undefined' ? opts.api.description : pack.description,
       version: typeof opts.api.version !== 'undefined' ? opts.api.version : pack.version,
       license: typeof opts.api.license !== 'undefined' ? opts.api.license : (pack.licenses ? pack.licenses[0].type : undefined), // eslint-disable-line
+      stability: opts.api.stability,
     },
     entries,
     definitions,
   };
+
+  if (opts.api.properties) {
+    extend(spec.info, opts.api.properties);
+  }
 
   return JSON.stringify(spec, null, 2);
 }
