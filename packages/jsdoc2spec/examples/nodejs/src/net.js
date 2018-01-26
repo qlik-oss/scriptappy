@@ -46,9 +46,3 @@ export class Server {
  * @returns {module:net.Server}
  */
 export function createServer(options, connectionListener) {}
-
-
-/**
- * A number, or a string containing a number.
- * @typedef {(number|string)} NumberLike
- */

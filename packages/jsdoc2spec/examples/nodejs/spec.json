@@ -34,7 +34,7 @@
           },
           "definitions": {
             "address": {
-              "kind": "struct",
+              "kind": "object",
               "entries": {
                 "port": {
                   "type": "number"
@@ -45,8 +45,7 @@
                 "address": {
                   "type": "string"
                 }
-              },
-              "type": "object"
+              }
             }
           },
           "events": {
@@ -75,7 +74,7 @@
             {
               "name": "options",
               "optional": true,
-              "kind": "struct",
+              "kind": "object",
               "entries": {
                 "allowHalfOpen": {
                   "description": "Indicates whether half-opened TCP connections are allowed.",
@@ -101,20 +100,6 @@
           "returns": {
             "type": "#/entries/module:net/entries/Server"
           }
-        }
-      },
-      "definitions": {
-        "NumberLike": {
-          "description": "A number, or a string containing a number.",
-          "kind": "union",
-          "items": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "string"
-            }
-          ]
         }
       }
     },
