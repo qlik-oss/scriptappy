@@ -2,7 +2,7 @@
 
 Generate structured [API specification](https://github.com/miralemd/js-api-spec) from your jsdoc.
 
-See [nodejs example](./examples/nodejs/README.md)
+See [nodejs example](./examples/nodejs)
 
 ## Install
 
