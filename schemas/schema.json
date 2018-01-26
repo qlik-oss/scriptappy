@@ -113,32 +113,45 @@
       "type": "object",
       "properties": {
         "since": {
+          "description": "API version from which owning entity is available.",
           "$ref": "#/definitions/version"
         },
         "deprecated": {
+          "description": "Current deprecation status of owning entity.",
           "oneOf": [
             {
               "type": "boolean"
             },
             {
-              "type": "object",
-              "properties": {
-                "since": {
-                  "$ref": "#/definitions/version"
-                },
-                "description": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "since"
-              ],
-              "additionalProperties": false
+              "$ref": "#/definitions/deprecated"
             }
           ]
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "examples": [
+        "\n  \"since\": \"1.0.0\",\n  \"deprecated\": false\n"
+      ]
+    },
+    "deprecated": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "description": "API version from which owning entity is considered deprecated.",
+          "$ref": "#/definitions/version"
+        },
+        "description": {
+          "description": "A short description and a recommendation on what to use instead of the deprecated entity.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "since"
+      ],
+      "additionalProperties": false,
+      "examples": [
+        "\n  \"since\": \"1.4.5\",\n  \"description\": \"Deprecated since 1.4.5, use something else instead :P.\"\n"
+      ]
     },
     "stability": {
       "description": "Stability of the entity",
@@ -153,33 +166,42 @@
       "type": "object",
       "properties": {
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "A description of the entity."
         },
         "stability": {
-          "$ref": "#/definitions/stability"
+          "$ref": "#/definitions/stability",
+          "description": "The stability of the entity."
         },
         "availability": {
-          "$ref": "#/definitions/availability"
+          "$ref": "#/definitions/availability",
+          "description": "The availability of the entity."
         },
         "examples": {
+          "description": "Examples showing how to use this entity.",
           "type": "array",
           "items": {
             "type": "string"
           }
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "description": "The type of this entity."
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of this entity."
         },
         "optional": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry."
         },
         "nullable": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry."
         },
         "defaultValue": {
+          "description": "Default value for this entity. Used when the entity is optional.",
           "oneOf": [
             {
               "type": "number"
@@ -197,7 +219,10 @@
         "^x-": {
           "$ref": "#/definitions/vendor"
         }
-      }
+      },
+      "examples": [
+        "\n  \"type\": \"number\"\n  \"description\": \"Get the current amount\",\n  \"stability\": \"stable\",\n  \"availability\": {\n    \"since\": \"1.1.0\"\n  },\n  \"optional\": true,\n  \"defaultValue\": 13\n"
+      ]
     },
     "entity-tier0": {
       "type": "object",
@@ -332,6 +357,9 @@
             "value"
           ]
         }
+      ],
+      "examples": [
+        "\n  \"kind\": \"literal\",\n  \"value\": 13\n"
       ]
     },
     "kind.module": {
@@ -359,7 +387,8 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "definitions": {
               "additionalProperties": {
@@ -375,12 +404,14 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "events": {
               "additionalProperties": {
                 "$ref": "#/definitions/kind.event"
-              }
+              },
+              "description": "An object."
             },
             "description": true,
             "stability": true,
@@ -402,6 +433,9 @@
             "kind"
           ]
         }
+      ],
+      "examples": [
+        "\n  \"kind\": \"module\",\n  \"entries\": {\n    \"a\": { /* entity */ },\n    \"b\": { /* entity */ }\n  }\n"
       ]
     },
     "kind.object": {
@@ -416,12 +450,14 @@
               "const": "object"
             },
             "extends": {
+              "description": "References to other entities this entity extends from.",
               "type": "array",
               "items": {
                 "$ref": "#/definitions/type"
               }
             },
             "implements": {
+              "description": "References to other entities this entity implements.",
               "type": "array",
               "items": {
                 "$ref": "#/definitions/type"
@@ -435,7 +471,8 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "definitions": {
               "additionalProperties": {
@@ -445,12 +482,14 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "events": {
               "additionalProperties": {
                 "$ref": "#/definitions/kind.event"
-              }
+              },
+              "description": "An object."
             },
             "description": true,
             "stability": true,
@@ -472,6 +511,9 @@
             "kind"
           ]
         }
+      ],
+      "examples": [
+        "\n  \"kind\": \"object\",\n  \"entries\": {\n    \"prop\": { /* entity */ }\n  }\n"
       ]
     },
     "kind.namespace": {
@@ -499,7 +541,8 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "definitions": {
               "additionalProperties": {
@@ -515,12 +558,14 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "events": {
               "additionalProperties": {
                 "$ref": "#/definitions/kind.event"
-              }
+              },
+              "description": "An object."
             },
             "description": true,
             "stability": true,
@@ -542,6 +587,9 @@
             "kind"
           ]
         }
+      ],
+      "examples": [
+        "\n  \"kind\": \"namespace\",\n  \"entries\": {\n    \"subspace\": { /* entity */ }\n  }\n"
       ]
     },
     "kind.function": {
@@ -556,6 +604,7 @@
               "const": "function"
             },
             "params": {
+              "description": "The parameters for this entity.",
               "type": "array",
               "items": {
                 "allOf": [
@@ -566,21 +615,22 @@
               }
             },
             "returns": {
+              "description": "The return type from this entity.",
               "$ref": "#/definitions/entity-tier3"
             },
             "async": {
-              "type": "boolean"
-            },
-            "generator": {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "Indicates whether this function is asynchronous."
             },
             "yields": {
+              "description": "The entities this function yields.",
               "type": "array",
               "items": {
                 "$ref": "#/definitions/entity-tier3"
               }
             },
             "emits": {
+              "description": "The events this entity emits.",
               "type": "array",
               "items": {
                 "$ref": "#/definitions/type"
@@ -594,278 +644,25 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
-            },
-            "definitions": {
-              "additionalProperties": {
-                "type": "object",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
-            },
-            "events": {
-              "additionalProperties": {
-                "$ref": "#/definitions/kind.event"
-              }
-            },
-            "description": true,
-            "stability": true,
-            "availability": true,
-            "examples": true,
-            "type": true,
-            "name": true,
-            "optional": true,
-            "nullable": true,
-            "defaultValue": true
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^x-": {
-              "$ref": "#/definitions/vendor"
-            }
-          },
-          "required": [
-            "kind"
-          ]
-        }
-      ]
-    },
-    "kind.class": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/common"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "class"
-            },
-            "extends": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/type"
-              }
-            },
-            "implements": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/type"
-              }
-            },
-            "constructor": {
-              "properties": {
-                "params": {
-                  "type": "array",
-                  "items": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/entity-tier3"
-                      }
-                    ]
-                  }
-                },
-                "returns": {
-                  "$ref": "#/definitions/entity-tier3"
-                }
               },
-              "additionalProperties": false,
-              "required": [
-                "params"
-              ]
-            },
-            "staticEntries": {
-              "additionalProperties": {
-                "type": "object",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
-            },
-            "entries": {
-              "additionalProperties": {
-                "type": "object",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
+              "description": "An object."
             },
             "definitions": {
               "additionalProperties": {
                 "type": "object",
                 "oneOf": [
                   {
-                    "$ref": "#/definitions/entity-tier2"
-                  },
-                  {
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "events": {
               "additionalProperties": {
                 "$ref": "#/definitions/kind.event"
-              }
-            },
-            "description": true,
-            "stability": true,
-            "availability": true,
-            "examples": true,
-            "type": true,
-            "name": true,
-            "optional": true,
-            "nullable": true,
-            "defaultValue": true
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^x-": {
-              "$ref": "#/definitions/vendor"
-            }
-          },
-          "required": [
-            "kind"
-          ]
-        }
-      ]
-    },
-    "kind.interface": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/common"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "interface"
-            },
-            "params": {
-              "type": "array",
-              "items": {
-                "allOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
-            },
-            "returns": {
-              "$ref": "#/definitions/entity-tier3"
-            },
-            "extends": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/type"
-              }
-            },
-            "implements": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/type"
-              }
-            },
-            "entries": {
-              "additionalProperties": {
-                "type": "object",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
-            },
-            "definitions": {
-              "additionalProperties": {
-                "type": "object",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier2"
-                  },
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
-            },
-            "events": {
-              "additionalProperties": {
-                "$ref": "#/definitions/kind.event"
-              }
-            },
-            "description": true,
-            "stability": true,
-            "availability": true,
-            "examples": true,
-            "type": true,
-            "name": true,
-            "optional": true,
-            "nullable": true,
-            "defaultValue": true
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^x-": {
-              "$ref": "#/definitions/vendor"
-            }
-          },
-          "required": [
-            "kind"
-          ]
-        }
-      ]
-    },
-    "kind.event": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/common"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "const": "event"
-            },
-            "params": {
-              "type": "array",
-              "items": {
-                "allOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
-            },
-            "returns": {
-              "$ref": "#/definitions/entity-tier3"
-            },
-            "entries": {
-              "additionalProperties": {
-                "type": "object",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
-            },
-            "definitions": {
-              "additionalProperties": {
-                "type": "object",
-                "oneOf": [
-                  {
-                    "$ref": "#/definitions/entity-tier3"
-                  }
-                ]
-              }
+              },
+              "description": "An object."
             },
             "description": true,
             "stability": true,
@@ -888,6 +685,293 @@
             "params"
           ]
         }
+      ],
+      "examples": [
+        "\n  \"kind\": \"function\",\n  \"params\": [{\n    \"name\": \"first\"\n    \"type\": \"string\",\n    \"optional\": true\n  }],\n  \"returns\": {\n    \"type\": \"Promise<number>\"\n  },\n  \"async\": true\n"
+      ]
+    },
+    "kind.class": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "class"
+            },
+            "extends": {
+              "description": "References to other entities this entity extends from.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "implements": {
+              "description": "References to other entities this entity implements.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "constructor": {
+              "properties": {
+                "params": {
+                  "description": "The parameters for this entity.",
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/entity-tier3"
+                      }
+                    ]
+                  }
+                },
+                "returns": {
+                  "description": "The return type from this entity.",
+                  "$ref": "#/definitions/entity-tier3"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "params"
+              ]
+            },
+            "staticEntries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              },
+              "description": "An object."
+            },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              },
+              "description": "An object."
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              },
+              "description": "An object."
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              },
+              "description": "An object."
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "examples": true,
+            "type": true,
+            "name": true,
+            "optional": true,
+            "nullable": true,
+            "defaultValue": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ],
+      "examples": [
+        "\n  \"kind\": \"class\",\n  \"constructor\": {\n    \"params\": []\n  },\n  \"staticEntries\": {\n    \"fun\": { /* entity */ }\n  }\n"
+      ]
+    },
+    "kind.interface": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "interface"
+            },
+            "params": {
+              "description": "The parameters for this entity.",
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "returns": {
+              "description": "The return type from this entity.",
+              "$ref": "#/definitions/entity-tier3"
+            },
+            "extends": {
+              "description": "References to other entities this entity extends from.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "implements": {
+              "description": "References to other entities this entity implements.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              },
+              "description": "An object."
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier2"
+                  },
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              },
+              "description": "An object."
+            },
+            "events": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.event"
+              },
+              "description": "An object."
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "examples": true,
+            "type": true,
+            "name": true,
+            "optional": true,
+            "nullable": true,
+            "defaultValue": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ],
+      "examples": [
+        "\n  \"kind\": \"interface\",\n  \"entries\": {\n    \"a\": { /* entity */ }\n  }\n"
+      ]
+    },
+    "kind.event": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "event"
+            },
+            "params": {
+              "description": "The parameters for this entity.",
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "returns": {
+              "description": "The return type from this entity.",
+              "$ref": "#/definitions/entity-tier3"
+            },
+            "entries": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              },
+              "description": "An object."
+            },
+            "definitions": {
+              "additionalProperties": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              },
+              "description": "An object."
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "examples": true,
+            "type": true,
+            "name": true,
+            "optional": true,
+            "nullable": true,
+            "defaultValue": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ],
+      "examples": [
+        "\n  \"kind\": \"event\",\n  \"params\": []\n"
       ]
     },
     "kind.array": {
@@ -922,7 +1006,8 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "description": true,
             "stability": true,
@@ -944,6 +1029,10 @@
             "kind"
           ]
         }
+      ],
+      "examples": [
+        "\n  \"kind\": \"array\",\n  \"items\": { /* entity */ } // all values in array are of same type\n",
+        "\n  \"kind\": \"array\",\n  \"items\": [ {/* entity */ }, { /* entity */ }] // tuple\n"
       ]
     },
     "kind.union": {
@@ -971,7 +1060,8 @@
                     "$ref": "#/definitions/entity-tier3"
                   }
                 ]
-              }
+              },
+              "description": "An object."
             },
             "description": true,
             "stability": true,
@@ -993,6 +1083,9 @@
             "kind"
           ]
         }
+      ],
+      "examples": [
+        "\n  \"kind\": \"union\",\n  \"items\": [{ /* entity */ }, { /* entity */ }]\n"
       ]
     }
   }

@@ -1,6 +1,6 @@
 const Ajv = require('ajv');
 const extend = require('extend');
-const schema = require('../schema/schema.json');
+const schema = require('../schemas/schema.json');
 
 const vv = require('../tools/validate');
 
@@ -191,7 +191,6 @@ describe('kinds', () => {
         params: [],
         yields: [],
         async: true,
-        generator: true,
         emits: [{ type: 'ev' }],
       };
       validate('function', value);

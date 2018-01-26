@@ -5,11 +5,12 @@
   "main": "lib/index.js",
   "files": [
     "/lib",
-    "/schema",
-    "/tools"
+    "/schemas",
+    "/tools",
+    "/specifications"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "aw test"
   },
   "repository": {
     "type": "git",

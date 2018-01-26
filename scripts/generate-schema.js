@@ -8,18 +8,20 @@ const schema = require('./partial.json');
 const common = {
   type: 'object',
   properties: {
-    description: { type: 'string' },
-    stability: { $ref: '#/definitions/stability' },
-    availability: { $ref: '#/definitions/availability' },
+    description: { type: 'string', description: 'A description of the entity.' },
+    stability: { $ref: '#/definitions/stability', description: 'The stability of the entity.' },
+    availability: { $ref: '#/definitions/availability', description: 'The availability of the entity.' },
     examples: {
+      description: 'Examples showing how to use this entity.',
       type: 'array',
       items: { type: 'string' },
     },
-    type: { type: 'string' },
-    name: { type: 'string' },
-    optional: { type: 'boolean' },
-    nullable: { type: 'boolean' },
+    type: { type: 'string', description: 'The type of this entity.' },
+    name: { type: 'string', description: 'Name of this entity.' },
+    optional: { type: 'boolean', description: 'Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry.' },
+    nullable: { type: 'boolean', description: 'Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry.' },
     defaultValue: {
+      description: 'Default value for this entity. Used when the entity is optional.',
       oneOf: [
         { type: 'number' },
         { type: 'boolean' },
@@ -32,17 +34,31 @@ const common = {
       $ref: '#/definitions/vendor',
     },
   },
+  examples: [
+    `
+  "type": "number"
+  "description": "Get the current amount",
+  "stability": "stable",
+  "availability": {
+    "since": "1.1.0"
+  },
+  "optional": true,
+  "defaultValue": 13
+`,
+  ],
 };
 
 const extendable = {
   properties: {
     extends: {
+      description: 'References to other entities this entity extends from.',
       type: 'array',
       items: {
         $ref: '#/definitions/type',
       },
     },
     implements: {
+      description: 'References to other entities this entity implements.',
       type: 'array',
       items: {
         $ref: '#/definitions/type',
@@ -54,6 +70,7 @@ const extendable = {
 const signature = {
   properties: {
     params: {
+      description: 'The parameters for this entity.',
       type: 'array',
       items: {
         allOf: [{
@@ -62,6 +79,7 @@ const signature = {
       },
     },
     returns: {
+      description: 'The return type from this entity.',
       $ref: '#/definitions/entity-tier3',
     },
   },
@@ -129,6 +147,7 @@ function entries(lowestTier) {
       type: 'object',
       oneOf: [],
     },
+    description: 'An object.',
   };
   for (let i = lowestTier; i <= max; i += 1) {
     obj.additionalProperties.oneOf.push({
@@ -143,6 +162,7 @@ function entry(t) {
     additionalProperties: {
       $ref: `#/definitions/kind.${t}`,
     },
+    description: 'An object.',
   };
 }
 
@@ -168,6 +188,9 @@ function addKind(k, tier, ...props) {
     },
   }, entityProps, ...props);
 
+  const { examples } = def;
+  delete def.examples;
+
   Object.keys(common.properties).forEach(key => { def.properties[key] = true; });
 
   schema.definitions[`kind.${k}`] = {
@@ -175,6 +198,7 @@ function addKind(k, tier, ...props) {
       { $ref: '#/definitions/common' },
       def,
     ],
+    examples,
   };
 
   addToTier(`kind.${k}`, tier);
@@ -191,6 +215,12 @@ addKind('literal', 3, {
     },
   },
   required: ['kind', 'value'],
+  examples: [
+    `
+  "kind": "literal",
+  "value": 13
+`,
+  ],
 });
 
 addKind('module', 0, {
@@ -199,6 +229,15 @@ addKind('module', 0, {
     definitions: entries(1),
     events: entry('event'),
   },
+  examples: [
+    `
+  "kind": "module",
+  "entries": {
+    "a": { /* entity */ },
+    "b": { /* entity */ }
+  }
+`,
+  ],
 });
 addKind('object', 3, extendable, {
   properties: {
@@ -206,6 +245,14 @@ addKind('object', 3, extendable, {
     definitions: entries(3),
     events: entry('event'),
   },
+  examples: [
+    `
+  "kind": "object",
+  "entries": {
+    "prop": { /* entity */ }
+  }
+`,
+  ],
 });
 addKind('namespace', 1, {
   properties: {
@@ -213,17 +260,27 @@ addKind('namespace', 1, {
     definitions: entries(1),
     events: entry('event'),
   },
+  examples: [
+    `
+  "kind": "namespace",
+  "entries": {
+    "subspace": { /* entity */ }
+  }
+`,
+  ],
 });
 
 addKind('function', 3, signature, {
   properties: {
-    async: { type: 'boolean' },
-    generator: { type: 'boolean' },
+    async: { type: 'boolean', description: 'Indicates whether this function is asynchronous.' },
+    // generator: { type: 'boolean' },
     yields: {
+      description: 'The entities this function yields.',
       type: 'array',
       items: { $ref: '#/definitions/entity-tier3' },
     },
     emits: {
+      description: 'The events this entity emits.',
       type: 'array',
       items: {
         $ref: '#/definitions/type',
@@ -233,7 +290,21 @@ addKind('function', 3, signature, {
     definitions: entries(3),
     events: entry('event'),
   },
-  required: ['kind'],
+  required: ['kind', 'params'],
+  examples: [
+    `
+  "kind": "function",
+  "params": [{
+    "name": "first"
+    "type": "string",
+    "optional": true
+  }],
+  "returns": {
+    "type": "Promise<number>"
+  },
+  "async": true
+`,
+  ],
 });
 
 addKind('class', 2, extendable, {
@@ -244,6 +315,17 @@ addKind('class', 2, extendable, {
     definitions: entries(2),
     events: entry('event'),
   },
+  examples: [
+    `
+  "kind": "class",
+  "constructor": {
+    "params": []
+  },
+  "staticEntries": {
+    "fun": { /* entity */ }
+  }
+`,
+  ],
 });
 
 addKind('interface', 2, signature, extendable, {
@@ -253,6 +335,14 @@ addKind('interface', 2, signature, extendable, {
     events: entry('event'),
   },
   required: ['kind'],
+  examples: [
+    `
+  "kind": "interface",
+  "entries": {
+    "a": { /* entity */ }
+  }
+`,
+  ],
 });
 
 addKind('event', 4, signature, {
@@ -260,7 +350,13 @@ addKind('event', 4, signature, {
     entries: entries(3),
     definitions: entries(3),
   },
-  required: ['kind', 'params'],
+  required: ['kind'],
+  examples: [
+    `
+  "kind": "event",
+  "params": []
+`,
+  ],
 });
 
 addKind('array', 3, {
@@ -278,6 +374,16 @@ addKind('array', 3, {
     },
     definitions: entries(3),
   },
+  examples: [
+    `
+  "kind": "array",
+  "items": { /* entity */ } // all values in array are of same type
+`,
+    `
+  "kind": "array",
+  "items": [ {/* entity */ }, { /* entity */ }] // tuple
+`,
+  ],
 });
 
 addKind('union', 3, {
@@ -288,6 +394,12 @@ addKind('union', 3, {
     },
     definitions: entries(3),
   },
+  examples: [
+    `
+  "kind": "union",
+  "items": [{ /* entity */ }, { /* entity */ }]
+`,
+  ],
 });
 
 const ajv = new Ajv({
@@ -301,5 +413,5 @@ if (!isValid) {
   throw new Error('Invalid schema');
 } else {
   const JSONSpec = JSON.stringify(schema, null, 2);
-  fs.writeFileSync(`${__dirname}/../schema/schema.json`, JSONSpec);
+  fs.writeFileSync(`${__dirname}/../schemas/schema.json`, JSONSpec);
 }

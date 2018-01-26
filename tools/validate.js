@@ -9,7 +9,7 @@ const ajv = new Ajv({
   verbose: true,
 });
 
-const schemaFile = require('../schema/schema.json');
+const schemaFile = require('../schemas/schema.json');
 
 function toJSONPointer(s) {
   return s

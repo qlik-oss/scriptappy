@@ -100,25 +100,36 @@
     "availability": {
       "type": "object",
       "properties": {
-        "since": { "$ref": "#/definitions/version" },
+        "since": {
+          "description": "API version from which owning entity is available.",
+          "$ref": "#/definitions/version"
+        },
         "deprecated": {
+          "description": "Current deprecation status of owning entity.",
           "oneOf": [
             { "type": "boolean" },
-            {
-              "type": "object",
-              "properties": {
-                "since": { "$ref": "#/definitions/version" },
-                "description": {
-                  "type": "string"
-                }
-              },
-              "required": ["since"],
-              "additionalProperties": false
-            }
+            { "$ref": "#/definitions/deprecated" }
           ]
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "examples": ["\n  \"since\": \"1.0.0\",\n  \"deprecated\": false\n"]
+    },
+    "deprecated": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "description": "API version from which owning entity is considered deprecated.",
+          "$ref": "#/definitions/version"
+        },
+        "description": {
+          "description": "A short description and a recommendation on what to use instead of the deprecated entity.",
+          "type": "string"
+        }
+      },
+      "required": ["since"],
+      "additionalProperties": false,
+      "examples": ["\n  \"since\": \"1.4.5\",\n  \"description\": \"Deprecated since 1.4.5, use something else instead :P.\"\n"]
     },
     "stability": {
       "description": "Stability of the entity",
