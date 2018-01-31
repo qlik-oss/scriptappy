@@ -253,9 +253,7 @@ function transform({ ids, priv }, cfg) {
 
 function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts) {
   const spec = {
-    spec: {
-      version: '0.x',
-    },
+    spec: '0.x',
     info: {
       name: typeof opts.api.name !== 'undefined' ? opts.api.name : pack.name,
       description: typeof opts.api.description !== 'undefined' ? opts.api.description : pack.description,

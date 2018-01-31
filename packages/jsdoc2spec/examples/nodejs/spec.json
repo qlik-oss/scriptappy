@@ -1,7 +1,5 @@
 {
-  "spec": {
-    "version": "0.x"
-  },
+  "spec": "0.x",
   "info": {
     "name": "nodejs",
     "version": "8.0.0"

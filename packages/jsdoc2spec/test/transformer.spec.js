@@ -386,7 +386,7 @@ describe('generate', () => {
     }));
 
     expect(spec).to.eql({
-      spec: { version: '0.x' },
+      spec: '0.x',
       info: {
         name: 'api',
         version: '3.7.0',
