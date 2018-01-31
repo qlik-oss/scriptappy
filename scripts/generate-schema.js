@@ -20,6 +20,7 @@ const common = {
     name: { type: 'string', description: 'Name of this entity.' },
     optional: { type: 'boolean', description: 'Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry.' },
     nullable: { type: 'boolean', description: 'Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry.' },
+    variable: { type: 'boolean', description: 'Variability of this entity. Used to indicate when the entity is repeatable as a method parameter.' },
     defaultValue: {
       description: 'Default value for this entity. Used when the entity is optional.',
       oneOf: [
@@ -304,7 +305,8 @@ addKind('function', 3, signature, {
   "params": [{
     "name": "first"
     "type": "string",
-    "optional": true
+    "optional": true,
+    "variable": true
   }],
   "returns": {
     "type": "Promise<number>"

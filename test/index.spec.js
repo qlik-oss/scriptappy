@@ -201,7 +201,9 @@ describe('kinds', () => {
       it(`subtype - ${t}`, () => {
         const value = {
           kind: 'function',
-          params: [validKinds[t]],
+          params: [extend({}, validKinds[t], {
+            variable: true,
+          })],
           yields: [validKinds[t]],
           returns: validKinds[t],
         };

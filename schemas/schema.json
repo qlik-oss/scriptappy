@@ -200,6 +200,10 @@
           "type": "boolean",
           "description": "Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry."
         },
+        "variable": {
+          "type": "boolean",
+          "description": "Variability of this entity. Used to indicate when the entity is repeatable as a method parameter."
+        },
         "defaultValue": {
           "description": "Default value for this entity. Used when the entity is optional.",
           "oneOf": [
@@ -298,6 +302,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "required": [
@@ -344,6 +349,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -421,6 +427,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -499,6 +506,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -575,6 +583,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -679,6 +688,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -694,7 +704,7 @@
         }
       ],
       "examples": [
-        "\n  \"kind\": \"function\",\n  \"params\": [{\n    \"name\": \"first\"\n    \"type\": \"string\",\n    \"optional\": true\n  }],\n  \"returns\": {\n    \"type\": \"Promise<number>\"\n  },\n  \"async\": true\n"
+        "\n  \"kind\": \"function\",\n  \"params\": [{\n    \"name\": \"first\"\n    \"type\": \"string\",\n    \"optional\": true,\n    \"variable\": true\n  }],\n  \"returns\": {\n    \"type\": \"Promise<number>\"\n  },\n  \"async\": true\n"
       ]
     },
     "kind.class": {
@@ -795,6 +805,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -891,6 +902,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -964,6 +976,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -1024,6 +1037,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -1078,6 +1092,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
+            "variable": true,
             "defaultValue": true
           },
           "additionalProperties": false,

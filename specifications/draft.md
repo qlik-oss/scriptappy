@@ -115,6 +115,7 @@ type|`string`|The type of this entity.
 name|`string`|Name of this entity.
 optional|`boolean`|Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry.
 nullable|`boolean`|Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry.
+variable|`boolean`|Variability of this entity. Used to indicate when the entity is repeatable as a method parameter.
 defaultValue|`number` \| `boolean` \| `string`|Default value for this entity. Used when the entity is optional.
 
 ##### Example
@@ -301,7 +302,8 @@ events|Object&lt;`string`, [Event](#kind.event)&gt;|An object.
   "params": [{
     "name": "first"
     "type": "string",
-    "optional": true
+    "optional": true,
+    "variable": true
   }],
   "returns": {
     "type": "Promise<number>"
