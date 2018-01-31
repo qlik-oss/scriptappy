@@ -286,6 +286,13 @@ addKind('function', 3, signature, {
         $ref: '#/definitions/type',
       },
     },
+    throws: {
+      description: 'The errors this entity throws.',
+      type: 'array',
+      items: {
+        $ref: '#/definitions/type',
+      },
+    },
     entries: entries(3),
     definitions: entries(3),
     events: entry('event'),

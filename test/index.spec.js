@@ -192,6 +192,7 @@ describe('kinds', () => {
         yields: [],
         async: true,
         emits: [{ type: 'ev' }],
+        throws: [{ type: 'err' }],
       };
       validate('function', value);
     });

@@ -636,6 +636,13 @@
                 "$ref": "#/definitions/type"
               }
             },
+            "throws": {
+              "description": "The errors this entity throws.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            },
             "entries": {
               "additionalProperties": {
                 "type": "object",

@@ -10,8 +10,8 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
 - [Specification](#specification)
   - [Schema](#schema)
     - [Root Object](#root)
-    - [Spec Object](#root)
-    - [Info Object](#root)
+    - [Spec Object](#specObject)
+    - [Info Object](#infoObject)
     - [Entity Base](#type)
     - [Availability Object](#availability)
     - [Deprecated Object](#deprecated)
@@ -288,6 +288,7 @@ returns|[Entity Tier 3](#entity-tier3)|The return type from this entity.
 async|`boolean`|Indicates whether this function is asynchronous.
 yields|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|The entities this function yields.
 emits|Array&lt;[Entity Base](#type)&gt;|The events this entity emits.
+throws|Array&lt;[Entity Base](#type)&gt;|The errors this entity throws.
 entries|Object&lt;`string`, [Entity Tier 3](#entity-tier3)&gt;|An object.
 definitions|Object&lt;`string`, [Entity Tier 3](#entity-tier3)&gt;|An object.
 events|Object&lt;`string`, [Event](#kind.event)&gt;|An object.
