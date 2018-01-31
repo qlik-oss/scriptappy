@@ -373,7 +373,7 @@ function entity(doc, cfg = {}, opts = {}) {
     ent.nullable = true;
   }
   if (doc.variable) {
-    ent.rest = true;
+    ent.variable = true;
   }
   if (doc.type && doc.meta && doc.meta.code && doc.meta.code.type === 'Literal') {
     ent.defaultValue = doc.meta.code.value;

@@ -137,7 +137,7 @@ describe('collect params', () => {
       description: 'descr',
       name: 'param name',
       defaultValue: 3,
-      rest: true,
+      variable: true,
       type: 'object',
     }]);
   });
@@ -650,7 +650,7 @@ describe('entity', () => {
       description: 'descr',
       optional: true,
       nullable: true,
-      rest: true,
+      variable: true,
       examples: 'ex',
       implements: [{ type: 'Iterable' }],
       extends: [{ type: 'Dummy' }],
