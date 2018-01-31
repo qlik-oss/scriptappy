@@ -25,12 +25,6 @@ module.exports = {
       Boolean: {
         rewrite: 'boolean',
       },
-      Object: {
-        rewrite: 'object',
-      },
-      Array: {
-        rewrite: 'array',
-      },
     },
     rules: {
       'no-unknown-types': 1,
