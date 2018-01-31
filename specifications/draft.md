@@ -10,7 +10,6 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
 - [Specification](#specification)
   - [Schema](#schema)
     - [Root Object](#root)
-    - [Spec Object](#specObject)
     - [Info Object](#infoObject)
     - [Entity Base](#type)
     - [Availability Object](#availability)
@@ -49,7 +48,7 @@ The different entities are separated into _tiers_ to make referencing easier. Wh
 
 Field|Type|Description
 ---|---|---
-spec | [Spec Object](#specObject) | **REQUIRED.**
+spec | `const` `'0.x'` | **REQUIRED.** The specification version the document uses.
 info | [Info object](#infoObject) | **REQUIRED.** Metadata about the API.
 entries | Map&lt;`string`, [Entity Object](#entityObject)&gt; | **REQUIRED.** An object holding the entry points available for the API.
 definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional entities reachable through the entry points.
@@ -58,7 +57,7 @@ definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional e
 
 ```js
 {
-  spec: { /* spec object */ },
+  spec: '0.x',
   info: { /* info object */ },
   entries: {
     getName: { /* entity object */ }
@@ -66,20 +65,6 @@ definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional e
   definitions: {
     Name: { /* entity object */ }
   }
-}
-```
-
-#### <a name="specObject"></a> Spec Object
-
-Field|Type|Description
----|---|---
-version|`string`|**REQUIRED.**
-
-##### Example
-
-```js
-{
-  version: "1.0.0"
 }
 ```
 

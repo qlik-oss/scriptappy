@@ -16,20 +16,11 @@
   },
   "properties": {
     "spec": {
-      "type": "object",
-      "description": "Info about the specification version the document uses",
-      "properties": {
-        "version": {
-          "type": "string",
-          "enum": [
-            "0.x"
-          ]
-        }
-      },
-      "required": [
-        "version"
+      "type": "string",
+      "enum": [
+        "0.x"
       ],
-      "additionalProperties": false
+      "description": "The specification version the document uses"
     },
     "info": {
       "type": "object",

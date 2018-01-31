@@ -79,7 +79,7 @@ describe('base', () => {
   }
   it('should pass', () => {
     validate({
-      spec: { version: '0.x' },
+      spec: '0.x',
       'x-v': '',
       info: {
         name: 'a',
