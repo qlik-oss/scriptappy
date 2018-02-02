@@ -51,6 +51,40 @@ describe('availability', () => {
 });
 
 describe('tags', () => {
+  it('excluded', () => {
+    const a = types.tags({
+      tags: [{
+        title: 'a',
+      }, {
+        title: 'b',
+      }],
+    }, {
+      parse: {
+        tags: { exclude: ['b'] },
+      },
+    });
+    expect(a).to.eql({
+      'x-a': true,
+    });
+  });
+
+  it('included', () => {
+    const a = types.tags({
+      tags: [{
+        title: 'a',
+      }, {
+        title: 'b',
+      }],
+    }, {
+      parse: {
+        tags: { include: ['b'], exclude: ['b'] }, // include should be prioritized over exclude
+      },
+    });
+    expect(a).to.eql({
+      'x-b': true,
+    });
+  });
+
   it('stability - locked', () => {
     const a = types.tags({
       tags: [{
@@ -67,7 +101,7 @@ describe('tags', () => {
       tags: [{
         title: 'stable',
       }],
-    }, { logger });
+    }, { logger, parse: { tags: { exclude: ['stable'] } } });
     expect(a).to.eql({
       stability: 'stable',
     });
@@ -90,7 +124,7 @@ describe('tags', () => {
         title: 'stability',
         value: 'stable',
       }],
-    }, { logger });
+    }, { logger, parse: { tags: { exclude: ['stability'] } } });
     expect(a).to.eql({
       stability: 'stable',
     });

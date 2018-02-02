@@ -26,6 +26,10 @@ module.exports = {
         rewrite: 'boolean',
       },
     },
+    tags: {
+      include: undefined,
+      exclude: undefined,
+    },
     rules: {
       'no-unknown-types': 1,
       'no-missing-types': 1,

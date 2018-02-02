@@ -10,27 +10,36 @@
 const EXCLUDE_TAGS = ['entry'];
 const VENDOR_TAG_RX = /^x-/;
 
-const STABILITY = ['experimental', 'stable', 'locked'];
+const STABILITY_TAGS = ['experimental', 'stable', 'locked'];
+const STABILITY = 'stability';
 
 let currentMetaDoc;
 
 function tags(doc, cfg) {
   const o = {};
 
+  let include = false;
+  let exclude = false;
+
+  if (cfg && cfg.parse && cfg.parse.tags) {
+    include = Array.isArray(cfg.parse.tags.include) ? cfg.parse.tags.include : false;
+    exclude = !include && Array.isArray(cfg.parse.tags.exclude) ? cfg.parse.tags.exclude : false;
+  }
+
   (doc.tags || []).forEach(tag => {
-    if (EXCLUDE_TAGS.indexOf(tag.title) !== -1) {
-      // do nothing
-    } else if (tag.title === 'stability') {
-      if (STABILITY.indexOf(tag.value) !== -1) {
+    if (tag.title === STABILITY) {
+      if (STABILITY_TAGS.indexOf(tag.value) !== -1) {
         o.stability = tag.value;
       } else {
         cfg.logRule(doc, 'no-unknown-stability', `Stability unknown: '${tag.value}'`);
       }
-    } else if (STABILITY.indexOf(tag.title) !== -1) {
+    } else if (STABILITY_TAGS.indexOf(tag.title) !== -1) {
       o.stability = tag.title;
     } else if (tag.title === 'template') {
       // reserve for later - TODO
       // o.templates = tag.value.split(/,\s*/);
+    } else if (EXCLUDE_TAGS.indexOf(tag.title) !== -1 || (include && include.indexOf(tag.title) === -1) || (exclude && exclude.indexOf(tag.title) !== -1)) {
+      // do nothing
     } else if (VENDOR_TAG_RX.test(tag.title)) {
       o[tag.title] = typeof tag.value !== 'undefined' ? tag.value : true;
     } else {
