@@ -106,7 +106,7 @@ function collect(doclets, cfg, entity = entities.doclet) {
       d.__memberScope = doc.scope;
       d.__meta = doc.meta;
       d.__access = doc.access;
-      d.__isDefinition = (doc.tags || []).filter(tag => tag.originalTitle === 'definition').length > 0;
+      d.__isEntry = (doc.tags || []).filter(tag => tag.originalTitle === 'entry').length > 0;
 
       if (ids[d.__id] && ids[d.__id][0] && ids[d.__id][0].kind === 'module') { // 'd' is a default export from a module
         d.__memberOf = d.__id;
@@ -192,7 +192,8 @@ function transform({ ids, priv }, cfg) {
       const scopeName = pr.__scopeName;
       let parent = ids[memberOf] && ids[memberOf][0];
       const access = pr.__access;
-      const isDefinition = pr.__isDefinition;
+      // const isDefinition = pr.__isDefinition;
+      const isEntry = pr.__isEntry;
 
       const parentMaybeDefault = ids[memberDefault] && ids[memberDefault][0];
       if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
@@ -213,7 +214,7 @@ function transform({ ids, priv }, cfg) {
           memberProperty = 'events';
         } else if (memberScope === 'static' && parent && parent.kind === 'class') {
           memberProperty = 'staticEntries';
-        } else if (memberScope === 'inner' || isDefinition) {
+        } else if (memberScope === 'inner') {
           memberProperty = 'definitions';
         } else {
           memberProperty = 'entries';
@@ -231,7 +232,7 @@ function transform({ ids, priv }, cfg) {
           parent[memberProperty][scopeName] = d;
           pr.__ref = ref;
         }
-      } else if (memberScope === 'inner' || isDefinition) {
+      } else if (d.kind !== 'module' && (memberScope === 'inner' || !isEntry)) {
         definitions[pr.__id] = d;
         pr.__ref = `#/definitions/${pr.__id}`;
       } else {

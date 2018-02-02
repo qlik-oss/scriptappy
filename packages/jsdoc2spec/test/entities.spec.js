@@ -119,6 +119,16 @@ describe('tags', () => {
       'x-random-tag': 'yes',
     });
   });
+
+  it('ignored', () => {
+    const a = types.tags({
+      tags: [{
+        title: 'entry',
+        value: 'foo',
+      }],
+    });
+    expect(a).to.eql({});
+  });
 });
 
 describe('collect params', () => {

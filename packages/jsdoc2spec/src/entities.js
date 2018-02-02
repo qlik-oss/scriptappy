@@ -7,7 +7,7 @@
 // generic templates
 // meta - see, links, inline tags
 
-const EXCLUDE_TAGS = ['definition'];
+const EXCLUDE_TAGS = ['entry'];
 const VENDOR_TAG_RX = /^x-/;
 
 const STABILITY = ['experimental', 'stable', 'locked'];

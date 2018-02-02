@@ -146,7 +146,7 @@ describe('transform', () => {
         ent: [{}],
       },
       priv: {
-        ent: [{ __id: 'foo' }],
+        ent: [{ __id: 'foo', __isEntry: true }],
       },
     });
 
@@ -163,7 +163,7 @@ describe('transform', () => {
       },
       priv: {
         a: [{ __id: 'inner', __memberScope: 'inner' }],
-        b: [{ __id: 'def', __isDefinition: true }],
+        b: [{ __id: 'def' }],
       },
     });
 
@@ -173,8 +173,8 @@ describe('transform', () => {
     });
   });
 
-  it('should default to "entries"', () => {
-    const { entries } = t.transform({
+  it('should default to "definitions"', () => {
+    const { definitions } = t.transform({
       ids: {
         Person: [{}],
         'Person#name': [{}],
@@ -185,7 +185,7 @@ describe('transform', () => {
       },
     });
 
-    expect(entries).to.eql({
+    expect(definitions).to.eql({
       Person: {
         entries: {
           name: {},
@@ -195,7 +195,7 @@ describe('transform', () => {
   });
 
   it('should add "kind: event" to events property', () => {
-    const { entries } = t.transform({
+    const { definitions } = t.transform({
       ids: {
         Person: [{}],
         ev: [{ kind: 'event' }],
@@ -206,7 +206,7 @@ describe('transform', () => {
       },
     });
 
-    expect(entries).to.eql({
+    expect(definitions).to.eql({
       Person: {
         events: {
           change: { kind: 'event' },
@@ -222,7 +222,7 @@ describe('transform', () => {
         'Person#name': [{}],
       },
       priv: {
-        Person: [{ __id: 'Person' }],
+        Person: [{ __id: 'Person', __isEntry: true }],
         'Person#name': [{ __scopeName: 'name', __memberOf: 'Person', __memberScope: 'inner' }],
       },
     });
@@ -243,7 +243,7 @@ describe('transform', () => {
         'Person.name': [{}],
       },
       priv: {
-        Person: [{ __id: 'Person' }],
+        Person: [{ __id: 'Person', __isEntry: true }],
         'Person.name': [{ __scopeName: 'name', __memberOf: 'Person', __memberScope: 'static' }],
       },
     });
@@ -319,7 +319,7 @@ describe('transform', () => {
       },
     }, cfg);
 
-    expect(transformed.entries.cc).to.eql({
+    expect(transformed.definitions.cc).to.eql({
       type: 'car',
     });
   });
@@ -336,7 +336,7 @@ describe('transform', () => {
         'component.settings.shape': [{ description: 'shape' }, { type: 'string' }],
       },
       priv: {
-        component: [{ __id: 'component' }],
+        component: [{ __id: 'component', __isEntry: true }],
         'component.settings': [{ __scopeName: 'settings', __memberOf: 'component' }],
         'component.settings.shape': [{ __scopeName: 'shape', __memberOf: 'component.settings' }, { __scopeName: 'shape', __memberOf: 'component.settings' }],
       },
@@ -404,6 +404,7 @@ describe('generate', () => {
   it('refs', () => {
     const doclets = [{
       meta: { code: { name: '' } },
+      tags: [{ originalTitle: 'entry' }],
       kind: 'typedef',
       type: { names: ['object'] },
       longname: 'data-source',
@@ -427,6 +428,9 @@ describe('generate', () => {
 
     expect(spec.entries).to.eql({
       'data-source': { entries: {}, kind: 'object' },
+    });
+
+    expect(spec.definitions).to.eql({
       'chart-definition': {
         kind: 'object',
         entries: {
