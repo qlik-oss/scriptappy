@@ -101,10 +101,13 @@ describe('tags', () => {
       tags: [{
         title: 'random-tag',
         value: 'yes',
+      }, {
+        title: 'custom-tag',
       }],
     });
     expect(a).to.eql({
       'x-random-tag': 'yes',
+      'x-custom-tag': true,
     });
   });
 
@@ -113,10 +116,13 @@ describe('tags', () => {
       tags: [{
         title: 'x-random-tag',
         value: 'yes',
+      }, {
+        title: 'x-custom-tag',
       }],
     });
     expect(a).to.eql({
       'x-random-tag': 'yes',
+      'x-custom-tag': true,
     });
   });
 

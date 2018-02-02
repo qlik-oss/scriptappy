@@ -404,7 +404,7 @@ describe('generate', () => {
   it('refs', () => {
     const doclets = [{
       meta: { code: { name: '' } },
-      tags: [{ originalTitle: 'entry' }],
+      tags: [{ originalTitle: 'entry', title: 'entry' }],
       kind: 'typedef',
       type: { names: ['object'] },
       longname: 'data-source',

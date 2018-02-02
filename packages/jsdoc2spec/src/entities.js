@@ -32,9 +32,9 @@ function tags(doc, cfg) {
       // reserve for later - TODO
       // o.templates = tag.value.split(/,\s*/);
     } else if (VENDOR_TAG_RX.test(tag.title)) {
-      o[tag.title] = tag.value;
+      o[tag.title] = typeof tag.value !== 'undefined' ? tag.value : true;
     } else {
-      o[`x-${tag.title}`] = tag.value;
+      o[`x-${tag.title}`] = typeof tag.value !== 'undefined' ? tag.value : true;
     }
   });
 
