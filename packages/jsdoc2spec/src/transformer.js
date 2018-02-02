@@ -63,7 +63,7 @@ function collect(doclets, cfg, entity = entities.doclet) {
   doclets.forEach(doc => {
     let d;
     if (doc.meta && doc.meta.code.name === 'module.exports') {
-      if (doc.longname.indexOf('module.exports') === 0) {
+      if (doc.longname.indexOf('module.exports') === 0 && doc.access !== 'private') {
         cfg.logRule(doc, 'no-default-exports-wo-name', 'Default export without module name');
         return;
       }
