@@ -1,4 +1,7 @@
 .DS_Store
 .vscode
+*.rej
+*.tmp
+*.log
 node_modules
 package-lock.json

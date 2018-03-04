@@ -13,6 +13,7 @@
           "description": "This class is used to create a TCP or ICP server",
           "kind": "class",
           "constructor": {
+            "kind": "function",
             "params": []
           },
           "entries": {

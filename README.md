@@ -24,17 +24,17 @@ The purpose of this project is to define and provide a standard for describing J
 
 ## Examples
 
-- [nodejs](./examples/nodejs)
+- [nodejs](./packages/jsdoc2spec/examples/nodejs)
 
 ## Current Version
 
 [Draft of specification](./packages/js-api-spec/specifications/draft.md)
 
-[JSON schema](./packages/js-api-spec/schemas/shema.json)
+[JSON schema](./packages/js-api-spec/schemas/schema.json)
 
 ## Tools
 
-- [jsdoc2spec](https://github.com/miralemd/jsdoc2spec) A tool that generates an API specification from JSDoc annotations
+- [jsdoc2spec](./packages/jsdoc2spec) A tool that generates an API specification from JSDoc annotations
 - Markdown API reference documentation (coming soon)
 - Visualize API (coming soon)
     ![Visual API](./assets/visual.png)

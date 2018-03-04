@@ -22,22 +22,19 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miralemd/jsdoc2spec.git"
+    "url": "git+https://github.com/miralemd/js-api-spec.git"
   },
   "bin": {
     "jsdoc2spec": "./src/cli.js"
   },
   "bugs": {
-    "url": "https://github.com/miralemd/jsdoc2spec/issues"
+    "url": "https://github.com/miralemd/js-api-spec/issues"
   },
-  "homepage": "https://github.com/miralemd/jsdoc2spec#readme",
+  "homepage": "https://github.com/miralemd/js-api-spec#readme",
   "devDependencies": {
     "after-work.js": "^4.0.1",
     "babel-core": "^6.26.0",
     "babel-plugin-istanbul": "^4.1.5",
-    "eslint": "^4.12.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
     "jsdoc": "^3.5.5",
     "jsdoc-json": "^2.0.2"
   },
