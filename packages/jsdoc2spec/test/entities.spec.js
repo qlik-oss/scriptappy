@@ -663,19 +663,41 @@ describe('type', () => {
       kind: 'class',
       classdesc: 'Class descr',
       description: 'Constructor descr',
+      properties: [
+        {
+          type: { names: ['object'] },
+          name: 'first',
+        },
+        {
+          type: { names: ['string'] },
+          name: 'first.sub',
+          optional: true,
+        },
+      ],
       params: [{ name: 'first', type: { names: ['string'] } }],
     });
 
     expect(o).to.eql({
       kind: 'class',
       constructor: {
+        kind: 'function',
         description: 'Constructor descr',
         params: [{
           name: 'first',
           type: 'string',
         }],
       },
-      entries: {},
+      entries: {
+        first: {
+          kind: 'object',
+          entries: {
+            sub: {
+              optional: true,
+              type: 'string',
+            },
+          },
+        },
+      },
     });
   });
 

@@ -334,13 +334,15 @@ function kindNamespace() {
 
 function kindClass(doc, cfg, opts) {
   const constr = kindFunction(doc, cfg, opts);
+  const entries = doc.properties ? collectProps(doc.properties, cfg, opts) : {};
   return {
     kind: 'class',
     constructor: {
+      kind: 'function',
       description: doc.description,
       params: constr.params,
     },
-    entries: {},
+    entries,
   };
 }
 
