@@ -28,9 +28,9 @@ The purpose of this project is to define and provide a standard for describing J
 
 ## Current Version
 
-[Draft of specification](./specifications/draft.md)
+[Draft of specification](./packages/js-api-spec/specifications/draft.md)
 
-[JSON schema](./schemas/shema.json)
+[JSON schema](./packages/js-api-spec/schemas/shema.json)
 
 ## Tools
 
