@@ -173,10 +173,11 @@ function unwrapArrayGeneric(type, cfg, opts) {
   const isTuple = /,/.test(itemtype);
   typedef.kind = 'array';
   if (isTuple) {
-    typedef.items = itemtype.split(',').map(t => getTypedef({ type: { names: [t.replace(/\s+/g, '')] } }));
+    typedef.items = itemtype.split(/\s*,\s*/).map(t => getTypedef({ type: { names: t.replace(/\s*\(\s*|\s*\)/g, '').split(/\s*\|\s*/) } }));
   } else {
+    itemtype = itemtype.replace(/\s*\(\s*|\s*\)/g, '').split(/\s*\|\s*/);
     typedef.items = getTypedef({
-      type: { names: [itemtype] },
+      type: { names: itemtype },
     }, cfg, opts);
   }
 

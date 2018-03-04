@@ -433,16 +433,29 @@ describe('type', () => {
     });
   });
 
+  it('array generics', () => {
+    const o = types.typedef({
+      type: { names: ['Array.< (  number | boolean )>'] },
+    });
+
+    expect(o).to.eql({
+      kind: 'array',
+      items: {
+        kind: 'union',
+        items: [{ type: 'number' }, { type: 'boolean' }],
+      },
+    });
+  });
+
   it('array - tuple', () => {
     const o = types.typedef({
-      type: { names: ['Array.<string, number, Promise.<string>>'] },
+      type: { names: ['Array.<(string | number ), Promise.<string>>'] },
     });
 
     expect(o).to.eql({
       kind: 'array',
       items: [
-        { type: 'string' },
-        { type: 'number' },
+        { kind: 'union', items: [{ type: 'string' }, { type: 'number' }] },
         { type: 'Promise<string>' },
       ],
     });
