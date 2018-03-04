@@ -724,27 +724,7 @@
               }
             },
             "constructor": {
-              "properties": {
-                "params": {
-                  "description": "The parameters for this entity.",
-                  "type": "array",
-                  "items": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/entity-tier3"
-                      }
-                    ]
-                  }
-                },
-                "returns": {
-                  "description": "The return type from this entity.",
-                  "$ref": "#/definitions/entity-tier3"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "params"
-              ]
+              "$ref": "#/definitions/constructor"
             },
             "staticEntries": {
               "additionalProperties": {
@@ -812,6 +792,51 @@
       ],
       "examples": [
         "\n  \"kind\": \"class\",\n  \"constructor\": {\n    \"params\": []\n  },\n  \"staticEntries\": {\n    \"fun\": { /* entity */ }\n  }\n"
+      ]
+    },
+    "constructor": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "function"
+            },
+            "params": {
+              "description": "The parameters for this entity.",
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/entity-tier3"
+                  }
+                ]
+              }
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "examples": true,
+            "type": true,
+            "name": true,
+            "optional": true,
+            "nullable": true,
+            "variable": true,
+            "defaultValue": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
       ]
     },
     "kind.interface": {

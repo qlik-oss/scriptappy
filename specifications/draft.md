@@ -25,6 +25,7 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
     - [Namespace](#kind.namespace)
     - [Function](#kind.function)
     - [Class](#kind.class)
+    - [Constructor Object](#constructor)
     - [Interface](#kind.interface)
     - [Event](#kind.event)
     - [Array](#kind.array)
@@ -306,7 +307,7 @@ Field|Type|Description
 kind|`const` `'class'`|**REQUIRED.** 
 extends|Array&lt;[Entity Base](#type)&gt;|References to other entities this entity extends from.
 implements|Array&lt;[Entity Base](#type)&gt;|References to other entities this entity implements.
-constructor||
+constructor|[Constructor Object](#constructor)|
 staticEntries|Object&lt;`string`, [Entity Tier 3](#entity-tier3)&gt;|An object.
 entries|Object&lt;`string`, [Entity Tier 3](#entity-tier3)&gt;|An object.
 definitions|Object&lt;`string`, [Entity Tier 2](#entity-tier2) \| [Entity Tier 3](#entity-tier3)&gt;|An object.
@@ -325,6 +326,15 @@ events|Object&lt;`string`, [Event](#kind.event)&gt;|An object.
   }
 }
 ```
+
+#### <a name="constructor"></a> Constructor Object
+
+> This entity extends from [Entity Base](#type) and accepts all its fields as well.
+
+Field|Type|Description
+---|---|---
+kind|`const` `'function'`|**REQUIRED.** 
+params|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|The parameters for this entity.
 
 #### <a name="kind.interface"></a> Interface
 

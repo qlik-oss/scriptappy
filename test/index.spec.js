@@ -12,6 +12,7 @@ const validKinds = {
   class: {
     kind: 'class',
     constructor: {
+      kind: 'function',
       params: [],
     },
   },

@@ -149,7 +149,7 @@ Object.keys(schema.definitions).filter(key => /^entity-tier/.test(key)).forEach(
   entityTier(schema.definitions[key], key);
 });
 
-Object.keys(schema.definitions).filter(key => /^kind\./.test(key)).forEach(key => {
+Object.keys(schema.definitions).filter(key => /^kind\./.test(key) || key === 'constructor').forEach(key => {
   kind(schema.definitions[key], key);
 });
 

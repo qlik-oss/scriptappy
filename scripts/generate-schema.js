@@ -316,9 +316,55 @@ addKind('function', 3, signature, {
   ],
 });
 
+
+function constr() {
+  const entityProps = {
+    type: 'object',
+    properties: {},
+    additionalProperties: false,
+    patternProperties: {
+      '^x-': {
+        $ref: '#/definitions/vendor',
+      },
+    },
+    required: ['kind'],
+  };
+
+  const def = extend(true, {
+    type: 'object',
+    properties: {
+      kind: {
+        const: 'function',
+      },
+      params: {
+        description: 'The parameters for this entity.',
+        type: 'array',
+        items: {
+          allOf: [{
+            $ref: '#/definitions/entity-tier3',
+          }],
+        },
+      },
+    },
+  }, entityProps);
+
+  Object.keys(common.properties).forEach(key => { def.properties[key] = true; });
+
+  schema.definitions.constructor = {
+    allOf: [
+      { $ref: '#/definitions/common' },
+      def,
+    ],
+  };
+
+  return def;
+}
+
 addKind('class', 2, extendable, {
   properties: {
-    constructor: signature,
+    constructor: {
+      $ref: '#/definitions/constructor',
+    },
     staticEntries: entries(3),
     entries: entries(3),
     definitions: entries(2),
@@ -336,6 +382,8 @@ addKind('class', 2, extendable, {
 `,
   ],
 });
+
+constr();
 
 addKind('interface', 2, signature, extendable, {
   properties: {
