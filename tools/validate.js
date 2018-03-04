@@ -11,11 +11,25 @@ const ajv = new Ajv({
 
 const schemaFile = require('../schemas/schema.json');
 
-function toJSONPointer(s) {
+function toJSONPointer(path) {
+  let s = '';
+  let inside = false;
+
+  path.split('').forEach(char => {
+    if (char === '.' && !inside) {
+      s += '/';
+      return;
+    } else if (char === '[') {
+      inside = true;
+    } else if (char === ']') {
+      inside = false;
+    }
+    s += char;
+  });
+
   return s
-    .replace(/\./g, '/')
     .replace(/\[(\d+)\]/g, '/$1')
-    .replace(/\['([A-z0-9:_<>-]+)'\]/g, '/$1');
+    .replace(/\['([#A-z0-9:_<>.-]+)'\]/g, '/$1');
 }
 
 function message(err, {
