@@ -1,4 +1,6 @@
 module.exports = {
+  glob: ['./src/**/*.js'],
+  package: './package.json',
   api: {
     name: undefined,
     description: undefined,
