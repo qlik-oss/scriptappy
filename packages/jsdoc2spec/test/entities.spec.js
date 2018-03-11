@@ -169,6 +169,25 @@ describe('tags', () => {
     });
     expect(a).to.eql({});
   });
+
+  it('inline', () => {
+    const o = types.entity({
+      description: 'descr {@deprecated since 2.0.0}{@since 1.2.0}{@stable}',
+    }, cfg, { includeName: true });
+
+    expect(o).to.eql({
+      description: 'descr',
+      availability: {
+        deprecated: {
+          description: 'since 2.0.0',
+          since: '2.0.0',
+        },
+        since: '1.2.0',
+      },
+      stability: 'stable',
+      type: 'any',
+    });
+  });
 });
 
 describe('collect params', () => {

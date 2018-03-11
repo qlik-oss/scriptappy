@@ -5,7 +5,7 @@
 // TODO
 // symbols
 // generic templates
-// meta - see, links, inline tags
+// meta - see, links
 
 const EXCLUDE_TAGS = ['entry'];
 const VENDOR_TAG_RX = /^x-/;
@@ -360,6 +360,49 @@ function kindInterface(doc, cfg, opts) {
   return obj;
 }
 
+const inlineTags = [
+  'since',
+  'deprecated',
+  STABILITY,
+  ...STABILITY_TAGS,
+].map(t => ({
+  rx: new RegExp(`\\s*\\{@${t}\\s*([^}]*)\\}`),
+  tag: t,
+}));
+
+function extractTags(doc) {
+  let s = '';
+  if (doc.kind === 'class') {
+    if (doc.classdesc) {
+      s = doc.classdesc;
+    }
+  } else if (doc.description) {
+    s = doc.description;
+  }
+  inlineTags.forEach(t => {
+    const m = t.rx.exec(s);
+    if (m) {
+      s = s.replace(m[0], '');
+      if (t.tag === 'since') {
+        doc.since = m[1];
+      } else if (t.tag === 'deprecated') {
+        doc.deprecated = m[1];
+      } else {
+        if (!doc.tags) {
+          doc.tags = [];
+        }
+        doc.tags.push({
+          originalTitle: t.tag,
+          title: t.tag,
+          text: m[1],
+        });
+      }
+    }
+  });
+
+  return s;
+}
+
 function entity(doc, cfg = {}, opts = {}) {
   const ent = {};
   if (doc && doc.meta) {
@@ -368,19 +411,13 @@ function entity(doc, cfg = {}, opts = {}) {
   if (opts.includeName && doc.name) {
     ent.name = doc.name;
   }
-  if (doc.kind === 'class') {
-    if (doc.classdesc) {
-      ent.description = doc.classdesc;
-    }
-  } else if (doc.description) {
-    ent.description = doc.description;
+
+  const descr = extractTags(doc);
+  if (descr) {
+    ent.description = descr;
   }
 
   Object.assign(ent, tags(doc, cfg), availability(doc));
-
-  // if (typeof ent.stability === 'undefined' && typeof opts.stability.default) {
-  //   ent.stability = opts.stability.default;
-  // }
 
   if (doc.optional) {
     ent.optional = true;
