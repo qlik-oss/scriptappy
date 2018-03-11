@@ -13,13 +13,16 @@ const { generate, write } = require('./transformer.js');
 
 const defaultConfig = require('../spec.config.js');
 
-const y = yargs // eslint-disable-line no-unused-expressions
+const conf = yargs // eslint-disable-line no-unused-expressions
   .usage('jsdoc2spec')
   .help('help')
   .alias('h', 'help')
-  // .version()
   .alias('v', 'version')
   .options({
+    glob: {
+      describe: 'Glob pattern for source files',
+      type: 'array',
+    },
     c: {
       alias: 'config',
       describe: 'Path to config file',
@@ -56,34 +59,24 @@ const y = yargs // eslint-disable-line no-unused-expressions
   .wrap(Math.min(120, yargs.terminalWidth()))
   .argv;
 
-const config = ((configPath) => {
-  if (configPath == null) {
-    return defaultConfig;
-  }
-  const p = path.resolve(process.cwd(), configPath);
+const configs = [defaultConfig];
+
+if (typeof conf.c === 'string') {
+  const p = path.resolve(process.cwd(), conf.c);
   if (!fs.existsSync(p)) {
     throw new Error(`Config ${p} not found`);
   }
-  return extend(true, {}, defaultConfig, require(p));
-})(y.config);
-
-if (y.output && y.output.file != null) {
-  config.output.file = y.output.file;
+  configs.push(require(p));
 }
-if (y.jsdoc != null) {
-  config.jsdoc = y.jsdoc;
-}
-if (y.p != null) {
-  config.package = y.p;
-}
+configs.push(conf);
+const config = extend(true, {}, ...configs);
 
 const run = (data) => {
-  // console.log(typeof data);
   const spec = generate({
     data: data.docs || data,
     config,
   });
-  if (y.x) {
+  if (config.x) {
     console.log(spec); // stream to stdout
   } else {
     write(spec, config.output.file);
@@ -141,9 +134,9 @@ if (require.main === module) {
       const cwd = process.cwd();
       const pkg = config.package ? path.resolve(cwd, config.package) : [];
       const files = (await globby(config.glob, {
-        gitignore: true,
+        gitignore: false,
       })).concat(pkg).map(f => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
-      if (y.w) {
+      if (config.w) {
         chokidar.watch(files).on('change', (filename) => {
           console.log(filename);
           runWithJSDoc(files);
