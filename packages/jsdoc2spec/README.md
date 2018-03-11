@@ -76,6 +76,7 @@ module.exports = {
       'no-duplicate-references': 1,
       'no-untreated-kinds': 1,
       'no-default-exports-wo-name': 1,
+      'no-unknown-promise': 1,
     }
   }
 }

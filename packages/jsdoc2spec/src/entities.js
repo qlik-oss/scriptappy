@@ -154,10 +154,14 @@ function getTypeFromCodeMeta(doc /* opts */) {
   return o;
 }
 
-function simpleType(type) {
+function simpleType(type, cfg) {
   const t = {
     type: type.replace(/\.</g, '<'),
   };
+
+  if (t.type === 'Promise') {
+    cfg.logRule(currentMetaDoc, 'no-unknown-promise', 'Promise is missing type');
+  }
 
   return t;
 }
@@ -189,7 +193,7 @@ function typeOrKind(names, cfg, opts) {
     throw new Error('ooops');
   }
   if (names.length === 1) {
-    return simpleType(names[0]);
+    return simpleType(names[0], cfg, opts);
   }
   return {
     kind: 'union',
@@ -312,11 +316,11 @@ function kindFunction(doc, cfg, opts) {
   }
 
   if (doc.fires && doc.fires.length) {
-    f.emits = doc.fires.map(t => simpleType(t, cfg));
+    f.emits = doc.fires.map(t => simpleType(t, cfg, opts));
   }
 
   if (doc.this) {
-    f.this = simpleType(doc.this);
+    f.this = simpleType(doc.this, cfg, opts);
   }
 
   return f;
@@ -441,6 +445,9 @@ function entity(doc, cfg = {}, opts = {}) {
   }
 
   const typedef = getTypedef(doc, cfg, opts);
+  if (typedef.type === 'Promise') {
+    cfg.logRule(currentMetaDoc, 'no-unknown-promise', 'Promise is missing type');
+  }
   Object.assign(ent, typedef);
 
   if (doc.examples) {

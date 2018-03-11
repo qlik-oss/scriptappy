@@ -190,3 +190,23 @@ export {
   fun as default
 }
 ```
+
+### `'no-unknown-promise'`
+
+Disallow `Promise`s without a type.
+
+Examples of **incorrect** jsdoc for this rule:
+
+```js
+/**
+ * @returns {Promise}
+ */
+```
+
+Examples of **correct** jsdoc for this rule:
+
+```js
+/**
+ * @returns {Promise<string>}
+ */
+```
