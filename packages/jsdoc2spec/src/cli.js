@@ -6,6 +6,7 @@ const path = require('path');
 const extend = require('extend');
 const yargs = require('yargs');
 const globby = require('globby');
+const chokidar = require('chokidar');
 const cp = require('child_process');
 
 const { generate, write } = require('./transformer.js');
@@ -44,6 +45,12 @@ const y = yargs // eslint-disable-line no-unused-expressions
       alias: 'output.file',
       describe: 'File to write to',
       type: 'string',
+    },
+    w: {
+      alias: 'watch',
+      describe: 'Watch for file changes',
+      type: 'boolean',
+      default: false,
     },
   })
   .wrap(Math.min(120, yargs.terminalWidth()))
@@ -136,6 +143,12 @@ if (require.main === module) {
       const files = (await globby(config.glob, {
         gitignore: true,
       })).concat(pkg).map(f => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
+      if (y.w) {
+        chokidar.watch(files).on('change', (filename) => {
+          console.log(filename);
+          runWithJSDoc(files);
+        });
+      }
       try {
         runWithJSDoc(files);
       } catch (e) {
