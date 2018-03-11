@@ -315,6 +315,10 @@ function kindFunction(doc, cfg, opts) {
     f.emits = doc.fires.map(t => simpleType(t, cfg));
   }
 
+  if (doc.this) {
+    f.this = simpleType(doc.this);
+  }
+
   return f;
 }
 

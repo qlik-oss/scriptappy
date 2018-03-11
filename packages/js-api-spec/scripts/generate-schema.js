@@ -83,6 +83,10 @@ const signature = {
       description: 'The return type from this entity.',
       $ref: '#/definitions/entity-tier3',
     },
+    this: {
+      description: 'The value of `this`.',
+      $ref: '#/definitions/entity-tier3',
+    },
   },
   additionalProperties: false,
   required: ['params'],

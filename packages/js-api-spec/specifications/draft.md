@@ -272,6 +272,7 @@ Field|Type|Description
 kind|`const` `'function'`|**REQUIRED.** 
 params|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|**REQUIRED.** The parameters for this entity.
 returns|[Entity Tier 3](#entity-tier3)|The return type from this entity.
+this|[Entity Tier 3](#entity-tier3)|
 async|`boolean`|Indicates whether this function is asynchronous.
 yields|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|The entities this function yields.
 emits|Array&lt;[Entity Base](#type)&gt;|The events this entity emits.
@@ -345,6 +346,7 @@ Field|Type|Description
 kind|`const` `'interface'`|**REQUIRED.** 
 params|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|The parameters for this entity.
 returns|[Entity Tier 3](#entity-tier3)|The return type from this entity.
+this|[Entity Tier 3](#entity-tier3)|
 extends|Array&lt;[Entity Base](#type)&gt;|References to other entities this entity extends from.
 implements|Array&lt;[Entity Base](#type)&gt;|References to other entities this entity implements.
 entries|Object&lt;`string`, [Entity Tier 3](#entity-tier3)&gt;|An object.
@@ -371,6 +373,7 @@ Field|Type|Description
 kind|`const` `'event'`|**REQUIRED.** 
 params|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|The parameters for this entity.
 returns|[Entity Tier 3](#entity-tier3)|The return type from this entity.
+this|[Entity Tier 3](#entity-tier3)|
 entries|Object&lt;`string`, [Entity Tier 3](#entity-tier3)&gt;|An object.
 definitions|Object&lt;`string`, [Entity Tier 3](#entity-tier3)&gt;|An object.
 

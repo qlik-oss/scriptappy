@@ -618,6 +618,9 @@
               "description": "The return type from this entity.",
               "$ref": "#/definitions/entity-tier3"
             },
+            "this": {
+              "$ref": "#/definitions/entity-tier3"
+            },
             "async": {
               "type": "boolean",
               "description": "Indicates whether this function is asynchronous."
@@ -865,6 +868,9 @@
               "description": "The return type from this entity.",
               "$ref": "#/definitions/entity-tier3"
             },
+            "this": {
+              "$ref": "#/definitions/entity-tier3"
+            },
             "extends": {
               "description": "References to other entities this entity extends from.",
               "type": "array",
@@ -960,6 +966,9 @@
             },
             "returns": {
               "description": "The return type from this entity.",
+              "$ref": "#/definitions/entity-tier3"
+            },
+            "this": {
               "$ref": "#/definitions/entity-tier3"
             },
             "entries": {

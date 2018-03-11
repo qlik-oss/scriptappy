@@ -504,6 +504,7 @@ describe('type', () => {
       description: 'descr',
       async: true,
       params: [],
+      this: 'Person',
       fires: [
         'generate#event:start',
       ],
@@ -532,6 +533,9 @@ describe('type', () => {
       returns: {
         description: 'a promise',
         type: 'Promise<string>',
+      },
+      this: {
+        type: 'Person',
       },
       async: true,
     });

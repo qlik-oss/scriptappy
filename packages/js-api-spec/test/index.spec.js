@@ -192,6 +192,7 @@ describe('kinds', () => {
         params: [],
         yields: [],
         async: true,
+        this: { type: 'f' },
         emits: [{ type: 'ev' }],
         throws: [{ type: 'err' }],
       };
