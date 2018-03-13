@@ -57,11 +57,12 @@ module.exports = {
     stability: /* 'experimental' | 'stable' | 'locked' */,
   },
   output: {
+    diffOnly: false, // set to true to write to file only when API has changed
     file: 'spec.json', // file to write to
   },
   jsdoc: /* string | object */, // location of jsdoc-json file, or a jsdoc configuration object
   spec: {
-    validate: true, // set to false to skip validation against schema
+    validate: true, // set to false to skip validation against schema, set to 'diff' to validate only when API has changed
   },
   parse: {
     tags: {

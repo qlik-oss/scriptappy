@@ -270,7 +270,7 @@ function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts)
     extend(spec.info, opts.api.properties);
   }
 
-  return JSON.stringify(spec, null, 2);
+  return spec;
 }
 
 function write(JSONSpec, destination) {
@@ -302,13 +302,42 @@ function generate({
 
   const errors = printViolations(violations);
 
+  const unversioned = JSON.stringify(extend(true, {}, spec, {
+    info: {
+      version: '',
+    },
+  }));
+
+  let oldSpec = {};
+  if (!config.x && fs.existsSync(config.output.file)) {
+    oldSpec = JSON.parse(fs.readFileSync(config.output.file));
+  }
+  const unversionedOld = JSON.stringify(extend(true, {}, oldSpec, {
+    info: {
+      version: '',
+    },
+  }));
+
+  const isDifferent = unversioned !== unversionedOld;
+
   // validate spec against schema
-  if (config.spec.validate !== false) {
-    jsAPISpec.validate(JSON.parse(spec));
+  if ((config.spec.validate === 'diff' && isDifferent) || (config.spec.validate !== false && config.spec.validate !== 'diff')) {
+    jsAPISpec.validate(spec);
+  } else {
+    console.log('No API changes - skippping validation');
   }
 
   if (errors > 0) {
     process.exitCode = 1;
+  }
+
+  const specStr = JSON.stringify(spec, null, 2);
+  if (config.x) {
+    console.log(specStr); // stream to stdout
+  } else if (config.output.diffOnly !== true || (config.output.diffOnly === true && isDifferent)) {
+    write(specStr, config.output.file);
+  } else {
+    console.log('No API changes - skipping output');
   }
 
   return spec;
@@ -320,13 +349,10 @@ function jsdocpublish(taffydata, jsdocopts) {
     config.output.file = jsdocopts.destination;
   }
 
-  const spec = generate({
+  generate({
     data: taffydata().get(),
     config,
   });
-
-  // write
-  write(spec, config.output.file);
 }
 
 module.exports = {

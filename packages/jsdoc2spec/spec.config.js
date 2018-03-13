@@ -9,12 +9,13 @@ module.exports = {
     stability: undefined,
   },
   output: {
+    diffOnly: false,
     file: 'spec.json',
   },
   jsdoc: undefined,
   spec: {
     version: '',
-    validate: true,
+    validate: 'diff',
   },
   parse: {
     types: {

@@ -9,7 +9,7 @@ const globby = require('globby');
 const chokidar = require('chokidar');
 const cp = require('child_process');
 
-const { generate, write } = require('./transformer.js');
+const { generate } = require('./transformer.js');
 
 const defaultConfig = require('../spec.config.js');
 
@@ -72,15 +72,10 @@ configs.push(conf);
 const config = extend(true, {}, ...configs);
 
 const run = (data) => {
-  const spec = generate({
+  generate({
     data: data.docs || data,
     config,
   });
-  if (config.x) {
-    console.log(spec); // stream to stdout
-  } else {
-    write(spec, config.output.file);
-  }
 };
 
 const runWithJSDoc = (files) => {
