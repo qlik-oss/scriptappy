@@ -99,7 +99,7 @@ const runWithJSDoc = (files) => {
   const temp = path.join(__dirname, 'temp.conf.json');
   fs.writeFileSync(temp, JSON.stringify(cfg, null, 2));
   try {
-    s = cp.execSync('jsdoc -c ./temp.conf.json -p -X', { cwd: __dirname });
+    s = cp.execSync('npx jsdoc -c ./temp.conf.json -p -X', { cwd: __dirname });
   } finally {
     fs.unlinkSync(temp);
   }
