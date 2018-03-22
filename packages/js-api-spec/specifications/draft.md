@@ -102,6 +102,7 @@ name|`string`|Name of this entity.
 optional|`boolean`|Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry.
 nullable|`boolean`|Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry.
 variable|`boolean`|Variability of this entity. Used to indicate when the entity is repeatable as a method parameter.
+generics|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|Generic types.
 defaultValue|`number` \| `boolean` \| `string`|Default value for this entity. Used when the entity is optional.
 
 ##### Example

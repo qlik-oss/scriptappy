@@ -206,6 +206,7 @@ describe('kinds', () => {
           params: [extend({}, validKinds[t], {
             variable: true,
           })],
+          generics: [validKinds[t]],
           yields: [validKinds[t]],
           returns: validKinds[t],
         };
@@ -220,6 +221,7 @@ describe('kinds', () => {
         const value = {
           kind: 'interface',
           params: [validKinds[t]],
+          generics: [validKinds[t]],
         };
         validate('interface', value);
       });

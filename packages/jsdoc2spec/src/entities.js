@@ -166,6 +166,10 @@ function simpleType(type, cfg) {
   return t;
 }
 
+function parseName(type) {
+  return type.split(/\s*,\s*/).map(t => getTypedef({ type: { names: [t.replace(/\s*/g, '')] } }));
+}
+
 function unwrapArrayGeneric(type, cfg, opts) {
   const typedef = {};
   let itemtype = type.match(/<(.+)>/);
@@ -177,7 +181,7 @@ function unwrapArrayGeneric(type, cfg, opts) {
   const isTuple = /,/.test(itemtype);
   typedef.kind = 'array';
   if (isTuple) {
-    typedef.items = itemtype.split(/\s*,\s*/).map(t => getTypedef({ type: { names: t.replace(/\s*\(\s*|\s*\)/g, '').split(/\s*\|\s*/) } }));
+    typedef.items = itemtype.split(/\s*,\s*/).map(t => getTypedef({ type: { names: [t] } }));
   } else {
     itemtype = itemtype.replace(/\s*\(\s*|\s*\)/g, '').split(/\s*\|\s*/);
     typedef.items = getTypedef({
@@ -186,6 +190,20 @@ function unwrapArrayGeneric(type, cfg, opts) {
   }
 
   return typedef;
+}
+
+function unwrapGeneric(type, cfg, opts) {
+  const itemtype = type.match(/<(.+)>/);
+  if (itemtype) {
+    const t = type.replace(itemtype[0], '').replace(/\.$/g, '');
+    return {
+      type: t,
+      generics: parseName(itemtype[1], cfg, opts),
+    };
+  }
+  return {
+    type: 'any',
+  };
 }
 
 function typeOrKind(names, cfg, opts) {
@@ -269,10 +287,15 @@ function getTypedef(doc, cfg, opts) {
     }
   }
 
-  if (/Array\.</.test(type) || type === 'array') {
+  if (/^Array\.</.test(type) || type === 'array') {
     return unwrapArrayGeneric(type, cfg, opts);
   } else if (/\.</.test(type)) { // generic
-    typedef.type = type.replace(/\.</g, '<');
+    return unwrapGeneric(type, cfg, opts);
+  } else if (/\|/.exec(type)) {
+    return {
+      kind: 'union',
+      items: type.split(/\s*\|\s*/).map(t => getTypedef({ type: { names: [t.replace(/^\s*\(?\s*|\s*\)?\s*$/g, '')] } }, cfg, opts)),
+    };
   } else if (type && ((type !== typedef.kind) || !typedef.kind)) {
     typedef.type = type;
   }
@@ -445,7 +468,7 @@ function entity(doc, cfg = {}, opts = {}) {
   }
 
   const typedef = getTypedef(doc, cfg, opts);
-  if (typedef.type === 'Promise') {
+  if (typedef.type === 'Promise' && !typedef.generics) {
     cfg.logRule(currentMetaDoc, 'no-unknown-promise', 'Promise is missing type');
   }
   Object.assign(ent, typedef);

@@ -380,10 +380,10 @@ describe('generate', () => {
       version: '3.7.0',
       licenses: [{ type: 'yes' }],
     }];
-    const spec = JSON.parse(t.generate({
+    const spec = JSON.parse(JSON.stringify(t.generate({
       data: doclets,
       config: cfg,
-    }));
+    })));
 
     expect(spec).to.eql({
       spec: '0.x',
@@ -421,10 +421,10 @@ describe('generate', () => {
       memberof: 'chart-definition',
       longname: 'chart-definition.data',
     }];
-    const spec = JSON.parse(t.generate({
+    const spec = t.generate({
       data: doclets,
       config: cfg,
-    }));
+    });
 
     expect(spec.entries).to.eql({
       'data-source': { entries: {}, kind: 'object' },

@@ -309,7 +309,7 @@ function generate({
   }));
 
   let oldSpec = {};
-  if (!config.x && fs.existsSync(config.output.file)) {
+  if (!config.x && config.output && fs.existsSync(config.output.file)) {
     oldSpec = JSON.parse(fs.readFileSync(config.output.file));
   }
   const unversionedOld = JSON.stringify(extend(true, {}, oldSpec, {
@@ -334,7 +334,7 @@ function generate({
   const specStr = JSON.stringify(spec, null, 2);
   if (config.x) {
     console.log(specStr); // stream to stdout
-  } else if (config.output.diffOnly !== true || (config.output.diffOnly === true && isDifferent)) {
+  } else if (config.output && (config.output.diffOnly !== true || (config.output.diffOnly === true && isDifferent))) {
     write(specStr, config.output.file);
   } else {
     console.log('No API changes - skipping output');

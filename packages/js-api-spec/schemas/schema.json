@@ -195,6 +195,17 @@
           "type": "boolean",
           "description": "Variability of this entity. Used to indicate when the entity is repeatable as a method parameter."
         },
+        "generics": {
+          "type": "array",
+          "description": "Generic types.",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/entity-tier3"
+              }
+            ]
+          }
+        },
         "defaultValue": {
           "description": "Default value for this entity. Used when the entity is optional.",
           "oneOf": [
@@ -294,6 +305,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "required": [
@@ -341,6 +353,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -419,6 +432,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -498,6 +512,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -575,6 +590,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -684,6 +700,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -781,6 +798,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -829,6 +847,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -927,6 +946,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -1005,6 +1025,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -1066,6 +1087,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,
@@ -1121,6 +1143,7 @@
             "optional": true,
             "nullable": true,
             "variable": true,
+            "generics": true,
             "defaultValue": true
           },
           "additionalProperties": false,

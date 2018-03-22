@@ -21,6 +21,15 @@ const common = {
     optional: { type: 'boolean', description: 'Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry.' },
     nullable: { type: 'boolean', description: 'Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry.' },
     variable: { type: 'boolean', description: 'Variability of this entity. Used to indicate when the entity is repeatable as a method parameter.' },
+    generics: {
+      type: 'array',
+      description: 'Generic types.',
+      items: {
+        allOf: [
+          { $ref: '#/definitions/entity-tier3' },
+        ],
+      },
+    },
     defaultValue: {
       description: 'Default value for this entity. Used when the entity is optional.',
       oneOf: [

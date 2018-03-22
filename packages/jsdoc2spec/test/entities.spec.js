@@ -475,22 +475,53 @@ describe('type', () => {
       kind: 'array',
       items: [
         { kind: 'union', items: [{ type: 'string' }, { type: 'number' }] },
-        { type: 'Promise<string>' },
+        { type: 'Promise', generics: [{ type: 'string' }] },
       ],
     });
   });
 
-  it.skip('object - key value', () => {
+  it('generics', () => {
+    const o = types.typedef({
+      type: { names: ['Promise.<object.<boolean>, Array.<(string|number)>>'] },
+    }, { logRule: () => {} });
+
+    expect(o).to.eql({
+      type: 'Promise',
+      generics: [{
+        type: 'object',
+        generics: [{ type: 'boolean' }],
+      }, {
+        kind: 'array',
+        items: {
+          kind: 'union',
+          items: [{ type: 'string' }, { type: 'number' }],
+        },
+      }],
+    });
+  });
+
+  it('generics - union', () => {
+    const o = types.typedef({
+      type: { names: ['Promise.<  ( string|  number) | boolean, number  >'] },
+    }, { logRule: () => {} });
+
+    expect(o).to.eql({
+      type: 'Promise',
+      generics: [{
+        kind: 'union',
+        items: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
+      }, { type: 'number' }],
+    });
+  });
+
+  it('object - key value', () => {
     const o = types.typedef({
       type: { names: ['object.<string, number>'] },
     });
 
     expect(o).to.eql({
-      kind: 'object',
-      items: [ // ?
-        { type: 'string' },
-        { type: 'number' },
-      ],
+      type: 'object',
+      generics: [{ type: 'string' }, { type: 'number' }],
     });
   });
 
@@ -551,7 +582,8 @@ describe('type', () => {
       params: [],
       returns: {
         description: 'a promise',
-        type: 'Promise<string>',
+        type: 'Promise',
+        generics: [{ type: 'string' }],
       },
       this: {
         type: 'Person',
