@@ -383,7 +383,10 @@ function kindInterface(doc, cfg, opts) {
     kind: 'interface',
   };
   Object.keys(fn).filter(key => key !== 'kind').forEach(key => { obj[key] = fn[key]; });
-  obj.entries = {};
+  if (!doc.params) {
+    delete obj.params;
+  }
+  obj.entries = doc.properties ? collectProps(doc.properties, cfg, opts) : {};
   return obj;
 }
 
