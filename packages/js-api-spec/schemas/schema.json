@@ -94,7 +94,7 @@
   "definitions": {
     "version": {
       "type": "string",
-      "pattern": "^[0-9]+.[0-9]+.[0-9]+$"
+      "pattern": "^[0-9]+.[0-9]+.[0-9]+(-[a-z0-9_.-]+)?$"
     },
     "vendor": {
       "additionalProperties": true,
@@ -619,6 +619,7 @@
               "$ref": "#/definitions/entity-tier3"
             },
             "this": {
+              "description": "The value of `this`.",
               "$ref": "#/definitions/entity-tier3"
             },
             "async": {
@@ -869,6 +870,7 @@
               "$ref": "#/definitions/entity-tier3"
             },
             "this": {
+              "description": "The value of `this`.",
               "$ref": "#/definitions/entity-tier3"
             },
             "extends": {
@@ -969,6 +971,7 @@
               "$ref": "#/definitions/entity-tier3"
             },
             "this": {
+              "description": "The value of `this`.",
               "$ref": "#/definitions/entity-tier3"
             },
             "entries": {
