@@ -51,6 +51,7 @@ Field|Type|Description
 ---|---|---
 spec | `const` `'0.x'` | **REQUIRED.** The specification version the document uses.
 info | [Info object](#infoObject) | **REQUIRED.** Metadata about the API.
+examples | Array&lt;`string`&gt; | Examples showing how to use this API.
 entries | Map&lt;`string`, [Entity Object](#entityObject)&gt; | **REQUIRED.** An object holding the entry points available for the API.
 definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional entities reachable through the entry points.
 

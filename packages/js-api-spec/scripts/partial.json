@@ -48,6 +48,13 @@
         }
       }
     },
+    "examples": {
+      "description": "Examples showing how to use this API.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "entries": {
       "additionalProperties": {
         "type": "object",

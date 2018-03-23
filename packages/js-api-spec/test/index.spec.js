@@ -89,6 +89,7 @@ describe('base', () => {
         stability: 'stable',
         'x-v': '',
       },
+      examples: ['ex'],
       entries: {},
       definitions: {},
     });

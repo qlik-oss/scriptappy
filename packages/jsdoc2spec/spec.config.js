@@ -17,6 +17,7 @@ module.exports = {
     version: '',
     validate: true,
   },
+  examples: undefined,
   parse: {
     types: {
       String: {

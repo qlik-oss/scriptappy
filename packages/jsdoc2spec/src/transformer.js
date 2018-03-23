@@ -262,6 +262,7 @@ function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts)
       license: typeof opts.api.license !== 'undefined' ? opts.api.license : (pack.licenses ? pack.licenses[0].type : undefined), // eslint-disable-line
       stability: opts.api.stability,
     },
+    examples: opts.examples,
     entries,
     definitions,
   };
