@@ -1,8 +1,11 @@
 const Ajv = require('ajv');
 const extend = require('extend');
-const schema = require('../schemas/schema.json');
+const schema6 = require('ajv/lib/refs/json-schema-draft-06.json');
+const schema = require('../schema.json');
+const pkg = require('../package.json');
 
-const vv = require('../tools/validate');
+
+const vv = require('scriptappy-tools');
 
 const validKinds = {
   function: {
@@ -72,15 +75,16 @@ const validSubKinds = {
 describe('base', () => {
   function validate(obj, should = 'pass') {
     const validator = new Ajv({ allErrors: true, verbose: true, jsonPointers: true });
+    validator.addMetaSchema(schema6);
     const isValid = validator.validate(schema, obj);
     if (!isValid && should === 'pass') {
-      vv(obj); // print messages
+      vv.validate(schema, obj); // print messages
     }
     expect(isValid).to.equal(should === 'pass');
   }
   it('should pass', () => {
     validate({
-      spec: '0.x',
+      scriptappy: pkg.version,
       'x-v': '',
       info: {
         name: 'a',
@@ -120,8 +124,8 @@ describe('kinds', () => {
     };
     const isValid = validator.validate(subschema, extend(obj, common));
     if (!isValid && should === 'pass') {
-      vv({
-        spec: { version: '0.x' },
+      vv.validate(schema, {
+        scriptappy: pkg.version,
         info: { name: 'a', version: '1.1.0' },
         entries: {
           a: obj,

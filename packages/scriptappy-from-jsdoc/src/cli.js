@@ -14,7 +14,7 @@ const { generate } = require('./transformer.js');
 const defaultConfig = require('../spec.config.js');
 
 const conf = yargs // eslint-disable-line no-unused-expressions
-  .usage('jsdoc2spec')
+  .usage('scriptappy-from-jsdoc')
   .help('help')
   .alias('h', 'help')
   .alias('v', 'version')
@@ -140,7 +140,7 @@ if (require.main === module) {
       try {
         runWithJSDoc(files);
       } catch (e) {
-        // console.log(e.stack);
+        console.log(e.stack);
       }
     })();
   }

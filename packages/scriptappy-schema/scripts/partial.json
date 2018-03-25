@@ -4,7 +4,7 @@
   "description": "API specification",
   "type": "object",
   "required": [
-    "spec",
+    "scriptappy",
     "info",
     "entries"
   ],
@@ -15,9 +15,9 @@
     }
   },
   "properties": {
-    "spec": {
+    "scriptappy": {
       "type": "string",
-      "enum": ["0.x"],
+      "const": "x.y.z",
       "description": "The specification version the document uses"
     },
     "info": {

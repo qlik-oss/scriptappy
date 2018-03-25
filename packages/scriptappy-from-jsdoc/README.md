@@ -1,15 +1,15 @@
-# jsdoc2spec
+# scriptappy-from-jsdoc
+
+Generate a [Scriptappy](https://github.com/miralemd/scriptappy) specification from your JSDoc.
 
 > Instructions on how to use `jsdoc` can be found on the [project's homepage](http://usejsdoc.org/).
-
-Generate structured [API specification](https://github.com/miralemd/js-api-spec) from your jsdoc.
 
 See [nodejs example](./examples/nodejs)
 
 ## Install
 
 ```sh
-npm install jsdoc2spec
+npm install scriptappy-from-jsdoc
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ npm install jsdoc2spec
 ### CLI
 
 ```
-jsdoc2spec
+scriptappy-from-jsdoc
 
 Options:
   --glob             Glob pattern for source files                                                               [array]
@@ -31,16 +31,16 @@ Options:
   -v, --version      Show version number                                                                       [boolean]
 ```
 
-Running `jsdoc2spec` without any arguments will use the default values.
+Running `scriptappy-from-jsdoc` without any arguments will use the default values.
 
 ```sh
-npx jsdoc2spec
+npx scriptappy-from-jsdoc
 ```
 
 More options can be set through a config file:
 
 ```sh
-npx jsdoc2spec -c path/to/config.js
+npx scriptappy-from-jsdoc -c path/to/config.js
 ```
 
 ### Configuration
@@ -91,22 +91,22 @@ Parsing rules work a lot like [eslint rules](https://eslint.org/docs/rules/) and
 
 ### Generating specification from a JSDoc-JSON file
 
-`jsdoc2spec` will by default create a jsdoc-json file on the fly using the specified `glob` pattern. If you already have a jsdoc-json file, you can pass that in in two ways:
+`scriptappy-from-jsdoc` will by default create a jsdoc-json file on the fly using the specified `glob` pattern. If you already have a jsdoc-json file, you can pass that in in two ways:
 
-#### Pipe output from jsdoc to jsdoc2spec
+#### Pipe output from jsdoc to scriptappy-from-jsdoc
 
 ```sh
-npx jsdoc src -r -X | jsdoc2spec
+npx jsdoc src -r -X | scriptappy-from-jsdoc
 ```
 
 `npx jsdoc src -r` generates documentation from files found in `./src` and its subfolders.
 
-`-X` flag writes jsdoc-json to stdout, which is then piped to jsdoc2spec.
+`-X` flag writes jsdoc-json to stdout, which is then piped to scriptappy-from-jsdoc.
 
-#### Use jsdoc2spec as template
+#### Use scriptappy-from-jsdoc as template
 
 ```sh
-npx jsdoc src -r -t jsdoc2spec
+npx jsdoc src -r -t scriptappy-from-jsdoc
 ```
 
-`-t`specifies `jsdoc2spec` as the output template for `jsdoc`.
+`-t`specifies `scriptappy-from-jsdoc` as the output template for `jsdoc`.

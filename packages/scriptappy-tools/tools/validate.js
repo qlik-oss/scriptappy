@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const Ajv = require('ajv');
+const schema6 = require('ajv/lib/refs/json-schema-draft-06.json');
 const chalk = require('chalk');
 const jsonpatch = require('fast-json-patch');
 
@@ -8,8 +9,7 @@ const ajv = new Ajv({
   allErrors: true,
   verbose: true,
 });
-
-const schemaFile = require('../schemas/schema.json');
+ajv.addMetaSchema(schema6);
 
 function toJSONPointer(path) {
   let s = '';
@@ -52,6 +52,7 @@ function subValidateKind(spec, schema, jsonPointer) {
   const value = jsonpatch.getValueByPointer(spec, jsonPointer);
   const kind = value.kind || 'object';
   const subajv = new Ajv({ allErrors: true, verbose: true, jsonPointers: true });
+  subajv.addMetaSchema(schema6);
 
   const subschema = {
     $ref: `#/definitions/kind.${kind}`,
@@ -98,4 +99,4 @@ function validateSpec(spec, schema) {
   return 0;
 }
 
-module.exports = (spec) => validateSpec(spec, schemaFile);
+module.exports = (schema, spec) => validateSpec(spec, schema);

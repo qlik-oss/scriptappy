@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     diffOnly: false,
-    file: 'spec.json',
+    file: 'scriptappy.json',
   },
   jsdoc: undefined,
   spec: {

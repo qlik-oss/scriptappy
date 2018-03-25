@@ -17,6 +17,13 @@ const args = yargs
       demandOption: true,
       requiresArg: true,
     },
+    schema: {
+      alias: 'spec',
+      describe: 'Path to schema file',
+      type: 'string',
+      demandOption: true,
+      requiresArg: true,
+    },
   })
   .wrap(Math.min(120, yargs.terminalWidth()))
   .help('help')

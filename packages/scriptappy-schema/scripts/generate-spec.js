@@ -2,8 +2,9 @@
 
 const path = require('path');
 const fs = require('fs');
+const pkg = require('../package.json');
 
-const schema = require('../schemas/schema');
+const schema = require('../schema.json');
 
 const partial = fs.readFileSync(path.resolve(__dirname, 'partial.md'), {
   encoding: 'utf8',
@@ -159,4 +160,5 @@ const TOC = references.map(r => `    - ${r}`).join('\n');
 
 let generated = partial.replace('{{SCHEMA_TOC}}', TOC);
 generated = generated.replace('{{GENERATED}}', s);
-fs.writeFileSync(path.resolve(__dirname, '../specifications/draft.md'), generated);
+generated = generated.replace(/\{\{SCHEMA_VERSION\}\}/g, pkg.version);
+fs.writeFileSync(path.resolve(__dirname, '../specification.md'), generated);

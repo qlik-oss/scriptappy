@@ -1,6 +1,8 @@
-# JavaScript API Specification
+# Scriptappy
 
-> Work in progress
+A specification for Javascript APIs
+
+## Background
 
 In the past few years [OpenAPI](https://github.com/OAI/OpenAPI-Specification) (formerly Swagger) has become a de-facto standard for describing REST APIs, while a format for non-REST APIs is still lacking.
 
@@ -24,18 +26,18 @@ The purpose of this project is to define and provide a standard for describing J
 
 ## Examples
 
-- [nodejs](./packages/jsdoc2spec/examples/nodejs)
+- [nodejs](./packages/scriptappy-from-jsdoc/examples/nodejs)
 
 ## Current Version
 
-[Draft of specification](./packages/js-api-spec/specifications/draft.md)
+[Draft of specification](./packages/scriptappy-schema/specification.md)
 
-[JSON schema](./packages/js-api-spec/schemas/schema.json)
+[JSON schema](./packages/scriptappy-schema/schema.json)
 
 ## Tools
 
-- [jsdoc2spec](./packages/jsdoc2spec) A tool that generates an API specification from JSDoc annotations
+- [scriptappy-from-jsdoc](./packages/scriptappy-from-jsdoc) A tool that generates an API specification from JSDoc annotations
 - Markdown API reference documentation (coming soon)
 - Visualize API (coming soon)
     ![Visual API](./assets/visual.png)
-    > A visual representation of [nodejs/spec.json](./examples/nodejs/spec.json)
+    > A visual representation of [nodejs/scriptappy.json](./packages/scriptappy-from-jsdoc/examples/nodejs/scriptappy.json)

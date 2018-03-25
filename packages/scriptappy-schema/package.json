@@ -1,0 +1,32 @@
+{
+  "name": "scriptappy-schema",
+  "version": "0.5.0",
+  "description": "A specification for Javascript APIs",
+  "main": "./schema.json",
+  "scripts": {
+    "generate": "./scripts/generate-schema.js && ./scripts/generate-spec.js",
+    "test": "aw test",
+    "version": "npm run generate && git add ."
+  },
+  "keywords": [
+    "schema",
+    "spec",
+    "specification"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miralemd/scriptappy.git"
+  },
+  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miralemd/scriptappy/issues"
+  },
+  "homepage": "https://github.com/miralemd/scriptappy#readme",
+  "devDependencies": {
+    "after-work.js": "^4.1.0",
+    "ajv": "^6.4.0",
+    "extend": "^3.0.1",
+    "scriptappy-tools": "^0.5.0"
+  }
+}

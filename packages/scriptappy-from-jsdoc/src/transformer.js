@@ -2,7 +2,8 @@
 
 const fs = require('fs');
 const extend = require('extend');
-const jsAPISpec = require('js-api-spec');
+const tools = require('scriptappy-tools');
+const schema = require('scriptappy-schema');
 const entities = require('./entities');
 const types = require('./types');
 const defaultConfig = require('../spec.config.js');
@@ -252,9 +253,14 @@ function transform({ ids, priv }, cfg) {
   };
 }
 
-function specification({ entries = {}, definitions = {}, pack = {} } = {}, opts) {
+function specification({
+  entries = {},
+  definitions = {},
+  pack = {},
+  version,
+} = {}, opts) {
   const spec = {
-    spec: '0.x',
+    scriptappy: version || schema.properties.scriptappy.const,
     info: {
       name: typeof opts.api.name !== 'undefined' ? opts.api.name : pack.name,
       description: typeof opts.api.description !== 'undefined' ? opts.api.description : pack.description,
@@ -281,6 +287,7 @@ function write(JSONSpec, destination) {
 function generate({
   data,
   config,
+  version,
 }) {
   // filter doclets
   const doclets = filterDoclets(data);
@@ -299,6 +306,7 @@ function generate({
     entries,
     definitions,
     pack: collected.pack,
+    version,
   }, config);
 
   const errors = printViolations(violations);
@@ -323,7 +331,7 @@ function generate({
 
   // validate spec against schema
   if ((config.spec.validate === 'diff' && isDifferent) || (config.spec.validate !== false && config.spec.validate !== 'diff')) {
-    jsAPISpec.validate(spec);
+    tools.validate(schema, spec);
   } else {
     console.log('No API changes - skippping validation');
   }

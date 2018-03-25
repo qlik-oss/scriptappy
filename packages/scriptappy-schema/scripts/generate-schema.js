@@ -4,6 +4,7 @@ const fs = require('fs');
 const extend = require('extend');
 const Ajv = require('ajv');
 const schema = require('./partial.json');
+const pkg = require('../package.json');
 
 const common = {
   type: 'object',
@@ -102,6 +103,7 @@ const signature = {
 };
 
 schema.definitions.common = extend(true, {}, common, {});
+schema.properties.scriptappy.const = pkg.version;
 
 function addTier(t) {
   const tier = `entity-tier${t}`;
@@ -482,11 +484,13 @@ const ajv = new Ajv({
   verbose: true,
 });
 
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+
 const isValid = ajv.validateSchema(schema);
 
 if (!isValid) {
   throw new Error('Invalid schema');
 } else {
   const JSONSpec = JSON.stringify(schema, null, 2);
-  fs.writeFileSync(`${__dirname}/../schemas/schema.json`, JSONSpec);
+  fs.writeFileSync(`${__dirname}/../schema.json`, JSONSpec);
 }

@@ -383,10 +383,11 @@ describe('generate', () => {
     const spec = JSON.parse(JSON.stringify(t.generate({
       data: doclets,
       config: cfg,
+      version: 'x.y.z',
     })));
 
     expect(spec).to.eql({
-      spec: '0.x',
+      scriptappy: 'x.y.z',
       info: {
         name: 'api',
         version: '3.7.0',

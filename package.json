@@ -1,9 +1,6 @@
 {
   "private": true,
   "description": "",
-  "directories": {
-    "example": "examples"
-  },
   "devDependencies": {
     "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -12,17 +9,18 @@
     "lerna": "^2.9.0"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean && lerna exec -- rm package-lock.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miralemd/js-api-spec.git"
+    "url": "git+https://github.com/miralemd/scriptappy.git"
   },
   "keywords": [],
   "author": "miralemd",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/miralemd/js-api-spec/issues"
+    "url": "https://github.com/miralemd/scriptappy/issues"
   },
-  "homepage": "https://github.com/miralemd/js-api-spec#readme"
+  "homepage": "https://github.com/miralemd/scriptappy#readme"
 }
