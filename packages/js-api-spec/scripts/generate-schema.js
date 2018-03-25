@@ -139,6 +139,11 @@ function addToTier(ref, tier) {
       required: ['kind'],
     },
     additionalProperties: false,
+    patternProperties: {
+      '^x-': {
+        $ref: '#/definitions/vendor',
+      },
+    },
   });
 
   Object.keys(common.properties).forEach(key => { def.properties[key] = true; });

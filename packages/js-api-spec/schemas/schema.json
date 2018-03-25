@@ -323,7 +323,12 @@
               "kind"
             ]
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          }
         }
       ]
     },
