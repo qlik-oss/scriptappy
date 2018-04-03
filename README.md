@@ -1,6 +1,6 @@
 # Scriptappy
 
-A specification for Javascript APIs
+A specification for Javascript APIs.
 
 ## Background
 
@@ -30,9 +30,7 @@ The purpose of this project is to define and provide a standard for describing J
 
 ## Current Version
 
-[Draft of specification](./packages/scriptappy-schema/specification.md)
-
-[JSON schema](./packages/scriptappy-schema/schema.json)
+Current version of the Scriptappy specification is [1.0.0](./packages/scriptappy-schema/specification.md)
 
 ## Packages
 
