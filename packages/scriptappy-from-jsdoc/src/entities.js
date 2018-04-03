@@ -154,6 +154,17 @@ function getTypeFromCodeMeta(doc /* opts */) {
   return o;
 }
 
+function literal(v) {
+  if (v[0] === '\'' || v[0] === '"') {
+    return 'string';
+  } else if (v === 'false' || v === 'true') {
+    return 'boolean';
+  } else if (!Number.isNaN(+v)) {
+    return 'number';
+  }
+  return false;
+}
+
 function simpleType(type, cfg) {
   const t = {
     type: type.replace(/\.</g, '<'),
@@ -163,7 +174,27 @@ function simpleType(type, cfg) {
     cfg.logRule(currentMetaDoc, 'no-unknown-promise', 'Promise is missing type');
   }
 
+  const lit = literal(t.type);
+  if (lit) {
+    return {
+      kind: 'literal',
+      value: lit === 'number' ? +t.type : t.type,
+    };
+  }
+
   return t;
+}
+
+function commonType(names) {
+  const types = {};
+
+  names.forEach((v) => {
+    const lit = literal(v) || 'any';
+    types[lit] = (types[lit] || 0) + 1;
+  });
+  const frequency = Object.keys(types).sort((a, b) => types[a] - types[b]);
+
+  return frequency.length === 1 ? frequency[0] : undefined;
 }
 
 function parseName(type) {
@@ -215,7 +246,8 @@ function typeOrKind(names, cfg, opts) {
   }
   return {
     kind: 'union',
-    items: names.map(t => simpleType(t, cfg, opts)),
+    type: commonType(names),
+    items: names.map(t => getTypedef({ type: { names: [t] } }, cfg, opts)),
   };
 }
 
@@ -267,16 +299,23 @@ function getTypedef(doc, cfg, opts) {
       }
     }
   } else if (doc.type.names.length === 1) {
-    [type] = doc.type.names;
-    if (type === 'function') {
+    if (doc.type.names[0] === 'function') {
       return doc.kind === 'typedef' ? kindFunction(doc, cfg, opts) : {
         type: 'function',
       };
     }
+    const something = typeOrKind(doc.type.names, cfg, opts);
+    if (something.kind === 'literal') {
+      typedef.kind = something.kind;
+      typedef.value = something.value;
+      return typedef;
+    }
+    [type] = doc.type.names;
   } else {
     const something = typeOrKind(doc.type.names, cfg, opts);
     typedef.kind = something.kind;
     typedef.items = something.items;
+    typedef.type = something.type;
   }
 
   if (type === 'object') {

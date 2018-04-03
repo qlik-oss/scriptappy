@@ -461,6 +461,7 @@ describe('type', () => {
       kind: 'array',
       items: {
         kind: 'union',
+        type: 'any',
         items: [{ type: 'number' }, { type: 'boolean' }],
       },
     });
@@ -494,6 +495,7 @@ describe('type', () => {
         kind: 'array',
         items: {
           kind: 'union',
+          type: 'any',
           items: [{ type: 'string' }, { type: 'number' }],
         },
       }],
@@ -763,9 +765,10 @@ describe('type', () => {
 
     expect(o).to.eql({
       kind: 'union',
+      type: 'any',
       items: [
         { type: 'string' },
-        { type: 'Array<string>' },
+        { kind: 'array', items: { type: 'string' } },
       ],
     });
   });
