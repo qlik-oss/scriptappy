@@ -5,7 +5,7 @@
     "version": "8.0.0"
   },
   "entries": {
-    "module:net": {
+    "net": {
       "stability": "stable",
       "kind": "module",
       "entries": {
@@ -22,7 +22,7 @@
               "kind": "function",
               "params": [],
               "returns": {
-                "type": "#/entries/module:net/entries/Server/definitions/address"
+                "type": "#/entries/net/entries/Server/definitions/address"
               }
             },
             "close": {
@@ -53,7 +53,7 @@
                 }
               ],
               "returns": {
-                "type": "#/entries/module:net/entries/Server"
+                "type": "#/entries/net/entries/Server"
               }
             }
           },
@@ -123,12 +123,12 @@
             }
           ],
           "returns": {
-            "type": "#/entries/module:net/entries/Server"
+            "type": "#/entries/net/entries/Server"
           }
         }
       }
     },
-    "module:path": {
+    "path": {
       "stability": "stable",
       "kind": "module",
       "entries": {
