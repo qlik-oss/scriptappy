@@ -1,6 +1,6 @@
 # scriptappy-from-jsdoc
 
-Generate a [Scriptappy](https://github.com/miralemd/scriptappy) specification from your JSDoc.
+Generate a [Scriptappy](https://github.com/miralemd/scriptappy) definition from your JSDoc.
 
 > Instructions on how to use `jsdoc` can be found on the [project's homepage](http://usejsdoc.org/).
 
@@ -89,7 +89,7 @@ Parsing rules work a lot like [eslint rules](https://eslint.org/docs/rules/) and
 
 [More details on rules](./docs/rules.md).
 
-### Generating specification from a JSDoc-JSON file
+### Generating definition from a JSDoc-JSON file
 
 `scriptappy-from-jsdoc` will by default create a jsdoc-json file on the fly using the specified `glob` pattern. If you already have a jsdoc-json file, you can pass that in in two ways:
 

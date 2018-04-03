@@ -17,7 +17,7 @@ Various formats do exist though and each project/vendor seem to have their own w
 
 ## Purpose
 
-The purpose of this project is to define and provide a standard for describing JavaScript APIs. By defining a machine-readable format of the consumable API, additional tools can be created based on the provided specification:
+The purpose of this project is to define and provide a standard for describing JavaScript APIs. By defining a machine-readable format of the consumable API, additional tools can be created based on the specification:
 
 - Generate API reference documentation
 - Generate typings (TypeScript, Flow etc.)
@@ -38,7 +38,7 @@ Current version of the Scriptappy specification is [1.0.0](./packages/scriptappy
 |---|---|---|
 | [scriptappy-schema]       | [![scriptappy-schema-status]][scriptappy-schema-npm]  | JSON Schema of the scriptappy specification |
 | [scriptappy-tools]        | [![scriptappy-tools-status]][scriptappy-tools-npm]  | Tools for schema validation |
-| [scriptappy-from-jsdoc]   | [![scriptappy-from-jsdoc-status]][scriptappy-from-jsdoc-npm]  | Generate a scriptappy specification from JSDoc |
+| [scriptappy-from-jsdoc]   | [![scriptappy-from-jsdoc-status]][scriptappy-from-jsdoc-npm]  | Generate a scriptappy definition from JSDoc |
 
 [scriptappy-schema]: https://github.com/miralemd/scriptappy/tree/master/packages/scriptappy-schema
 [scriptappy-tools]: https://github.com/miralemd/scriptappy/tree/master/packages/scriptappy-tools
