@@ -237,8 +237,9 @@ function transform({ ids, priv }, cfg) {
         definitions[pr.__id] = d;
         pr.__ref = `#/definitions/${pr.__id}`;
       } else {
-        entries[pr.__id] = d;
-        pr.__ref = `#/entries/${pr.__id}`;
+        const id = d.kind === 'module' ? pr.__scopeName : pr.__id;
+        entries[id] = d;
+        pr.__ref = `#/entries/${id}`;
       }
     });
   });

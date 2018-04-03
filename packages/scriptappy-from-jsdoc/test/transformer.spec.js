@@ -266,7 +266,7 @@ describe('transform', () => {
         'module:fs.name': [{ kind: 'member' }],
       },
       priv: {
-        'module:fs': [{ __id: 'module:fs' }],
+        'module:fs': [{ __id: 'module:fs', __scopeName: 'fs' }],
         'module:fs@default': [{ __scopeName: '@default', __memberOf: 'module:fs' }],
         'module:fs.name': [{
           __id: 'module:fs.name',
@@ -278,7 +278,7 @@ describe('transform', () => {
     });
 
     expect(entries).to.eql({
-      'module:fs': {
+      fs: {
         kind: 'module',
         entries: {
           '@default': {
@@ -366,7 +366,8 @@ describe('generate', () => {
     const doclets = [{
       meta: { code: { name: '' } },
       kind: 'module',
-      longname: 'fs',
+      name: 'fs',
+      longname: 'module:fs',
     }, {
       meta: { code: { name: '' } },
       kind: 'member',
