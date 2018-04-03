@@ -17,7 +17,7 @@
   "properties": {
     "scriptappy": {
       "type": "string",
-      "const": "0.5.0",
+      "const": "1.0.0",
       "description": "The specification version the document uses"
     },
     "info": {
