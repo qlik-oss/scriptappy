@@ -24,12 +24,4 @@ jobs:
       - run: yarn
       - save_cache: *save_yarn_cache
       - run: yarn run test
-
-workflows:
-  version: 2
-  all:
-    jobs:
-      - install
-      - test:
-          requires:
-            - install
+      
