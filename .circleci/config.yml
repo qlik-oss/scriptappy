@@ -16,7 +16,7 @@ setup: &setup
     - image: circleci/node:10.10.0
 
 jobs:
-  install_and_test:
+  build:
     <<: *setup
     steps:
       - checkout
@@ -24,4 +24,3 @@ jobs:
       - run: yarn
       - save_cache: *save_yarn_cache
       - run: yarn run test
-      
