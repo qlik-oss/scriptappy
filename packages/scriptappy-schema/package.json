@@ -2,27 +2,27 @@
   "name": "scriptappy-schema",
   "version": "1.0.0",
   "description": "A specification for Javascript APIs",
-  "main": "./schema.json",
-  "scripts": {
-    "generate": "./scripts/generate-schema.js && ./scripts/generate-spec.js",
-    "test": "aw test",
-    "version": "npm run generate && git add ."
+  "license": "MIT",
+  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "homepage": "https://github.com/miralemd/scriptappy#readme",
+  "bugs": {
+    "url": "https://github.com/miralemd/scriptappy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miralemd/scriptappy.git"
   },
   "keywords": [
     "schema",
     "spec",
     "specification"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/miralemd/scriptappy.git"
+  "main": "./schema.json",
+  "scripts": {
+    "generate": "./scripts/generate-schema.js && ./scripts/generate-spec.js",
+    "test": "aw test",
+    "version": "npm run generate && git add ."
   },
-  "author": "Miralem Drek <mm85dk+github@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/miralemd/scriptappy/issues"
-  },
-  "homepage": "https://github.com/miralemd/scriptappy#readme",
   "devDependencies": {
     "after-work.js": "^4.1.0",
     "ajv": "^6.4.0",
