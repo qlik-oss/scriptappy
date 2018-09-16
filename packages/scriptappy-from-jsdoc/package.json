@@ -8,6 +8,7 @@
     "spec.config.js"
   ],
   "scripts": {
+    "lint": "eslint src test",
     "test": "aw -c aw.config.js",
     "test:watch": "aw -c aw.config.js -w",
     "test:coverage": "aw -c aw.config.js --coverage"

@@ -20,6 +20,7 @@
   "main": "./schema.json",
   "scripts": {
     "generate": "./scripts/generate-schema.js && ./scripts/generate-spec.js",
+    "lint": "eslint scripts test",
     "version": "npm run generate && git add ."
   },
   "devDependencies": {

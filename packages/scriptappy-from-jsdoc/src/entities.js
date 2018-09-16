@@ -157,9 +157,11 @@ function getTypeFromCodeMeta(doc /* opts */) {
 function literal(v) {
   if (v[0] === '\'' || v[0] === '"') {
     return 'string';
-  } else if (v === 'false' || v === 'true') {
+  }
+  if (v === 'false' || v === 'true') {
     return 'boolean';
-  } else if (!Number.isNaN(+v)) {
+  }
+  if (!Number.isNaN(+v)) {
     return 'number';
   }
   return false;
@@ -256,19 +258,25 @@ function getTypedef(doc, cfg, opts) {
   const typedef = {};
   if (doc.kind === 'module') {
     return kindModule(doc, cfg, opts);
-  } else if (doc.kind === 'namespace') {
+  }
+  if (doc.kind === 'namespace') {
     return kindNamespace(doc, cfg, opts);
-  } else if (doc.kind === 'function') {
+  }
+  if (doc.kind === 'function') {
     return kindFunction(doc, cfg, opts);
-  } else if (doc.kind === 'event') {
+  }
+  if (doc.kind === 'event') {
     const t = kindFunction(doc, cfg, opts);
     t.kind = 'event';
     return t;
-  } else if (doc.kind === 'class') {
+  }
+  if (doc.kind === 'class') {
     return kindClass(doc, cfg, opts);
-  } else if (doc.kind === 'interface') {
+  }
+  if (doc.kind === 'interface') {
     return kindInterface(doc, cfg, opts);
-  } else if (!doc.type || !doc.type.names) {
+  }
+  if (!doc.type || !doc.type.names) {
     const t = getTypeFromCodeMeta(doc, cfg, opts);
     if (!t.kind) {
       if (doc.kind === 'member' && doc.params && doc.meta && doc.meta.code && doc.meta.code.paramnames && doc.meta.code.paramnames.length === 1) { // property setter
@@ -328,14 +336,17 @@ function getTypedef(doc, cfg, opts) {
 
   if (/^Array\.</.test(type) || type === 'array') {
     return unwrapArrayGeneric(type, cfg, opts);
-  } else if (/\.</.test(type)) { // generic
+  }
+  if (/\.</.test(type)) { // generic
     return unwrapGeneric(type, cfg, opts);
-  } else if (/\|/.exec(type)) {
+  }
+  if (/\|/.exec(type)) {
     return {
       kind: 'union',
       items: type.split(/\s*\|\s*/).map(t => getTypedef({ type: { names: [t.replace(/^\s*\(?\s*|\s*\)?\s*$/g, '')] } }, cfg, opts)),
     };
-  } else if (type && ((type !== typedef.kind) || !typedef.kind)) {
+  }
+  if (type && ((type !== typedef.kind) || !typedef.kind)) {
     typedef.type = type;
   }
 

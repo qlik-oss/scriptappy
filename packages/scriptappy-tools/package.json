@@ -21,6 +21,9 @@
     "/lib",
     "/tools"
   ],
+  "scripts": {
+    "lint": "eslint lib tools"
+  },
   "dependencies": {
     "ajv": "^6.4.0",
     "chalk": "^2.3.0",

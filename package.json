@@ -24,6 +24,7 @@
   },
   "scripts": {
     "clean": "lerna clean",
+    "lint": "npx lerna exec -- yarn run lint",
     "test": "aw --glob packages/*/test/**/*.spec.js"
   },
   "workspaces": [

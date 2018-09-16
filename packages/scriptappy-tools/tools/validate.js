@@ -19,9 +19,11 @@ function toJSONPointer(path) {
     if (char === '.' && !inside) {
       s += '/';
       return;
-    } else if (char === '[') {
+    }
+    if (char === '[') {
       inside = true;
-    } else if (char === ']') {
+    }
+    if (char === ']') {
       inside = false;
     }
     s += char;

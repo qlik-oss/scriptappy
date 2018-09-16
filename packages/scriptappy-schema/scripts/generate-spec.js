@@ -19,10 +19,12 @@ function referenceName(id) {
     let n = id.replace('kind.', '');
     n = n.substr(0, 1).toUpperCase() + n.substr(1);
     return `${n}`;
-  } else if (/^entity-tier/.test(id)) {
+  }
+  if (/^entity-tier/.test(id)) {
     const num = +/entity-tier(\d)/.exec(id)[1];
     return `Entity Tier ${num}`;
-  } else if (id === 'type') {
+  }
+  if (id === 'type') {
     return 'Entity Base';
   }
 

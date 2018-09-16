@@ -11,6 +11,7 @@
     "mocha"
   ],
   "rules": {
-    "mocha/no-exclusive-tests": "error"
+    "mocha/no-exclusive-tests": "error",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }
 }

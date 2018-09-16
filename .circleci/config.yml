@@ -23,4 +23,5 @@ jobs:
       - restore_cache: *restore_yarn_cache
       - run: yarn
       - save_cache: *save_yarn_cache
+      - run: yarn run lint
       - run: yarn run test
