@@ -20,11 +20,9 @@
   "main": "./schema.json",
   "scripts": {
     "generate": "./scripts/generate-schema.js && ./scripts/generate-spec.js",
-    "test": "aw test",
     "version": "npm run generate && git add ."
   },
   "devDependencies": {
-    "after-work.js": "^4.1.0",
     "ajv": "^6.4.0",
     "extend": "^3.0.1",
     "scriptappy-tools": "^0.5.0"

@@ -1,0 +1,35 @@
+version: 2
+
+aliases:
+  - &restore_yarn_cache
+    keys:
+      - v1-yarn-deps-{{ checksum "yarn.lock" }}
+      - v1-yarn-deps-
+  - &save_yarn_cache
+    paths:
+      - ~/.cache/yarn
+    key: v1-yarn-deps-{{ checksum "yarn.lock" }}
+
+setup: &setup
+  working_directory: ~/scriptappy
+  docker:
+    - image: circleci/node:10.10.0
+
+jobs:
+  install_and_test:
+    <<: *setup
+    steps:
+      - checkout
+      - restore_cache: *restore_yarn_cache
+      - run: yarn
+      - save_cache: *save_yarn_cache
+      - run: yarn run test
+
+workflows:
+  version: 2
+  all:
+    jobs:
+      - install
+      - test:
+          requires:
+            - install
