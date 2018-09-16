@@ -1,26 +1,28 @@
 {
   "private": true,
   "description": "",
+  "author": "miralemd",
+  "license": "MIT",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miralemd/scriptappy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/miralemd/scriptappy/issues"
+  },
+  "homepage": "https://github.com/miralemd/scriptappy#readme",
   "devDependencies": {
     "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-mocha": "^4.11.0",
-    "lerna": "^2.9.0"
+    "lerna": "3.4.0"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "clean": "lerna clean && lerna exec -- rm package-lock.json"
+    "clean": "lerna clean"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/miralemd/scriptappy.git"
-  },
-  "keywords": [],
-  "author": "miralemd",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/miralemd/scriptappy/issues"
-  },
-  "homepage": "https://github.com/miralemd/scriptappy#readme"
+  "workspaces": [
+    "packages/*"
+  ]
 }
