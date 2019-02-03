@@ -502,6 +502,32 @@ describe('type', () => {
     });
   });
 
+  it('generics - properties', () => {
+    const o = types.typedef({
+      type: { names: ['Object.<string, number>'] },
+      properties: [
+        {
+          type: { names: ['string'] },
+          name: 'first',
+        },
+      ],
+    }, { logRule: () => {} });
+
+    expect(o).to.eql({
+      type: 'object',
+      generics: [{
+        type: 'string',
+      }, {
+        type: 'number',
+      }],
+      entries: {
+        first: {
+          type: 'string',
+        },
+      },
+    });
+  });
+
   it('generics - union', () => {
     const o = types.typedef({
       type: { names: ['Promise.<  ( string|  number) | boolean, number  >'] },

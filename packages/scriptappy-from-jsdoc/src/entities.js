@@ -230,7 +230,7 @@ function unwrapGeneric(type, cfg, opts) {
   if (itemtype) {
     const t = type.replace(itemtype[0], '').replace(/\.$/g, '');
     return {
-      type: t,
+      type: t === 'Object' ? 'object' : t,
       generics: parseName(itemtype[1], cfg, opts),
     };
   }
@@ -326,7 +326,7 @@ function getTypedef(doc, cfg, opts) {
     typedef.type = something.type;
   }
 
-  if (type === 'object') {
+  if (type && type.toLowerCase() === 'object') {
     const entries = collectProps(doc.properties, cfg, opts);
     if (doc.kind || Object.keys(entries).length) {
       typedef.kind = 'object';
@@ -338,7 +338,11 @@ function getTypedef(doc, cfg, opts) {
     return unwrapArrayGeneric(type, cfg, opts);
   }
   if (/\.</.test(type)) { // generic
-    return unwrapGeneric(type, cfg, opts);
+    const t = unwrapGeneric(type, cfg, opts);
+    if (t.type === 'object' && doc.properties) {
+      t.entries = collectProps(doc.properties, cfg, opts);
+    }
+    return t;
   }
   if (/\|/.exec(type)) {
     return {
