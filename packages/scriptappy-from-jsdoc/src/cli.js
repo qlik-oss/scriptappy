@@ -107,25 +107,14 @@ const runWithJSDoc = (files) => {
 };
 
 if (require.main === module) {
-  // allow piping in the jsdoc data
-  if (!process.stdin.isTTY) {
-    const stdin = process.openStdin();
-    let data = '';
-    stdin.on('data', (chunk) => {
-      data += chunk;
-    });
-
-    stdin.on('end', () => {
-      run(JSON.parse(data));
-    });
-  } else if (typeof config.jsdoc === 'string') { // assume path to jsdoc-json file
+  if (typeof config.jsdoc === 'string') { // assume path to jsdoc-json file
     const p = path.resolve(process.cwd(), config.jsdoc);
     if (!fs.existsSync(p)) {
       throw new Error(`jsdoc ${p} not found`);
     }
     run(require(p));
   } else {
-    (async () => {
+    const withJSDoc = async () => {
       const cwd = process.cwd();
       const pkg = config.package ? path.resolve(cwd, config.package) : [];
       const files = (await globby(config.glob, {
@@ -144,6 +133,28 @@ if (require.main === module) {
         console.log(e.stack);
         throw e;
       }
-    })();
+    };
+    (!process.stdin.isTTY ? new Promise((resolve, reject) => {
+      const stdin = process.openStdin();
+      let data = '';
+
+      const timer = setTimeout(() => {
+        stdin.unref();
+        reject();
+        stdin.end();
+      }, 10);
+
+      stdin.on('data', (chunk) => {
+        clearTimeout(timer);
+        data += chunk;
+      });
+
+      stdin.on('end', () => {
+        resolve();
+        run(JSON.parse(data));
+      });
+    }) : Promise.reject()).catch(() => {
+      withJSDoc();
+    });
   }
 }

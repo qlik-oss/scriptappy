@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "sy-example-nodejs",
+  "version": "8.0.0",
+  "scripts": {
+    "jsd": "node ../../node_modules/.bin/jsdoc ./src -r -p ./package.json -X > jsdoc.json",
+    "pipe": "node ../../node_modules/.bin/jsdoc ./src -r -p ./package.json -X | scriptappy-from-jsdoc",
+    "spec": "scriptappy-from-jsdoc --foo bar",
+    "jsdspec": "yarn run jsd && scriptappy-from-jsdoc --jsdoc jsdoc.json"
+  }
+}

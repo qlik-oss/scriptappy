@@ -1,7 +1,7 @@
 {
   "scriptappy": "1.0.0",
   "info": {
-    "name": "nodejs",
+    "name": "sy-example-nodejs",
     "version": "8.0.0"
   },
   "entries": {

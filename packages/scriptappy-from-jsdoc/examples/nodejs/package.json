@@ -1,9 +1,0 @@
-{
-  "name": "nodejs",
-  "version": "8.0.0",
-  "scripts": {
-    "jsd": "node ../../node_modules/.bin/jsdoc ./src -r -p ./package.json -X > jsdoc.json",
-    "pipe": "node ../../node_modules/.bin/jsdoc ./src -r -p ./package.json -X | ../../src/cli.js",
-    "spec": "../../src/cli.js"
-  }
-}
