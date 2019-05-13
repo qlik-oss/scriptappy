@@ -140,7 +140,9 @@ if (require.main === module) {
       try {
         runWithJSDoc(files);
       } catch (e) {
+        process.exitCode = 1;
         console.log(e.stack);
+        throw e;
       }
     })();
   }
