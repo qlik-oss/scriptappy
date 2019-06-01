@@ -25,10 +25,10 @@
     "lint": "eslint lib tools"
   },
   "dependencies": {
-    "ajv": "^6.4.0",
-    "chalk": "^2.3.0",
+    "ajv": "^6.10.0",
+    "chalk": "^2.4.2",
     "extend": "^3.0.1",
-    "fast-json-patch": "^2.0.6",
-    "yargs": "^12.0.2"
+    "fast-json-patch": "^2.1.0",
+    "yargs": "^13.2.4"
   }
 }
