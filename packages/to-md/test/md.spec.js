@@ -22,6 +22,7 @@ const tClass = {
           type: 'object',
           name: 'coordinate',
           description: 'coord descr',
+          variable: true,
           entries: {
             x: { type: 'number' },
           },
@@ -55,7 +56,7 @@ const toc = `
 - [class: Bike](#class-bike)
   - [new Bike(color)](#new-bikecolor)
   - [Bike.isBike()](#bikeisbike)
-  - [bike.ride(to, coordinate)](#bikerideto-coordinate)
+  - [bike.ride(to, ...coordinate)](#bikerideto-coordinate)
 - [object: t](#object-t)
 `;
 
@@ -78,10 +79,10 @@ Ride it!
 
 
 
-#### bike.ride(to, coordinate)
+#### bike.ride(to, ...coordinate)
 
 - \`to\` <[string]> param descr
-- \`coordinate\` <[Object]> coord descr
+- \`...coordinate\` <...[Object]> coord descr
   - \`x\` <[number]>
 - \`returns:\` <[boolean]> true if successful
 

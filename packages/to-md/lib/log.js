@@ -31,7 +31,8 @@ const templates = {
     slugify,
     type,
     listItem(entry, cfg, helpers) {
-      return `${this.indent.repeat(cfg.indent)}- \`${entry.name}\` ${this.type(entry, cfg, helpers)}${entry.description ? ` ${entry.description}` : ''}`;
+      const prefix = entry.variable ? '...' : '';
+      return `${this.indent.repeat(cfg.indent)}- \`${prefix}${entry.name}\` ${this.type(entry, cfg, helpers)}${entry.description ? ` ${entry.description}` : ''}`;
     },
     label: (entry) => `${entry.kind}: ${entry.name}`,
     toc(label, cfg) {
@@ -41,7 +42,7 @@ const templates = {
       return `${this.pre}${'#'.repeat(cfg.depth)} ${label}`;
     },
     description: (entry) => entry.description,
-    paramSignature: (entry) => (entry.params || []).map(p => p.name).join(', '),
+    paramSignature: (entry) => (entry.params || []).map(p => `${(p.variable ? '...' : '')}${p.name}`).join(', '),
     paramDetails: (entry, cfg, helpers) => {
       const sig = [];
       entry.params.forEach((p) => {

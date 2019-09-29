@@ -39,17 +39,14 @@ function types(spec) {
   };
 
   const getType = (entry) => {
+    const prefix = entry.variable ? '...' : '';
     if (entry.type && internal.paths[entry.type]) {
       internal.paths[entry.type].referenced = true;
-      return `[${internal.paths[entry.type].name}]`;
-    }
-
-    if (entry.type && entry.type[0] === '#') { // unknown internal reference
-      return `\`${entry.type}\``;
+      return `${prefix}[${internal.paths[entry.type].name}]`;
     }
 
     if (entry.kind === 'literal') {
-      return `\`${entry.value}\``;
+      return `\`${prefix}${entry.value}\``;
     }
 
     const t = entry.kind || entry.type;
@@ -59,9 +56,9 @@ function types(spec) {
       typeMap[text] = text;
     }
     if (knownReferences[text]) {
-      return `[${text}]`;
+      return `${prefix}[${text}]`;
     }
-    return `\`${text}\``;
+    return `\`${prefix}${text}\``;
   };
 
   function traverseForTypes(entry) {

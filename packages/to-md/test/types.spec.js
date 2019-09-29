@@ -40,6 +40,13 @@ describe('types', () => {
     })).to.equal('`foo`');
   });
 
+  it('should prefix ... for variable type', () => {
+    expect(t.getType({ type: 'unknown', variable: true })).to.equal('`...unknown`');
+    expect(t.getType({ type: 'boolean', variable: true })).to.equal('...[boolean]');
+    expect(t.getType({ type: '#/foo', variable: true })).to.equal('`...#/foo`');
+    expect(t.getType({ type: '#/definitions/Person', variable: true })).to.equal('...[Person]');
+  });
+
   it('should return internal references with assigned slugs', () => {
     t.assignSlug({
       path: '#/definitions/Person',
