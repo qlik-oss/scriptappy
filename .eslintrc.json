@@ -7,6 +7,23 @@
   "rules": {
     "arrow-parens": "off",
     "no-underscore-dangle": "off",
-    "max-len": "off"
-  }
+    "max-len": "off",
+    "no-use-before-define": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.spec.js"],
+      "env": {
+        "browser": false,
+        "node": true,
+        "mocha": true
+      },
+      "globals": {
+        "chai": false,
+        "expect": false,
+        "sinon": false,
+        "aw": false
+      }
+    }
+  ]
 }
