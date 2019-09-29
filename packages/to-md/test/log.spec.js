@@ -72,10 +72,13 @@ describe('log', () => {
         traverse: sinon.stub().returns('t'),
       };
       const params = [{ name: 'first' }, { name: 'second' }];
-      expect(d.paramDetails({ params }, cfg, helpers)).to.equal('ptpt');
+      expect(d.paramDetails({ params, returns: { type: 'string' } }, cfg, helpers)).to.equal('ptptpt');
 
       expect(helpers.entry.getCall(0)).to.have.been.calledWithExactly({ name: 'first' }, { ...cfg, mode: 'list' }, helpers);
       expect(helpers.traverse.getCall(0)).to.have.been.calledWithExactly({ name: 'first' }, { ...cfg, mode: 'list', indent: 2 }, helpers);
+
+      expect(helpers.entry.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list' }, helpers);
+      expect(helpers.traverse.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list', indent: 2 }, helpers);
     });
   });
 

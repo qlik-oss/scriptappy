@@ -48,7 +48,14 @@ const templates = {
         sig.push(helpers.entry(p, { ...cfg, mode: 'list' }, helpers));
         sig.push(helpers.traverse(p, { ...cfg, mode: 'list', indent: cfg.indent + 1 }, helpers));
       });
-      // TODO - return
+      if (entry.returns) {
+        const e = {
+          name: 'returns:',
+          ...entry.returns,
+        };
+        sig.push(helpers.entry(e, { ...cfg, mode: 'list' }, helpers));
+        sig.push(helpers.traverse(e, { ...cfg, mode: 'list', indent: cfg.indent + 1 }, helpers));
+      }
       const s = sig.filter(Boolean).join('');
       return s;
     },

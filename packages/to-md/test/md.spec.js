@@ -27,6 +27,10 @@ const tClass = {
           },
         },
       ],
+      returns: {
+        type: 'boolean',
+        description: 'true if successful',
+      },
     },
   },
 };
@@ -79,6 +83,7 @@ Ride it!
 - \`to\` <[string]> param descr
 - \`coordinate\` <[Object]> coord descr
   - \`x\` <[number]>
+- \`returns:\` <[boolean]> true if successful
 
 
 descr
@@ -94,6 +99,7 @@ const references = `
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
 [Object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type
+[boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type
 [Bike]: #class-bike
 `;
 
