@@ -23,9 +23,9 @@ function toMarkdown(spec) {
   });
 
   return {
-    toc: () => toc.join('\n'),
+    toc: () => `\n${toc.join('\n')}\n`,
     content: () => content,
-    references: () => types.getReferences().map(ref => `[${ref.key}]: ${ref.link}`).join('\n'),
+    references: () => `\n${types.getReferences().map(ref => `[${ref.key}]: ${ref.link}`).join('\n')}\n`,
   };
 }
 

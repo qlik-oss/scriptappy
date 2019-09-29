@@ -14,11 +14,11 @@ const tClass = {
       kind: 'function',
       description: 'descr',
       params: [
-        { type: 'string', name: 'to', description: 'afdfdfd fg d' },
+        { type: 'string', name: 'to', description: 'param descr' },
         {
           type: 'object',
           name: 'coordinate',
-          description: 'aweseomfe',
+          description: 'coord descr',
           entries: {
             x: { type: 'number' },
           },
@@ -32,32 +32,76 @@ const spec = {
   entries: {
     Bike: tClass,
   },
+  definitions: {
+    t: {
+      kind: 'object',
+      entries: {
+        b: {
+          type: '#/entries/Bike',
+        },
+      },
+    },
+  },
 };
 
-// describe('to markdown', () => {
-//   describe('class', () => {
-//     it('content', () => {
-//       const m = toMarkdown(spec);
-//       expect(m.content()).to.equal(`
-// ### class: Bike
+const toc = `
+- [class: Bike](#class-bike)
+  - [new Bike(color)](#new-bikecolor)
+  - [bike.ride(to, coordinate)](#bikerideto-coordinate)
+- [object: t](#object-t)
+`;
 
-// Ride it!
+const content = `
 
-// #### new Bike(color)
+### class: Bike
 
-// - \`color\` <[string]>
+Ride it!
 
 
-// #### bike.ride(to)
 
-// - \`to\` <[string]>
+#### new Bike(color)
 
-// `);
-//     });
-//   });
-// });
+- \`color\` <[string]>
 
-const m = toMarkdown(spec);
-// console.log(m.toc());
-console.log(m.content());
-// console.log(m.references());
+
+
+
+#### bike.ride(to, coordinate)
+
+- \`to\` <[string]> param descr
+- \`coordinate\` <[Object]> coord descr
+  - \`x\` <[number]>
+
+
+descr
+
+
+
+### object: t
+
+- \`b\` <[Bike]>
+`;
+
+const references = `
+[string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
+[Object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
+[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type
+[Bike]: #class-bike
+`;
+
+
+describe('to markdown', () => {
+  const m = toMarkdown(spec);
+
+  it('toc', () => {
+    expect(m.toc()).to.equal(toc);
+  });
+
+  it('content', () => {
+    expect(m.content()).to.equal(content);
+  });
+
+  it('references', () => {
+    expect(m.references()).to.equal(references);
+  });
+});
