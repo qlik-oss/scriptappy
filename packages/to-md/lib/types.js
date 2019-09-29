@@ -39,7 +39,7 @@ function types(spec) {
   };
 
   const getType = (entry) => {
-    const prefix = entry.variable ? '...' : '';
+    const prefix = `${entry.variable ? '...' : ''}${entry.nullable ? '?' : ''}`;
     if (entry.type && internal.paths[entry.type]) {
       internal.paths[entry.type].referenced = true;
       return `${prefix}[${internal.paths[entry.type].name}]`;

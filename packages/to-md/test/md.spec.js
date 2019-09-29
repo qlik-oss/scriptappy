@@ -35,6 +35,7 @@ const tClass = {
       ],
       returns: {
         type: 'boolean',
+        nullable: true,
         description: 'true if successful',
       },
     },
@@ -95,7 +96,7 @@ sample
 - \`to\` <[string]> param descr
 - \`...coordinate\` <...[Object]> coord descr
   - \`x\` <[number]> Defaults to \`def\`
-- \`returns:\` <[boolean]> true if successful
+- \`returns:\` <?[boolean]> true if successful
 
 
 descr

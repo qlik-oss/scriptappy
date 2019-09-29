@@ -47,6 +47,17 @@ describe('types', () => {
     expect(t.getType({ type: '#/definitions/Person', variable: true })).to.equal('...[Person]');
   });
 
+  it('should prefix ? for nullable type', () => {
+    expect(t.getType({ type: 'unknown', nullable: true })).to.equal('`?unknown`');
+    expect(t.getType({ type: 'boolean', nullable: true })).to.equal('?[boolean]');
+    expect(t.getType({ type: '#/foo', nullable: true })).to.equal('`?#/foo`');
+    expect(t.getType({ type: '#/definitions/Person', nullable: true })).to.equal('?[Person]');
+  });
+
+  it('should prefix ...? for nullable variable type', () => {
+    expect(t.getType({ type: 'boolean', nullable: true, variable: true })).to.equal('...?[boolean]');
+  });
+
   it('should return internal references with assigned slugs', () => {
     t.assignSlug({
       path: '#/definitions/Person',
