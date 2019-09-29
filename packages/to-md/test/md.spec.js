@@ -7,7 +7,7 @@ const tClass = {
     params: [{ type: 'string', name: 'color' }],
   },
   implements: ['Rideable'],
-  extends: ['Vehicle'],
+  extends: [{ type: 'Vehicle' }],
   description: 'Ride it!',
   staticEntries: {
     isBike: { kind: 'function', params: [] },
@@ -65,6 +65,8 @@ const content = `
 
 ### class: Bike
 
+  - extends: <\`Vehicle\`>
+
 Ride it!
 
 
@@ -98,6 +100,7 @@ descr
 `;
 
 const references = `
+[Vehicle]: undefined
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
 [Object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type

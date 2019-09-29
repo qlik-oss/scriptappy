@@ -49,7 +49,14 @@ const templates = {
     header(label, cfg) {
       return `${this.pre}${'#'.repeat(cfg.depth)} ${label}`;
     },
-    description: (entry) => entry.description,
+    description(entry, cfg, helpers) {
+      let s = '';
+      if (entry.extends) {
+        const types = entry.extends.map(t => this.type(t, cfg, helpers)).join(', ');
+        s += `${this.indent.repeat(cfg.indent + 1)}- extends: ${types}\n\n`;
+      }
+      return `${s}${entry.description || ''}`;
+    },
     paramSignature: (entry) => {
       let s = '';
       let optional = '';
