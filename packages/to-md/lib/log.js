@@ -24,6 +24,11 @@ const type = (entry, cfg, helpers) => {
   return `<${helpers.getType(entry)}${subType}>`;
 };
 
+
+const SEP_RX = /[.!?]$/;
+const SPACE_RX = /\s+$/;
+const DEFAULT_RX = /default/i;
+
 const templates = {
   default: {
     pre: '###',
@@ -32,7 +37,10 @@ const templates = {
     type,
     listItem(entry, cfg, helpers) {
       const prefix = entry.variable ? '...' : '';
-      return `${this.indent.repeat(cfg.indent)}- \`${prefix}${entry.name}\` ${this.type(entry, cfg, helpers)}${entry.description ? ` ${entry.description}` : ''}`;
+      const value = !DEFAULT_RX.test(entry.description) && entry.defaultValue ? ` Defaults to \`${entry.defaultValue}\`` : '';
+      const descr = `${entry.description ? ` ${entry.description.replace(SPACE_RX, '')}` : ''}`;
+      const separator = value && descr && !SEP_RX.test(descr) ? '.' : '';
+      return `${this.indent.repeat(cfg.indent)}- \`${prefix}${entry.name}\` ${this.type(entry, cfg, helpers)}${descr}${separator}${value}`;
     },
     label: (entry) => `${entry.kind}: ${entry.name}`,
     toc(label, cfg) {

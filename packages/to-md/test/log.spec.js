@@ -43,6 +43,34 @@ describe('log', () => {
       }
     });
 
+    it('listItem with defaultValue', () => {
+      const typeStub = sinon.stub(d, 'type');
+      typeStub.callsFake(() => 't');
+      try { // run inside try catch to make sure restore() happens when expect fails
+        expect(d.listItem({ name: 'item', description: 'd', defaultValue: 'def' }, { indent: 3 })).to.equal('      - `item` t d. Defaults to `def`');
+      } catch (e) {
+        throw e;
+      } finally {
+        typeStub.restore();
+      }
+    });
+
+    it('listItem with default described in description', () => {
+      const typeStub = sinon.stub(d, 'type');
+      typeStub.callsFake(() => 't');
+      try { // run inside try catch to make sure restore() happens when expect fails
+        expect(d.listItem({
+          name: 'item',
+          description: 'bla bla defaults to bla bla',
+          defaultValue: 'def',
+        }, { indent: 3 })).to.equal('      - `item` t bla bla defaults to bla bla');
+      } catch (e) {
+        throw e;
+      } finally {
+        typeStub.restore();
+      }
+    });
+
     it('label', () => {
       expect(d.label({ kind: 'k', name: 'n' })).to.equal('k: n');
     });

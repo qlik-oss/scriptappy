@@ -25,7 +25,7 @@ const tClass = {
           variable: true,
           optional: true,
           entries: {
-            x: { type: 'number' },
+            x: { type: 'number', defaultValue: 'def' },
           },
         },
       ],
@@ -84,7 +84,7 @@ Ride it!
 
 - \`to\` <[string]> param descr
 - \`...coordinate\` <...[Object]> coord descr
-  - \`x\` <[number]>
+  - \`x\` <[number]> Defaults to \`def\`
 - \`returns:\` <[boolean]> true if successful
 
 
