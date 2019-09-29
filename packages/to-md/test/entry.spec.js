@@ -25,6 +25,7 @@ describe('entry', () => {
           paramSignature: sinon.stub().returns('signature'),
           paramDetails: sinon.stub().returns('details'),
           header: sinon.stub().returns('header'),
+          examples: sinon.stub().returns('examples'),
         },
         method: {
           label: sinon.stub().returns('method'),
@@ -36,6 +37,7 @@ describe('entry', () => {
           paramSignature: sinon.stub().returns('foo - signature'),
           paramDetails: sinon.stub().returns('foo - details'),
           header: sinon.stub().returns('foo - header'),
+          examples: sinon.stub().returns('foo - examples'),
         },
       },
     };
@@ -79,6 +81,8 @@ header
 
 descr
 
+examples
+
 `);
   });
   it('should return a function section when params is defined', () => {
@@ -93,6 +97,8 @@ header
 details
 
 descr
+
+examples
 
 `);
   });
@@ -115,6 +121,8 @@ foo - header
 foo - details
 
 foo - descr
+
+foo - examples
 
 `);
   });

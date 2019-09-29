@@ -141,6 +141,21 @@ describe('log', () => {
       expect(helpers.entry.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list' }, helpers);
       expect(helpers.traverse.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list', indent: 2 }, helpers);
     });
+
+    it('example with simple string', () => {
+      expect(d.example('code'))
+        .to.equal('```js\ncode\n```');
+    });
+
+    it('example with caption', () => {
+      expect(d.example('<caption>Title</caption>code'))
+        .to.equal('**Title**\n\n```js\ncode\n```');
+    });
+
+    it('example with backticks', () => {
+      expect(d.example('```sh\ncode\n```'))
+        .to.equal('```sh\ncode\n```');
+    });
   });
 
   describe('method', () => {

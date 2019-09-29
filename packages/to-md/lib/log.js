@@ -101,6 +101,23 @@ const templates = {
       const s = sig.filter(Boolean).join('');
       return s;
     },
+    example(x) {
+      const title = /<caption>(.+)<\/caption>/.exec(x);
+      const code = title ? x.replace(title[0], '') : x;
+      const codified = /```/.exec(code);
+
+      return [
+        title ? `**${title[1]}**` : '',
+        codified ? `${code}` : `\`\`\`js\n${code}\n\`\`\``,
+      ].filter(Boolean).join('\n\n');
+    },
+    examples(entry /* , cfg, helpers */) {
+      if (!entry.examples) {
+        return '';
+      }
+
+      return entry.examples.map(x => this.example(x)).filter(Boolean).join('\n\n');
+    },
   },
   constructor: {
     label: (entry) => `new ${entry.name}`,

@@ -10,7 +10,11 @@ const tClass = {
   extends: [{ type: 'Vehicle' }],
   description: 'Ride it!',
   staticEntries: {
-    isBike: { kind: 'function', params: [] },
+    isBike: {
+      kind: 'function',
+      params: [],
+      examples: ['sample'],
+    },
   },
   entries: {
     ride: {
@@ -79,6 +83,10 @@ Ride it!
 
 
 #### Bike.isBike()
+
+\`\`\`js
+sample
+\`\`\`
 
 
 

@@ -39,10 +39,13 @@ function entryFn(entry, cfg, helpers) {
   }
   helpers.assignSlug(entry, slug);
 
+  const examples = templ.examples(...fnArgs);
+
   const section = [
     header,
     paramDetails,
     description,
+    examples,
   ].filter(Boolean).join('\n\n');
 
   if (section.length) {
