@@ -84,6 +84,10 @@ describe('log', () => {
     it('label', () => {
       expect(m.label({ name: 'open' }, { parent: { name: 'Session' } })).to.equal('session.open');
     });
+
+    it('static label', () => {
+      expect(m.label({ name: 'open', path: 'foo/staticEntries/open' }, { parent: { name: 'Session' } })).to.equal('Session.open');
+    });
   });
 
   describe('constructor', () => {

@@ -23,11 +23,13 @@ function entryFn(entry, cfg, helpers) {
   let paramDetails = '';
   let paramSignature = '';
 
+  let fullLabel = label;
+
   if (entry.params) {
     paramSignature = templ.paramSignature(...fnArgs);
     paramDetails = templ.paramDetails(...fnArgs);
+    fullLabel = `${label}${`(${paramSignature || ''})`}`;
   }
-  const fullLabel = `${label}${paramSignature ? `(${paramSignature})` : ''}`;
   const header = templ.header(fullLabel, cfg);
 
   const tocLabel = templ.toc(fullLabel, cfg);

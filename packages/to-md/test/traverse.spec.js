@@ -13,7 +13,7 @@ describe('traverse', () => {
     [traverse] = mock({ entry });
   });
 
-  ['entries', 'events', 'definitions'].forEach((prop) => {
+  ['staticEntries', 'entries', 'events', 'definitions'].forEach((prop) => {
     it(`should traverse ${prop}`, () => {
       const root = {
         [prop]: {

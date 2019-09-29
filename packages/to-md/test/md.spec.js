@@ -9,6 +9,9 @@ const tClass = {
   implements: ['Rideable'],
   extends: ['Vehicle'],
   description: 'Ride it!',
+  staticEntries: {
+    isBike: { kind: 'function', params: [] },
+  },
   entries: {
     ride: {
       kind: 'function',
@@ -47,6 +50,7 @@ const spec = {
 const toc = `
 - [class: Bike](#class-bike)
   - [new Bike(color)](#new-bikecolor)
+  - [Bike.isBike()](#bikeisbike)
   - [bike.ride(to, coordinate)](#bikerideto-coordinate)
 - [object: t](#object-t)
 `;
@@ -63,6 +67,10 @@ Ride it!
 
 - \`color\` <[string]>
 
+
+
+
+#### Bike.isBike()
 
 
 

@@ -57,7 +57,11 @@ const templates = {
     label: (entry) => `new ${entry.name}`,
   },
   method: {
-    label: (entry, cfg) => `${cfg.parent.name[0].toLowerCase() + cfg.parent.name.substring(1)}.${entry.name}`,
+    label(entry, cfg) {
+      const isStatic = (entry.path || '').split('/').slice(-2)[0] === 'staticEntries';
+      const prefix = isStatic ? cfg.parent.name : (cfg.parent.name[0].toLowerCase() + cfg.parent.name.substring(1));
+      return `${prefix}.${entry.name}`;
+    },
   },
 };
 
