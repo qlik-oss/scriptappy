@@ -1,7 +1,5 @@
-const entryFn = require('./entry');
-
 function trav(n, entry, cfg, helpers) {
-  let s = entryFn(n, {
+  let s = helpers.entry(n, {
     ...cfg,
     parent: entry,
   }, helpers);

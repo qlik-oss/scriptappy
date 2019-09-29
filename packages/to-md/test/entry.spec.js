@@ -1,12 +1,8 @@
-const mock = ({
-  log = () => ({}),
-} = {}) => aw.mock([
-  ['**/log.js', () => log],
-], ['../lib/entry']);
+const entryFn = require('../lib/entry');
 
 describe('entry', () => {
   let entry;
-  let log;
+  let templates;
   let helpers;
   beforeEach(() => {
     helpers = {
@@ -14,34 +10,32 @@ describe('entry', () => {
       assignSlug: sinon.stub(),
     };
 
-    log = {
-      templates: {
-        default: {
-          slugify: sinon.stub().returns('slug'),
-          toc: sinon.stub().returns('toc'),
-          listItem: sinon.stub().returns('li'),
-          label: sinon.stub().returns('label'),
-          description: sinon.stub().returns('descr'),
-          paramSignature: sinon.stub().returns('signature'),
-          paramDetails: sinon.stub().returns('details'),
-          header: sinon.stub().returns('header'),
-          examples: sinon.stub().returns('examples'),
-        },
-        method: {
-          label: sinon.stub().returns('method'),
-        },
-        foo: {
-          listItem: sinon.stub().returns('foo - li'),
-          label: sinon.stub().returns('foo - label'),
-          description: sinon.stub().returns('foo - descr'),
-          paramSignature: sinon.stub().returns('foo - signature'),
-          paramDetails: sinon.stub().returns('foo - details'),
-          header: sinon.stub().returns('foo - header'),
-          examples: sinon.stub().returns('foo - examples'),
-        },
+    templates = {
+      default: {
+        slugify: sinon.stub().returns('slug'),
+        toc: sinon.stub().returns('toc'),
+        listItem: sinon.stub().returns('li'),
+        label: sinon.stub().returns('label'),
+        description: sinon.stub().returns('descr'),
+        paramSignature: sinon.stub().returns('signature'),
+        paramDetails: sinon.stub().returns('details'),
+        header: sinon.stub().returns('header'),
+        examples: sinon.stub().returns('examples'),
+      },
+      method: {
+        label: sinon.stub().returns('method'),
+      },
+      foo: {
+        listItem: sinon.stub().returns('foo - li'),
+        label: sinon.stub().returns('foo - label'),
+        description: sinon.stub().returns('foo - descr'),
+        paramSignature: sinon.stub().returns('foo - signature'),
+        paramDetails: sinon.stub().returns('foo - details'),
+        header: sinon.stub().returns('foo - header'),
+        examples: sinon.stub().returns('foo - examples'),
       },
     };
-    [entry] = mock({ log });
+    entry = entryFn(templates);
   });
 
   it('should return list item when mode="list"', () => {
@@ -51,7 +45,7 @@ describe('entry', () => {
     };
     const e = entry(n, cfg, helpers);
     expect(e).to.equal('li\n');
-    expect(log.templates.default.listItem.getCall(0)).to.have.been.calledWithExactly(n, cfg, helpers);
+    expect(templates.default.listItem.getCall(0)).to.have.been.calledWithExactly(n, cfg, helpers);
   });
 
   it('should call template methods with entry, cfg and helpers params', () => {
@@ -59,7 +53,7 @@ describe('entry', () => {
     const cfg = {};
     entry(n, cfg, helpers);
     ['label', 'description', 'paramSignature', 'paramDetails'].forEach(fn => {
-      expect(log.templates.default[fn].getCall(0)).to.have.been.calledWithExactly(n, cfg, helpers);
+      expect(templates.default[fn].getCall(0)).to.have.been.calledWithExactly(n, cfg, helpers);
     });
   });
 
@@ -67,7 +61,7 @@ describe('entry', () => {
     const n = { kind: 'function' };
     const cfg = {};
     entry(n, cfg, helpers);
-    expect(log.templates.default.toc.getCall(0)).to.have.been.calledWithExactly('label', cfg);
+    expect(templates.default.toc.getCall(0)).to.have.been.calledWithExactly('label', cfg);
     expect(helpers.addToToc.getCall(0)).to.have.been.calledWithExactly('toc');
   });
 
@@ -89,7 +83,7 @@ examples
     const n = { params: [] };
     const cfg = {};
     const e = entry(n, cfg, helpers);
-    expect(log.templates.default.header.getCall(0)).to.have.been.calledWithExactly('label(signature)', cfg);
+    expect(templates.default.header.getCall(0)).to.have.been.calledWithExactly('label(signature)', cfg);
     expect(e).to.equal(`
 
 header
@@ -107,7 +101,7 @@ examples
     const n = { kind: 'function' };
     const cfg = { parent: { kind: 'class' } };
     entry(n, cfg, helpers);
-    expect(log.templates.method.label.callCount).to.equal(1);
+    expect(templates.method.label.callCount).to.equal(1);
   });
 
   it('should use custom templates when they exist', () => {

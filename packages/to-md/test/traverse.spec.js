@@ -1,16 +1,13 @@
-const mock = ({
-  entry = () => '',
-} = {}) => aw.mock([
-  ['**/entry.js', () => entry],
-], ['../lib/traverse']);
+const traverse = require('../lib/traverse');
 
 describe('traverse', () => {
   let entry;
-  let traverse;
-  const helpers = {};
+  let helpers = {};
   beforeEach(() => {
     entry = sinon.spy();
-    [traverse] = mock({ entry });
+    helpers = {
+      entry,
+    };
   });
 
   ['staticEntries', 'entries', 'events', 'definitions'].forEach((prop) => {
@@ -64,7 +61,7 @@ describe('traverse', () => {
         },
       },
     };
-    traverse(root);
+    traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
     expect(entry.callCount).to.equal(3);
     expect(entry.getCall(2)).to.have.been.calledWithExactly({
       name: 'bb', kind: 'function', path: '#/entries/B/definitions/bb',
@@ -73,7 +70,7 @@ describe('traverse', () => {
       indent: 0,
       mode: undefined,
       parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
-    }, undefined);
+    }, helpers);
   });
 
   it('should switch to list mode when kind is interface', () => {
@@ -87,7 +84,7 @@ describe('traverse', () => {
         },
       },
     };
-    traverse(root);
+    traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
     expect(entry.callCount).to.equal(2);
     expect(entry.getCall(1)).to.have.been.calledWithExactly({
       name: 'bb', kind: 'a', path: '#/entries/B/entries/bb',
@@ -96,7 +93,7 @@ describe('traverse', () => {
       indent: 0,
       mode: 'list',
       parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
-    }, undefined);
+    }, helpers);
   });
 
   it('should increase indent when in list mode', () => {
@@ -110,7 +107,7 @@ describe('traverse', () => {
         },
       },
     };
-    traverse(root);
+    traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
     expect(entry.callCount).to.equal(3);
     expect(entry.getCall(2)).to.have.been.calledWithExactly({
       name: 'cc', path: '#/entries/B/entries/bb/entries/cc',
@@ -119,6 +116,6 @@ describe('traverse', () => {
       indent: 1,
       mode: 'list',
       parent: { ...root.entries.B.entries.bb, name: 'bb', path: '#/entries/B/entries/bb' },
-    }, undefined);
+    }, helpers);
   });
 });

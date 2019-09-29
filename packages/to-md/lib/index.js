@@ -1,8 +1,13 @@
+const extend = require('extend');
+
 const traverse = require('./traverse');
 const entryFn = require('./entry');
 const typesFn = require('./types');
+const log = require('./log');
 
-function toMarkdown(spec) {
+function toMarkdown(spec, {
+  templates,
+} = {}) {
   const toc = [];
   const types = typesFn(spec);
 
@@ -10,13 +15,17 @@ function toMarkdown(spec) {
     toc.push(s);
   };
 
+  const templ = extend(true, {}, log.templates, templates);
+
+  const entry = entryFn(templ);
+
   const content = traverse(spec, {
     parent: null,
     depth: 0,
     indent: 0,
   }, {
     traverse,
-    entry: entryFn,
+    entry,
     addToToc,
     getType: types.getType,
     assignSlug: types.assignSlug,

@@ -1,57 +1,55 @@
-const log = require('./log');
+function entryClosure(templates) {
+  function entryFn(entry, cfg, helpers) {
+    const { parent } = cfg;
+    const kind = parent && parent.kind === 'class' && entry.kind === 'function' && templates.method ? 'method' : entry.kind;
+    const templ = {
+      ...templates.default,
+      ...(templates.hasOwnProperty(kind) ? templates[kind] : {}), // eslint-disable-line no-prototype-builtins
+    };
 
-const {
-  templates,
-} = log;
+    const fnArgs = [entry, cfg, helpers];
 
-function entryFn(entry, cfg, helpers) {
-  const { parent } = cfg;
-  const kind = parent && parent.kind === 'class' && entry.kind === 'function' && templates.method ? 'method' : entry.kind;
-  const templ = {
-    ...templates.default,
-    ...(templates.hasOwnProperty(kind) ? templates[kind] : {}), // eslint-disable-line no-prototype-builtins
-  };
+    if (cfg.mode === 'list') {
+      return `${templ.listItem(...fnArgs)}\n`;
+    }
 
-  const fnArgs = [entry, cfg, helpers];
+    const label = templ.label(...fnArgs);
+    const description = templ.description(...fnArgs);
+    let paramDetails = '';
+    let paramSignature = '';
 
-  if (cfg.mode === 'list') {
-    return `${templ.listItem(...fnArgs)}\n`;
+    let fullLabel = label;
+
+    if (entry.params) {
+      paramSignature = templ.paramSignature(...fnArgs);
+      paramDetails = templ.paramDetails(...fnArgs);
+      fullLabel = `${label}${`(${paramSignature || ''})`}`;
+    }
+    const header = templ.header(fullLabel, cfg);
+
+    const tocLabel = templ.toc(fullLabel, cfg);
+    const slug = templ.slugify(fullLabel);
+    if (tocLabel) {
+      helpers.addToToc(tocLabel);
+    }
+    helpers.assignSlug(entry, slug);
+
+    const examples = templ.examples(...fnArgs);
+
+    const section = [
+      header,
+      paramDetails,
+      description,
+      examples,
+    ].filter(Boolean).join('\n\n');
+
+    if (section.length) {
+      return `\n\n${section}\n\n`;
+    }
+    return '';
   }
 
-  const label = templ.label(...fnArgs);
-  const description = templ.description(...fnArgs);
-  let paramDetails = '';
-  let paramSignature = '';
-
-  let fullLabel = label;
-
-  if (entry.params) {
-    paramSignature = templ.paramSignature(...fnArgs);
-    paramDetails = templ.paramDetails(...fnArgs);
-    fullLabel = `${label}${`(${paramSignature || ''})`}`;
-  }
-  const header = templ.header(fullLabel, cfg);
-
-  const tocLabel = templ.toc(fullLabel, cfg);
-  const slug = templ.slugify(fullLabel);
-  if (tocLabel) {
-    helpers.addToToc(tocLabel);
-  }
-  helpers.assignSlug(entry, slug);
-
-  const examples = templ.examples(...fnArgs);
-
-  const section = [
-    header,
-    paramDetails,
-    description,
-    examples,
-  ].filter(Boolean).join('\n\n');
-
-  if (section.length) {
-    return `\n\n${section}\n\n`;
-  }
-  return '';
+  return entryFn;
 }
 
-module.exports = entryFn;
+module.exports = entryClosure;

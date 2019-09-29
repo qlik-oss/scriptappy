@@ -119,17 +119,58 @@ const references = `
 
 
 describe('to markdown', () => {
-  const m = toMarkdown(spec);
+  describe('with defaults', () => {
+    const m = toMarkdown(spec);
 
-  it('toc', () => {
-    expect(m.toc()).to.equal(toc);
+    it('toc', () => {
+      expect(m.toc()).to.equal(toc);
+    });
+
+    it('content', () => {
+      expect(m.content()).to.equal(content);
+    });
+
+    it('references', () => {
+      expect(m.references()).to.equal(references);
+    });
   });
 
-  it('content', () => {
-    expect(m.content()).to.equal(content);
-  });
+  describe('with custom templates', () => {
+    const m = toMarkdown({
+      entries: {
+        Bike: {
+          entries: {
+            ride: {},
+          },
+        },
+      },
+    }, {
+      templates: {
+        default: {
+          pre: '#',
+          indent: '>',
+          label: (entry) => entry.name,
+        },
+      },
+    });
 
-  it('references', () => {
-    expect(m.references()).to.equal(references);
+    it('should output custom content', () => {
+      expect(m.content()).to.equal(`
+
+# Bike
+
+
+
+## ride
+
+`);
+    });
+
+    it('should output custom toc', () => {
+      expect(m.toc()).to.equal(`
+- [Bike](#bike)
+>- [ride](#ride)
+`);
+    });
   });
 });
