@@ -60,7 +60,40 @@ describe('log', () => {
     });
 
     it('paramSignature', () => {
-      expect(d.paramSignature({ params: [{ name: 'first' }, { name: 'second' }] })).to.equal('first, second');
+      expect(d.paramSignature({
+        params: [
+          { name: 'first' },
+          { name: 'second' },
+        ],
+      })).to.equal('first, second');
+    });
+
+    it('paramSignature multiple optional', () => {
+      expect(d.paramSignature({
+        params: [
+          { name: 'first' },
+          { name: 'second', optional: true },
+          { name: 'third', optional: true },
+        ],
+      })).to.equal('first[, second[, third]]');
+    });
+
+    it('paramSignature with first param optional', () => {
+      expect(d.paramSignature({
+        params: [
+          { name: 'first', optional: true },
+        ],
+      })).to.equal('[first]');
+    });
+
+    it('paramSignature with bad optional order', () => {
+      expect(d.paramSignature({
+        params: [
+          { name: 'first' },
+          { name: 'second', optional: true },
+          { name: 'third' },
+        ],
+      })).to.equal('first[, second], third');
     });
 
     it('paramDetails', () => {

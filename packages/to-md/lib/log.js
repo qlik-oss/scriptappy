@@ -42,7 +42,33 @@ const templates = {
       return `${this.pre}${'#'.repeat(cfg.depth)} ${label}`;
     },
     description: (entry) => entry.description,
-    paramSignature: (entry) => (entry.params || []).map(p => `${(p.variable ? '...' : '')}${p.name}`).join(', '),
+    paramSignature: (entry) => {
+      let s = '';
+      let optional = '';
+      (entry.params || []).forEach((p, i, arr) => {
+        optional += p.optional ? ']' : '';
+        let postfix = '';
+        if (arr[i + 1]) {
+          if (arr[i + 1].optional) {
+            postfix = '[, ';
+          } else if (optional && !arr[i + 1].optional) {
+            postfix = `${optional}, `;
+            optional = '';
+          } else {
+            postfix = ', ';
+          }
+        } else if (i >= arr.length - 1) {
+          postfix = optional;
+        }
+        const prefix = !i && p.optional ? '[' : '';
+        s += `${prefix}${p.variable ? '...' : ''}${p.name}${postfix}`;
+
+        if (!p.optional) {
+          optional = '';
+        }
+      });
+      return s;
+    },
     paramDetails: (entry, cfg, helpers) => {
       const sig = [];
       entry.params.forEach((p) => {
