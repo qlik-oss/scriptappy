@@ -97,6 +97,25 @@ describe('collect', () => {
       longname: 'module:mod',
     });
   });
+
+  it('should mark filtered doclets as private', () => {
+    const doclets = [
+      { longname: 'f', kind: 'member' },
+    ];
+
+    const d = (doclet) => doclet;
+
+    const c = {
+      ...cfg,
+      parse: {
+        ...cfg.parse,
+        filter: (doc) => doc.longname !== 'f',
+      },
+    };
+
+    const { priv } = t.collect(doclets, c, d);
+    expect(priv.f[0].__access).to.equal('private');
+  });
 });
 
 describe('log rule', () => {

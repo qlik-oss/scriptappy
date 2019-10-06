@@ -107,6 +107,11 @@ function collect(doclets, cfg, entity = entities.doclet) {
       d.__memberScope = doc.scope;
       d.__meta = doc.meta;
       d.__access = doc.access;
+      if (doc.access !== 'private' && typeof cfg.parse.filter === 'function') {
+        if (!cfg.parse.filter(doc)) {
+          d.__access = 'private'; // leverage the use of 'private' access to filter out the doclet
+        }
+      }
       d.__isEntry = (doc.tags || []).filter(tag => tag.originalTitle === 'entry').length > 0;
 
       if (ids[d.__id] && ids[d.__id][0] && ids[d.__id][0].kind === 'module') { // 'd' is a default export from a module

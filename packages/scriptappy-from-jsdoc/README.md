@@ -69,6 +69,7 @@ module.exports = {
       include: undefined, // an array of white listed tags, e.g. ['committer']
       exclude: undefined, // an array of black-listed tags (not used if 'include' is an array), e.g. ['owner']
     },
+    filter(doclet) { return true; },// filter out doclets
     rules: {
       'no-unknown-types': 1,
       'no-missing-types': 1,
