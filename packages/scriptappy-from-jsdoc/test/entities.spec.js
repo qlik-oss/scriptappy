@@ -355,23 +355,6 @@ describe('type', () => {
     });
   });
 
-  it('literal', () => {
-    const o = types.typedef({
-      meta: {
-        code: {
-          type: 'Literal',
-          value: 'foo',
-        },
-      },
-    });
-
-    expect(o).to.eql({
-      kind: 'literal',
-      value: 'foo',
-    });
-  });
-
-
   it('object', () => {
     const o = types.typedef({
       name: 'person',
@@ -833,5 +816,71 @@ describe('entity', () => {
     });
 
     expect(o.description).to.equal('class descr');
+  });
+
+  it('defaultValue', () => {
+    const o = types.entity({
+      defaultvalue: 'def',
+    }, cfg);
+
+    expect(o.defaultValue).to.equal('def');
+  });
+
+  it('defaultValue from literal meta', () => {
+    const o = types.entity({
+      meta: {
+        code: {
+          type: 'Literal',
+          value: 'foo',
+        },
+      },
+      type: { names: ['string'] },
+    });
+
+    expect(o).to.eql({
+      type: 'string',
+      defaultValue: 'foo',
+    });
+  });
+
+  it('defaultValue from unary numeric meta', () => {
+    const o = types.entity({
+      meta: {
+        code: {
+          type: 'UnaryExpression',
+          value: -1,
+        },
+      },
+      type: { names: ['number'] },
+    });
+
+    expect(o).to.eql({
+      type: 'number',
+      defaultValue: -1,
+    });
+  });
+
+  it('defaultValue on boolean string', () => {
+    const o = types.entity({
+      type: { names: ['boolean'] },
+      defaultvalue: 'true',
+    });
+
+    expect(o).to.eql({
+      type: 'boolean',
+      defaultValue: true,
+    });
+  });
+
+  it('defaultValue on boolean', () => {
+    const o = types.entity({
+      type: { names: ['boolean'] },
+      defaultvalue: true,
+    });
+
+    expect(o).to.eql({
+      type: 'boolean',
+      defaultValue: true,
+    });
   });
 });

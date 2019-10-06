@@ -512,11 +512,6 @@ function entity(doc, cfg = {}, opts = {}) {
   if (doc.variable) {
     ent.variable = true;
   }
-  if (doc.type && doc.meta && doc.meta.code && doc.meta.code.type === 'Literal') {
-    ent.defaultValue = doc.meta.code.value;
-  } else if ('defaultvalue' in doc) { // note - small 'v' is used in jsdoc
-    ent.defaultValue = doc.defaultvalue;
-  }
   if (doc.implements) {
     ent.implements = doc.implements.map(simpleType);
   }
@@ -528,6 +523,19 @@ function entity(doc, cfg = {}, opts = {}) {
   if (typedef.type === 'Promise' && !typedef.generics) {
     cfg.logRule(currentMetaDoc, 'no-unknown-promise', 'Promise is missing type');
   }
+
+  if (doc.type && doc.meta && doc.meta.code && doc.meta.code.type === 'Literal') {
+    ent.defaultValue = doc.meta.code.value;
+  } else if (doc.type && doc.meta && doc.meta.code && doc.meta.code.type === 'UnaryExpression' && typedef.type === 'number') {
+    ent.defaultValue = Number(doc.meta.code.value);
+  } else if ('defaultvalue' in doc) { // note - small 'v' is used in jsdoc
+    if (typedef.type === 'boolean') {
+      ent.defaultValue = doc.defaultvalue === true || doc.defaultvalue === 'true';
+    } else {
+      ent.defaultValue = doc.defaultvalue;
+    }
+  }
+
   Object.assign(ent, typedef);
 
   if (doc.examples) {
