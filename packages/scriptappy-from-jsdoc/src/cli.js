@@ -128,26 +128,19 @@ if (require.main === module) {
       const files = (await globby(config.glob, {
         gitignore: false,
       })).concat(pkg).map(f => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
+      runWithJSDoc(files);
+
       if (config.w) {
-        chokidar.watch(files).on('change', (filename) => {
-          console.log(filename);
+        chokidar.watch(files).on('change', () => {
           runWithJSDoc(files);
         });
+        console.log('\nWatching changes...');
       }
-
-      runWithJSDoc(files);
     };
 
     // if stdin is piped in, assume its a jsdoc-json file
     (!process.stdin.isTTY ? new Promise((resolve, reject) => {
-      // const stdin = process.stdin;
       let data = '';
-      // const timer = setTimeout(() => {
-      //   console.log('TIMEOUED');
-      //   // stdin.unref();
-      //   reject();
-      //   // stdin.end();
-      // }, 10);
 
       process.stdin.on('data', (chunk) => {
         data += chunk;
