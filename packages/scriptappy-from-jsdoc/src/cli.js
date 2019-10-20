@@ -99,11 +99,19 @@ const runWithJSDoc = (files) => {
     fs.unlinkSync(temp);
   }
 
+  let parsed;
+
   if (!s) {
     throw new Error('Could not generate JSDoc');
+  } else {
+    try {
+      parsed = JSON.parse(s);
+    } catch (e) {
+      throw new Error(s);
+    }
   }
 
-  run(JSON.parse(s));
+  run(parsed);
 };
 
 if (require.main === module) {
@@ -126,34 +134,33 @@ if (require.main === module) {
           runWithJSDoc(files);
         });
       }
-      try {
-        runWithJSDoc(files);
-      } catch (e) {
-        process.exitCode = 1;
-        console.log(e.stack);
-        throw e;
-      }
+
+      runWithJSDoc(files);
     };
+
+    // if stdin is piped in, assume its a jsdoc-json file
     (!process.stdin.isTTY ? new Promise((resolve, reject) => {
-      const stdin = process.openStdin();
+      // const stdin = process.stdin;
       let data = '';
+      // const timer = setTimeout(() => {
+      //   console.log('TIMEOUED');
+      //   // stdin.unref();
+      //   reject();
+      //   // stdin.end();
+      // }, 10);
 
-      const timer = setTimeout(() => {
-        stdin.unref();
-        reject();
-        stdin.end();
-      }, 10);
-
-      stdin.on('data', (chunk) => {
-        clearTimeout(timer);
+      process.stdin.on('data', (chunk) => {
         data += chunk;
       });
 
-      stdin.on('end', () => {
-        resolve();
-        run(JSON.parse(data));
+      process.stdin.on('end', () => {
+        if (!data) {
+          reject();
+        } else {
+          resolve(JSON.parse(data));
+        }
       });
-    }) : Promise.reject()).catch(() => {
+    }) : Promise.reject()).then(jsdoc => run(jsdoc)).catch(() => {
       withJSDoc();
     });
   }
