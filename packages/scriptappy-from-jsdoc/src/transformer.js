@@ -200,7 +200,11 @@ function checkTypes(obj, priv, cfg) {
 function transform({ ids, priv }, cfg) {
   const entries = {};
   const definitions = {};
-  Object.keys(ids).forEach(longname => {
+  Object.keys(ids).sort((a, b) => {
+    const aa = a.toLowerCase();
+    const bb = b.toLowerCase();
+    return aa > bb ? 1 : (bb > aa ? -1 : 0); // eslint-disable-line
+  }).forEach(longname => {
     ids[longname].forEach((d, idx) => {
       // const d = ids[longname];
       const pr = priv[longname][idx];
