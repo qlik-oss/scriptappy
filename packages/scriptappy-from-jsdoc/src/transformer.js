@@ -10,7 +10,7 @@ const defaultConfig = require('../spec.config.js');
 
 function printViolations(violations, logger = console) {
   // formatting kinda ripped from https://github.com/eslint/eslint/blob/master/lib/formatters/stylish.js
-  // let warnings = 0;
+  let warnings = 0;
   let errs = 0;
   Object.keys(violations).forEach(file => {
     const vs = violations[file];
@@ -27,9 +27,21 @@ function printViolations(violations, logger = console) {
       logger.log(message);
       if (violation.severity === 2) {
         errs += 1;
+      } else if (violation.severity === 1) {
+        warnings += 1;
       }
     });
   });
+
+  const plural = n => (n === 1 ? '' : 's');
+  const str = `(${errs} error${plural(errs)}, ${warnings} warning${plural(warnings)})`;
+  console.log('\n');
+
+  if (errs || warnings) {
+    console.log(`${errs ? '\x1b[91m' : '\x1b[93m'}✖ ${errs + warnings} Problem${plural(errs + warnings)} ${str}\x1b[39m`);
+  } else {
+    console.log('\x1b[92m✔ Success\x1b[0m');
+  }
 
   return errs;
 }
