@@ -28,10 +28,38 @@ describe('types', () => {
     })).to.equal('[Person]');
   });
 
-  it('should return simple known kind', () => {
+  it('should return known data structure', () => {
+    expect(t.getType({
+      kind: 'boolean',
+    })).to.equal('[boolean]');
+    expect(t.getType({
+      kind: 'string',
+    })).to.equal('[string]');
+    expect(t.getType({
+      kind: 'number',
+    })).to.equal('[number]');
+
+    expect(t.getType({
+      kind: 'class',
+    })).to.equal('[class]');
+  });
+
+  it('should return known builtin object', () => {
     expect(t.getType({
       kind: 'function',
-    })).to.equal('[function]');
+    })).to.equal('[Function]');
+
+    expect(t.getType({
+      kind: 'RangeError',
+    })).to.equal('[RangeError]');
+
+    expect(t.getType({
+      kind: 'object',
+    })).to.equal('[Object]');
+
+    expect(t.getType({
+      kind: 'math',
+    })).to.equal('[Math]');
   });
 
   it('should return simple unknown type', () => {
@@ -73,6 +101,21 @@ describe('types', () => {
 
     expect(t.getReferences()).to.eql([
       { key: 'Person', link: '#class-person' },
+    ]);
+  });
+
+  it('should return builtin references', () => {
+    t.getType({
+      type: 'Set',
+    });
+
+    t.getType({
+      type: 'syntaxError',
+    });
+
+    expect(t.getReferences()).to.eql([
+      { key: 'Set', link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set' },
+      { key: 'SyntaxError', link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError' },
     ]);
   });
 });

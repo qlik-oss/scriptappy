@@ -1,13 +1,12 @@
 const knownReferences = {
-  Array: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array',
   boolean: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type',
   number: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type',
   string: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type',
-  function: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function',
-  Object: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object',
-  Promise: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
   class: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes',
 };
+
+// TODO - separate nodejs builtins vs web builtins
+const builtInType = (t) => `https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/${t}`;
 
 function types(spec) {
   const internal = {
@@ -16,6 +15,9 @@ function types(spec) {
   };
 
   const typeMap = {};
+  const knownRefs = {
+    ...knownReferences,
+  };
 
   const assignSlug = (entry, slug) => {
     if (internal.paths[entry.path] && slug) {
@@ -26,7 +28,7 @@ function types(spec) {
   const getReferences = () => {
     const refs = [];
     Object.keys(typeMap).forEach((key) => {
-      refs.push({ key, link: knownReferences[key] });
+      refs.push({ key, link: knownRefs[key] });
     });
 
     Object.keys(internal.paths).forEach((key) => {
@@ -50,12 +52,16 @@ function types(spec) {
     }
 
     const t = entry.kind || entry.type;
-    const alias = t[0].toUpperCase() + t.slice(1);
-    const text = knownReferences[alias] ? alias : t;
+    const upperT = t[0].toUpperCase() + t.slice(1);
+    const text = knownRefs[t] ? t : (global[upperT] ? upperT : t); // eslint-disable-line
     if (!typeMap[text]) {
       typeMap[text] = text;
     }
-    if (knownReferences[text]) {
+    if (knownRefs[text]) {
+      return `${prefix}[${text}]`;
+    }
+    if (global[text]) {
+      knownRefs[text] = builtInType(text);
       return `${prefix}[${text}]`;
     }
     return `\`${prefix}${text}\``;
