@@ -40,7 +40,8 @@ const templates = {
       const value = !DEFAULT_RX.test(entry.description) && entry.defaultValue ? ` Defaults to \`${entry.defaultValue}\`` : '';
       const descr = `${entry.description ? ` ${entry.description.replace(SPACE_RX, '')}` : ''}`;
       const separator = value && descr && !SEP_RX.test(descr) ? '.' : '';
-      return `${this.indent.repeat(cfg.indent)}- \`${prefix}${entry.name}\` ${this.type(entry, cfg, helpers)}${descr}${separator}${value}`;
+      const t = entry.name ? `\`${prefix}${entry.name}\` ` : '';
+      return `${this.indent.repeat(cfg.indent)}- ${t}${this.type(entry, cfg, helpers)}${descr}${separator}${value}`;
     },
     label: (entry) => `${entry.kind}: ${entry.name}`,
     toc(label, cfg) {
@@ -102,7 +103,7 @@ const templates = {
       });
       return s;
     },
-    paramDetails: (entry, cfg, helpers) => {
+    paramDetails(entry, cfg, helpers) {
       const sig = [];
       entry.params.forEach((p) => {
         sig.push(helpers.entry(p, { ...cfg, mode: 'list' }, helpers));
@@ -115,6 +116,20 @@ const templates = {
         };
         sig.push(helpers.entry(e, { ...cfg, mode: 'list' }, helpers));
         sig.push(helpers.traverse(e, { ...cfg, mode: 'list', indent: cfg.indent + 1 }, helpers));
+      }
+      if (entry.emits) {
+        sig.push(`${this.indent.repeat(cfg.indent)}- \`emits:\`\n`);
+        entry.emits.forEach(t => {
+          sig.push(this.listItem({ name: '', ...t }, { ...cfg, indent: cfg.indent + 1 }, helpers));
+          sig.push('\n');
+        });
+      }
+      if (entry.throws) {
+        sig.push(`${this.indent.repeat(cfg.indent)}- \`throws:\`\n`);
+        entry.throws.forEach(t => {
+          sig.push(this.listItem({ name: '', ...t }, { ...cfg, indent: cfg.indent + 1 }, helpers));
+          sig.push('\n');
+        });
       }
       const s = sig.filter(Boolean).join('');
       return s;

@@ -55,6 +55,18 @@ describe('log', () => {
       }
     });
 
+    it('listItem without name', () => {
+      const typeStub = sinon.stub(d, 'type');
+      typeStub.callsFake(() => 't');
+      try { // run inside try catch to make sure restore() happens when expect fails
+        expect(d.listItem({ description: 'd' }, { indent: 1 })).to.equal('  - t d');
+      } catch (e) {
+        throw e;
+      } finally {
+        typeStub.restore();
+      }
+    });
+
     it('listItem with default described in description', () => {
       const typeStub = sinon.stub(d, 'type');
       typeStub.callsFake(() => 't');
@@ -140,6 +152,38 @@ describe('log', () => {
 
       expect(helpers.entry.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list' }, helpers);
       expect(helpers.traverse.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list', indent: 2 }, helpers);
+    });
+
+    it('paramDetails emits', () => {
+      const cfg = {
+        indent: 0,
+      };
+      const helpers = {
+        entry: sinon.stub().returns('p'),
+        traverse: sinon.stub().returns('t'),
+        getType: (entry) => `$${entry.type}`,
+      };
+      const entry = {
+        params: [],
+        emits: [{ type: 'changed' }, { type: 'updated' }],
+      };
+      expect(d.paramDetails(entry, cfg, helpers)).to.equal('- `emits:`\n  - <$changed>\n  - <$updated>\n');
+    });
+
+    it('paramDetails throws', () => {
+      const cfg = {
+        indent: 0,
+      };
+      const helpers = {
+        entry: sinon.stub().returns('p'),
+        traverse: sinon.stub().returns('t'),
+        getType: (entry) => `$${entry.type}`,
+      };
+      const entry = {
+        params: [],
+        throws: [{ type: 'syntax' }, { type: 'rangeerr', description: 'oops' }],
+      };
+      expect(d.paramDetails(entry, cfg, helpers)).to.equal('- `throws:`\n  - <$syntax>\n  - <$rangeerr> oops\n');
     });
 
     it('example with simple string', () => {
