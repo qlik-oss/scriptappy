@@ -1,25 +1,28 @@
 {
-  "name": "scriptappy-to-md",
-  "private": true,
+  "name": "@scriptappy/to-md",
   "version": "0.1.0",
+  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/miralemd/scriptappy#readme",
+  "bugs": {
+    "url": "https://github.com/miralemd/scriptappy/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/miralemd/scriptappy.git"
   },
   "keywords": [
     "jsdoc",
-    "markdown"
+    "markdown",
+    "documentation"
   ],
-  "author": "Miralem Drek <mm85dk+github@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/miralemd/scriptappy/issues"
-  },
-  "homepage": "https://github.com/miralemd/scriptappy#readme",
-  "main": "lib/index.js",
   "files": [
     "/lib"
   ],
+  "main": "lib/index.js",
   "scripts": {
     "lint": "eslint lib"
   },
