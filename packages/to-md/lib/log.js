@@ -133,6 +133,12 @@ const templates = {
         };
         sig.push(helpers.entry(e, { ...cfg, mode: 'list' }, helpers));
         sig.push(helpers.traverse(e, { ...cfg, mode: 'list', indent: cfg.indent + 1 }, helpers));
+      } else if (entry.async) {
+        const e = {
+          name: 'returns:',
+          type: 'Promise',
+        };
+        sig.push(helpers.entry(e, { ...cfg, mode: 'list' }, helpers));
       }
       if (entry.emits) {
         sig.push(`${this.indent.repeat(cfg.indent)}- \`emits:\`\n`);

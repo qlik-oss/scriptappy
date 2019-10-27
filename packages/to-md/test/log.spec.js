@@ -188,6 +188,19 @@ describe('log', () => {
       expect(helpers.traverse.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list', indent: 2 }, helpers);
     });
 
+    it('paramDetails of async function should return Promise if return is not specified', () => {
+      const cfg = {
+        indent: 1,
+      };
+      const helpers = {
+        entry: sinon.stub().returns('p'),
+        traverse: sinon.stub().returns('t'),
+      };
+      expect(d.paramDetails({ async: true, params: [] }, cfg, helpers)).to.equal('p');
+
+      expect(helpers.entry.getCall(0)).to.have.been.calledWithExactly({ name: 'returns:', type: 'Promise' }, { ...cfg, mode: 'list' }, helpers);
+    });
+
     it('paramDetails emits', () => {
       const cfg = {
         indent: 0,
