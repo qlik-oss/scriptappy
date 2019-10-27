@@ -202,6 +202,17 @@ describe('log', () => {
     });
   });
 
+  describe('event', () => {
+    const m = templates.event;
+    it('label', () => {
+      expect(m.label({ name: 'open' })).to.equal('event: \'open\'');
+    });
+
+    it('paramSignature', () => {
+      expect(m.paramSignature()).to.equal(null);
+    });
+  });
+
   describe('method', () => {
     const m = templates.method;
     it('label', () => {

@@ -24,7 +24,11 @@ function entryClosure(templates) {
     if (entry.params) {
       paramSignature = templ.paramSignature(...fnArgs);
       paramDetails = templ.paramDetails(...fnArgs);
-      fullLabel = `${label}${`(${paramSignature || ''})`}`;
+      if (paramSignature !== null) {
+        fullLabel = `${label}${`(${paramSignature || ''})`}`;
+      } else {
+        fullLabel = `${label}`;
+      }
     }
     const header = templ.header(fullLabel, cfg);
 

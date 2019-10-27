@@ -36,6 +36,12 @@ describe('entry', () => {
         header: sinon.stub().returns('foo - header'),
         examples: sinon.stub().returns('foo - examples'),
       },
+      ev: {
+        label() {
+          return 'event: e';
+        },
+        paramSignature: sinon.stub().returns(null),
+      },
     };
     entry = entryFn(templates);
   });
@@ -101,6 +107,14 @@ descr
 examples
 
 `);
+  });
+
+  it('should not use signature when it returns null', () => {
+    const n = { kind: 'ev', params: [] };
+    const cfg = {};
+    entry(n, cfg, helpers);
+    expect(templates.ev.paramSignature.getCall(0)).to.have.been.calledWithExactly(n, cfg, helpers);
+    expect(templates.default.header.getCall(0)).to.have.been.calledWithExactly('event: e', cfg);
   });
 
   it('should call "method" label template when kind is function and parent is a class', () => {

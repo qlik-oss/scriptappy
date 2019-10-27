@@ -155,6 +155,12 @@ const templates = {
   constructor: {
     label: (entry) => `new ${entry.name}`,
   },
+  event: {
+    label(entry) {
+      return `event: '${entry.name}'`;
+    },
+    paramSignature: () => null,
+  },
   method: {
     label(entry, cfg) {
       const isStatic = (entry.path || '').split('/').slice(-2)[0] === 'staticEntries';
