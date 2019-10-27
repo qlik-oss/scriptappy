@@ -17,6 +17,7 @@ describe('entry', () => {
         listItem: sinon.stub().returns('li'),
         label: sinon.stub().returns('label'),
         description: sinon.stub().returns('descr'),
+        meta: sinon.stub().returns('meta'),
         paramSignature: sinon.stub().returns('signature'),
         paramDetails: sinon.stub().returns('details'),
         header: sinon.stub().returns('header'),
@@ -28,6 +29,7 @@ describe('entry', () => {
       foo: {
         listItem: sinon.stub().returns('foo - li'),
         label: sinon.stub().returns('foo - label'),
+        meta: sinon.stub().returns('foo - meta'),
         description: sinon.stub().returns('foo - descr'),
         paramSignature: sinon.stub().returns('foo - signature'),
         paramDetails: sinon.stub().returns('foo - details'),
@@ -73,6 +75,8 @@ describe('entry', () => {
 
 header
 
+meta
+
 descr
 
 examples
@@ -87,6 +91,8 @@ examples
     expect(e).to.equal(`
 
 header
+
+meta
 
 details
 
@@ -111,6 +117,8 @@ examples
     expect(e).to.equal(`
 
 foo - header
+
+foo - meta
 
 foo - details
 

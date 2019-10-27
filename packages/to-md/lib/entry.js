@@ -15,6 +15,7 @@ function entryClosure(templates) {
 
     const label = templ.label(...fnArgs);
     const description = templ.description(...fnArgs);
+    const meta = templ.meta(...fnArgs);
     let paramDetails = '';
     let paramSignature = '';
 
@@ -38,6 +39,7 @@ function entryClosure(templates) {
 
     const section = [
       header,
+      meta,
       paramDetails,
       description,
       examples,

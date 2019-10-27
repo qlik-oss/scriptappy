@@ -49,6 +49,24 @@ const templates = {
     header(label, cfg) {
       return `${this.pre}${'#'.repeat(cfg.depth)} ${label}`;
     },
+    meta(entry) {
+      const s = [];
+      if (entry.stability) {
+        s.push(`> Stability: \`${entry.stability}\``);
+      }
+      if (entry.availability) {
+        if (entry.availability.since) {
+          s.push(`> Since: \`${entry.availability.since}\``);
+        }
+        if (entry.availability.deprecated === true) {
+          s.push('> Deprecated');
+        } else if (entry.availability.deprecated) {
+          s.push(`> Deprecated: ${entry.availability.deprecated.description || `since ${entry.availability.deprecated.since}`}`);
+        }
+      }
+
+      return s.filter(Boolean).join('\n>\n');
+    },
     description(entry, cfg, helpers) {
       let s = '';
       if (entry.extends) {
