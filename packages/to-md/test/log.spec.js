@@ -99,6 +99,27 @@ describe('log', () => {
       expect(d.description({ description: 'descr' })).to.equal('descr');
     });
 
+    it('meta', () => {
+      expect(d.meta({
+        stability: 'stable',
+        availability: { since: '0.1.0' },
+      })).to.equal('> Stability: `stable`\n>\n> Since: `0.1.0`');
+    });
+
+    it('meta deprecated', () => {
+      expect(d.meta({
+        availability: { deprecated: true },
+      })).to.equal('> Deprecated');
+
+      expect(d.meta({
+        availability: { deprecated: { since: '0.2.0' } },
+      })).to.equal('> Deprecated: since 0.2.0');
+
+      expect(d.meta({
+        availability: { deprecated: { description: 'Use something else' } },
+      })).to.equal('> Deprecated: Use something else');
+    });
+
     it('paramSignature', () => {
       expect(d.paramSignature({
         params: [
