@@ -43,7 +43,24 @@ const templates = {
       const t = entry.name ? `\`${prefix}${entry.name}\` ` : '';
       return `${this.indent.repeat(cfg.indent)}- ${t}${this.type(entry, cfg, helpers)}${descr}${separator}${value}`;
     },
-    label: (entry) => `${entry.kind}: ${entry.name}`,
+    label(entry, cfg) {
+      const isStatic = (entry.path || '').split('/').slice(-2)[0] === 'staticEntries';
+      if (cfg.parent) {
+        let prefix = cfg.parent.name;
+        if (!isStatic && ['interface', 'class'].indexOf(cfg.parent.kind) !== -1) {
+          prefix = (cfg.parent.name[0].toLowerCase() + cfg.parent.name.substring(1));
+        }
+        if (prefix) {
+          return `${prefix}.${entry.name}`;
+        }
+      }
+
+      if (!entry.kind) {
+        return entry.name;
+      }
+
+      return `${entry.kind}: ${entry.name}`;
+    },
     toc(label, cfg) {
       return `${this.indent.repeat(cfg.depth)}- [${label}](${this.slugify(label)})`;
     },

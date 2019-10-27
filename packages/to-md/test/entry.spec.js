@@ -23,9 +23,6 @@ describe('entry', () => {
         header: sinon.stub().returns('header'),
         examples: sinon.stub().returns('examples'),
       },
-      method: {
-        label: sinon.stub().returns('method'),
-      },
       foo: {
         listItem: sinon.stub().returns('foo - li'),
         label: sinon.stub().returns('foo - label'),
@@ -115,13 +112,6 @@ examples
     entry(n, cfg, helpers);
     expect(templates.ev.paramSignature.getCall(0)).to.have.been.calledWithExactly(n, cfg, helpers);
     expect(templates.default.header.getCall(0)).to.have.been.calledWithExactly('event: e', cfg);
-  });
-
-  it('should call "method" label template when kind is function and parent is a class', () => {
-    const n = { kind: 'function' };
-    const cfg = { parent: { kind: 'class' } };
-    entry(n, cfg, helpers);
-    expect(templates.method.label.callCount).to.equal(1);
   });
 
   it('should use custom templates when they exist', () => {

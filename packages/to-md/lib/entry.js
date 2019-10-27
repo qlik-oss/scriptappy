@@ -1,7 +1,6 @@
 function entryClosure(templates) {
   function entryFn(entry, cfg, helpers) {
-    const { parent } = cfg;
-    const kind = parent && parent.kind === 'class' && entry.kind === 'function' && templates.method ? 'method' : entry.kind;
+    const { kind } = entry;
     const templ = {
       ...templates.default,
       ...(templates.hasOwnProperty(kind) ? templates[kind] : {}), // eslint-disable-line no-prototype-builtins

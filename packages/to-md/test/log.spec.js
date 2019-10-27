@@ -84,7 +84,20 @@ describe('log', () => {
     });
 
     it('label', () => {
-      expect(d.label({ kind: 'k', name: 'n' })).to.equal('k: n');
+      expect(d.label({ kind: 'k', name: 'n' }, {})).to.equal('k: n');
+    });
+
+    it('label with parent class or interface', () => {
+      expect(d.label({ kind: 'k', name: 'n' }, { parent: { name: 'Foo', kind: 'interface' } })).to.equal('foo.n');
+      expect(d.label({ kind: 'k', name: 'n' }, { parent: { name: 'Foo', kind: 'class' } })).to.equal('foo.n');
+    });
+
+    it('label as static entry', () => {
+      expect(d.label({ kind: 'k', name: 'n', path: 'a/b/staticEntries/n' }, { parent: { name: 'Foo', kind: 'interface' } })).to.equal('Foo.n');
+    });
+
+    it('label without kind', () => {
+      expect(d.label({ name: 'n' }, {})).to.equal('n');
     });
 
     it('toc', () => {

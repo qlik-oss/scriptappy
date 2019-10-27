@@ -3,7 +3,7 @@ function trav(n, entry, cfg, helpers) {
     ...cfg,
     parent: entry,
   }, helpers);
-  const isList = cfg.mode === 'list' || ['interface', 'object'].indexOf(n.kind) !== -1;
+  const isList = cfg.mode === 'list' || ['object'].indexOf(n.kind) !== -1;
   s += traverse(n, {
     ...cfg,
     mode: isList ? 'list' : cfg.mode,

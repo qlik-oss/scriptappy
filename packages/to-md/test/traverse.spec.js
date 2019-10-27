@@ -73,11 +73,11 @@ describe('traverse', () => {
     }, helpers);
   });
 
-  it('should switch to list mode when kind is interface', () => {
+  it('should switch to list mode when kind is object', () => {
     const root = {
       entries: {
         B: {
-          kind: 'interface',
+          kind: 'object',
           entries: {
             bb: { kind: 'a' },
           },
