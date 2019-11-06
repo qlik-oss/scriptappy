@@ -46,6 +46,12 @@ function printViolations(violations, logger = console) {
   return errs;
 }
 
+function sortAlphabetically(a, b) {
+  const aa = a.toLowerCase();
+  const bb = b.toLowerCase();
+  return aa > bb ? 1 : (bb > aa ? -1 : 0); // eslint-disable-line
+}
+
 function logRule(cfg, doc, rule, message, violations) {
   const r = cfg.parse.rules[rule];
   const severity = +r;
@@ -200,11 +206,7 @@ function checkTypes(obj, priv, cfg) {
 function transform({ ids, priv }, cfg) {
   const entries = {};
   const definitions = {};
-  Object.keys(ids).sort((a, b) => {
-    const aa = a.toLowerCase();
-    const bb = b.toLowerCase();
-    return aa > bb ? 1 : (bb > aa ? -1 : 0); // eslint-disable-line
-  }).forEach(longname => {
+  Object.keys(ids).sort(sortAlphabetically).forEach(longname => {
     ids[longname].forEach((d, idx) => {
       // const d = ids[longname];
       const pr = priv[longname][idx];
@@ -229,6 +231,14 @@ function transform({ ids, priv }, cfg) {
 
       if (access === 'private') {
         return;
+      }
+
+      if (typeof d.entries === 'object') {
+        const sortedEntries = {};
+        Object.keys(d.entries).sort(sortAlphabetically).forEach((key) => {
+          sortedEntries[key] = d.entries[key];
+        });
+        d.entries = sortedEntries;
       }
 
       if (parent) {

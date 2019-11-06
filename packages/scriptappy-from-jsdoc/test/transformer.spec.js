@@ -378,6 +378,82 @@ describe('transform', () => {
       },
     });
   });
+
+  it('should sort entries alphabetically', () => {
+    const { entries } = t.transform({
+      ids: {
+        B: [{
+          entries: {
+            d: { type: 'object' },
+            c: { type: 'object' },
+          },
+        }],
+        'B.d': [{ description: 'd', entries: {} }],
+        'B.c': [{ description: 'c', entries: {} }],
+        A: [{
+          entries: {
+            b: { type: 'object' },
+            a: { type: 'object' },
+          },
+        }],
+        'A.b': [{ description: 'b', entries: {} }],
+        'A.a': [{ description: 'a', entries: {} }],
+      },
+      priv: {
+        A: [{ __id: 'A', __isEntry: true }],
+        'A.b': [{ __scopeName: 'b', __memberOf: 'A' }],
+        'A.a': [{ __scopeName: 'a', __memberOf: 'A' }],
+        B: [{ __id: 'B', __isEntry: true }],
+        'B.d': [{ __scopeName: 'd', __memberOf: 'B' }],
+        'B.c': [{ __scopeName: 'c', __memberOf: 'B' }],
+      },
+    }, cfg);
+
+    const topKeys = Object.keys(entries);
+    const childKeys = [];
+    topKeys.forEach(key => childKeys.push(...Object.keys(entries[key].entries)));
+
+    expect(topKeys).to.eql(['A', 'B'], 'top level entries');
+    expect(childKeys).to.eql(['a', 'b', 'c', 'd'], 'child entries');
+  });
+
+  it('should sort definitions alphabetically', () => {
+    const { definitions } = t.transform({
+      ids: {
+        B: [{
+          entries: {
+            d: { type: 'object' },
+            c: { type: 'object' },
+          },
+        }],
+        'B.d': [{ description: 'd', entries: {} }],
+        'B.c': [{ description: 'c', entries: {} }],
+        A: [{
+          entries: {
+            b: { type: 'object' },
+            a: { type: 'object' },
+          },
+        }],
+        'A.b': [{ description: 'b', entries: {} }],
+        'A.a': [{ description: 'a', entries: {} }],
+      },
+      priv: {
+        A: [{ __id: 'A' }],
+        'A.b': [{ __scopeName: 'b', __memberOf: 'A' }],
+        'A.a': [{ __scopeName: 'a', __memberOf: 'A' }],
+        B: [{ __id: 'B' }],
+        'B.d': [{ __scopeName: 'd', __memberOf: 'B' }],
+        'B.c': [{ __scopeName: 'c', __memberOf: 'B' }],
+      },
+    }, cfg);
+
+    const topKeys = Object.keys(definitions);
+    const childKeys = [];
+    topKeys.forEach(key => childKeys.push(...Object.keys(definitions[key].entries)));
+
+    expect(topKeys).to.eql(['A', 'B'], 'top level definitions');
+    expect(childKeys).to.eql(['a', 'b', 'c', 'd'], 'child entries of definitions');
+  });
 });
 
 describe('generate', () => {
