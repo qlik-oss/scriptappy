@@ -9,6 +9,7 @@ const BASIC_TYPES = [
   'array',
   'any',
   'null',
+  'symbol',
   'undefined',
 ].concat(types);
 

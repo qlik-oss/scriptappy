@@ -93,6 +93,7 @@ describe('check-types', () => {
       'array',
       'any',
       'null',
+      'symbol',
       'undefined',
       // custom types
       'mine',
