@@ -51,6 +51,10 @@ const templates = {
     /** */
     label(entry, cfg) {
       const isStatic = (entry.path || '').split('/').slice(-2)[0] === 'staticEntries';
+      const isDefinition = (entry.path || '').split('/').slice(-2)[0] === 'definitions';
+      if (isDefinition) {
+        return `${entry.kind}: ${entry.name}`;
+      }
       if (cfg.parent) {
         let prefix = cfg.parent.name;
         if (!isStatic && ['interface', 'class'].indexOf(cfg.parent.kind) !== -1) {

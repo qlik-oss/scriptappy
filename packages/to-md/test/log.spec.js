@@ -96,6 +96,10 @@ describe('log', () => {
       expect(d.label({ kind: 'k', name: 'n', path: 'a/b/staticEntries/n' }, { parent: { name: 'Foo', kind: 'interface' } })).to.equal('Foo.n');
     });
 
+    it('label as definition', () => {
+      expect(d.label({ kind: 'k', name: 'n', path: 'a/b/definitions/n' }, { parent: { name: 'Foo', kind: 'interface' } })).to.equal('k: n');
+    });
+
     it('label without kind', () => {
       expect(d.label({ name: 'n' }, {})).to.equal('n');
     });
