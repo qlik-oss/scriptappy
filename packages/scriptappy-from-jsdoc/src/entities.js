@@ -436,10 +436,23 @@ function kindInterface(doc, cfg, opts) {
   const obj = {
     kind: 'interface',
   };
-  Object.keys(fn).filter(key => key !== 'kind').forEach(key => { obj[key] = fn[key]; });
-  if (!doc.params) {
+  let numProps = 0; // number of props specific to the function kind (except params)
+  Object.keys(fn).filter(key => key !== 'kind').forEach(key => {
+    obj[key] = fn[key];
+    if (key !== 'params') {
+      numProps++;
+    }
+  });
+
+  // if the entity is a comment only and does not have an AST node,
+  // do not treat it as a functional interface if it does not have any
+  // functional properties
+  if (!doc.meta.code.type && !numProps && !obj.params.length) {
+    delete obj.params;
+  } else if (doc.meta.code && doc.meta.code.type === 'ObjectExpression') {
     delete obj.params;
   }
+
   obj.entries = doc.properties ? collectProps(doc.properties, cfg, opts) : {};
   return obj;
 }

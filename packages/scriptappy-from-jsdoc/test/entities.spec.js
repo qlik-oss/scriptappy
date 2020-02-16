@@ -704,12 +704,13 @@ describe('type', () => {
     });
   });
 
-  it('interface', () => {
+  it('interface comment with params', () => {
     const o = types.typedef({
       name: 'Person',
       kind: 'interface',
       description: 'iface',
       params: [{ name: 'first', type: { names: ['string'] } }],
+      meta: { code: {} },
     });
 
     expect(o).to.eql({
@@ -722,6 +723,35 @@ describe('type', () => {
     });
   });
 
+  it('interface from ObjectExpression should be treated as an object', () => {
+    const o = types.typedef({
+      name: 'Person',
+      kind: 'interface',
+      description: 'iface',
+      meta: { code: { type: 'ObjectExpression' } },
+    });
+
+    expect(o).to.eql({
+      kind: 'interface',
+      entries: {},
+    });
+  });
+
+  it('interface with an AST node should be treated as a function', () => {
+    const o = types.typedef({
+      name: 'Person',
+      kind: 'interface',
+      description: 'iface',
+      params: [],
+      meta: { code: { type: 'foo' } },
+    });
+
+    expect(o).to.eql({
+      kind: 'interface',
+      entries: {},
+      params: [],
+    });
+  });
 
   it('class', () => {
     const o = types.typedef({
