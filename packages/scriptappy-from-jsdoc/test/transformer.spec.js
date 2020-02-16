@@ -358,24 +358,6 @@ describe('transformer', () => {
       });
     });
 
-    it.skip('should rewrite types', () => {
-      const transformed = t.transform(
-        {
-          ids: {
-            c: [{ type: 'Carr' }],
-          },
-          priv: {
-            c: [{ __id: 'cc' }],
-          },
-        },
-        cfg
-      );
-
-      expect(transformed.definitions.cc).to.eql({
-        type: 'car',
-      });
-    });
-
     it('should deep merge entities', () => {
       const { entries } = t.transform(
         {
@@ -414,6 +396,57 @@ describe('transformer', () => {
                   type: 'string',
                 },
               },
+            },
+          },
+        },
+      });
+    });
+
+    it('should merge same entities', () => {
+      const { entries, definitions } = t.transform({
+        ids: {
+          Person: [{ kind: 'class' }, { kind: 'class' }],
+          'Person#name': [{ kind: 'function' }],
+          'Person#age': [{ kind: 'function' }],
+          Vehicle: [{ kind: 'class' }, { kind: 'class' }],
+          'Vehicle#color': [{ kind: 'function' }],
+          'Vehicle#model': [{ kind: 'function' }],
+        },
+        priv: {
+          Person: [
+            { __id: 'Person', __isEntry: true },
+            { __id: 'Person', __isEntry: true },
+          ],
+          'Person#name': [{ __scopeName: 'name', __memberOf: 'Person' }],
+          'Person#age': [{ __scopeName: 'age', __memberOf: 'Person' }],
+          Vehicle: [{ __id: 'Vehicle' }, { __id: 'Vehicle' }],
+          'Vehicle#color': [{ __scopeName: 'color', __memberOf: 'Vehicle' }],
+          'Vehicle#model': [{ __scopeName: 'model', __memberOf: 'Vehicle' }],
+        },
+      });
+
+      expect(entries).to.eql({
+        Person: {
+          kind: 'class',
+          entries: {
+            name: {
+              kind: 'function',
+            },
+            age: {
+              kind: 'function',
+            },
+          },
+        },
+      });
+      expect(definitions).to.eql({
+        Vehicle: {
+          kind: 'class',
+          entries: {
+            color: {
+              kind: 'function',
+            },
+            model: {
+              kind: 'function',
             },
           },
         },

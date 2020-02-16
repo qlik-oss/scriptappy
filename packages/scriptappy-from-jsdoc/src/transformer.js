@@ -172,7 +172,7 @@ function transform({ ids, priv }, cfg) {
     .sort((a, b) => {
       const aa = a.toLowerCase();
       const bb = b.toLowerCase();
-    return aa > bb ? 1 : (bb > aa ? -1 : 0); // eslint-disable-line
+      return aa > bb ? 1 : bb > aa ? -1 : 0; // eslint-disable-line
     })
     .forEach(longname => {
       ids[longname].forEach((d, idx) => {
@@ -225,11 +225,19 @@ function transform({ ids, priv }, cfg) {
             pr.__ref = ref;
           }
         } else if (d.kind !== 'module' && (memberScope === 'inner' || !isEntry)) {
-          definitions[pr.__id] = d;
+          if (definitions[pr.__id]) {
+            extend(true, definitions[pr.__id], d);
+          } else {
+            definitions[pr.__id] = d;
+          }
           pr.__ref = `#/definitions/${pr.__id}`;
         } else {
           const id = d.kind === 'module' ? pr.__scopeName : pr.__id;
-          entries[id] = d;
+          if (entries[id]) {
+            extend(true, entries[id], d);
+          } else {
+            entries[id] = d;
+          }
           pr.__ref = `#/entries/${id}`;
         }
       });
@@ -252,7 +260,8 @@ function specification({ entries = {}, definitions = {}, pack = {}, version } = 
       name: typeof opts.api.name !== 'undefined' ? opts.api.name : pack.name,
       description: typeof opts.api.description !== 'undefined' ? opts.api.description : pack.description,
       version: typeof opts.api.version !== 'undefined' ? opts.api.version : pack.version,
-      license: typeof opts.api.license !== 'undefined' ? opts.api.license : (pack.licenses ? pack.licenses[0].type : undefined), // eslint-disable-line
+      license:
+        typeof opts.api.license !== 'undefined' ? opts.api.license : pack.licenses ? pack.licenses[0].type : undefined, // eslint-disable-line
       stability: opts.api.stability,
     },
     examples: opts.examples,
