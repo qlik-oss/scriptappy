@@ -29,12 +29,17 @@ const SEP_RX = /[.!?]$/;
 const SPACE_RX = /\s+$/;
 const DEFAULT_RX = /default/i;
 
+/** @typedef {object} */
 const templates = {
+  /** @typedef {object} */
   default: {
+    /** */
     pre: '###',
+    /** */
     indent: '  ',
     slugify,
     type,
+    /** */
     listItem(entry, cfg, helpers) {
       const prefix = entry.variable ? '...' : '';
       const value = !DEFAULT_RX.test(entry.description) && entry.defaultValue ? ` Defaults to \`${entry.defaultValue}\`` : '';
@@ -43,6 +48,7 @@ const templates = {
       const t = entry.name ? `\`${prefix}${entry.name}\` ` : '';
       return `${this.indent.repeat(cfg.indent)}- ${t}${this.type(entry, cfg, helpers)}${descr}${separator}${value}`;
     },
+    /** */
     label(entry, cfg) {
       const isStatic = (entry.path || '').split('/').slice(-2)[0] === 'staticEntries';
       if (cfg.parent) {
@@ -61,12 +67,15 @@ const templates = {
 
       return `${entry.kind}: ${entry.name}`;
     },
+    /** */
     toc(label, cfg) {
       return `${this.indent.repeat(cfg.depth)}- [${label}](${this.slugify(label)})`;
     },
+    /** */
     header(label, cfg) {
       return `${this.pre}${'#'.repeat(cfg.depth)} ${label}`;
     },
+    /** */
     meta(entry) {
       const s = [];
       if (entry.stability) {
@@ -85,6 +94,7 @@ const templates = {
 
       return s.filter(Boolean).join('\n>\n');
     },
+    /** */
     description(entry, cfg, helpers) {
       let s = '';
       if (entry.extends) {
@@ -93,6 +103,7 @@ const templates = {
       }
       return `${s}${entry.description || ''}`;
     },
+    /** */
     paramSignature: (entry) => {
       let s = '';
       let optional = '';
@@ -120,6 +131,7 @@ const templates = {
       });
       return s;
     },
+    /** */
     paramDetails(entry, cfg, helpers) {
       const sig = [];
       entry.params.forEach((p) => {
@@ -157,6 +169,7 @@ const templates = {
       const s = sig.filter(Boolean).join('');
       return s;
     },
+    /** */
     example(x) {
       const title = /<caption>(.+)<\/caption>/.exec(x);
       const code = title ? x.replace(title[0], '') : x;
@@ -167,6 +180,7 @@ const templates = {
         codified ? `${code}` : `\`\`\`js\n${code}\n\`\`\``,
       ].filter(Boolean).join('\n\n');
     },
+    /** */
     examples(entry /* , cfg, helpers */) {
       if (!entry.examples) {
         return '';
@@ -178,10 +192,13 @@ const templates = {
   constructor: {
     label: (entry) => `new ${entry.name}`,
   },
+  /** */
   event: {
+    /** */
     label(entry) {
       return `event: '${entry.name}'`;
     },
+    /** */
     paramSignature: () => null,
   },
   method: {

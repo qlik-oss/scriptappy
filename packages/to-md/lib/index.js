@@ -5,7 +5,15 @@ const entryFn = require('./entry');
 const typesFn = require('./types');
 const log = require('./log');
 
-function toMarkdown(spec, {
+
+/**
+ * @entry
+ * @param {object} spec
+ * @param {object} [config]
+ * @param {templates} [config.templates]
+ * @returns {module:to-md~md}
+ */
+module.exports = function toMarkdown(spec, {
   templates,
 } = {}) {
   const toc = [];
@@ -31,11 +39,21 @@ function toMarkdown(spec, {
     assignSlug: types.assignSlug,
   });
 
+  /**
+   * @interface md
+   */
   return {
+    /**
+     * @returns {string}
+     */
     toc: () => `\n${toc.join('\n')}\n`,
+    /**
+     * @returns {string}
+     */
     content: () => content,
+    /**
+     * @returns {string}
+     */
     references: () => `\n${types.getReferences().map(ref => `[${ref.key}]: ${ref.link}`).join('\n')}\n`,
   };
-}
-
-module.exports = toMarkdown;
+};
