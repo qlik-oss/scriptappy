@@ -40,13 +40,7 @@ function entryClosure(templates) {
 
     const examples = templ.examples(...fnArgs);
 
-    const section = [
-      header,
-      meta,
-      paramDetails,
-      description,
-      examples,
-    ].filter(Boolean).join('\n\n');
+    const section = [header, meta, paramDetails, description, examples].filter(Boolean).join('\n\n');
 
     if (section.length) {
       return `\n\n${section}\n\n`;

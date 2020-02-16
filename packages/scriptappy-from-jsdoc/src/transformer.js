@@ -20,7 +20,10 @@ function printViolations(violations, logger = console) {
       logger.log('\nType check\x1b[0m');
     }
     vs.forEach(violation => {
-      const position = violation.doc && violation.doc.meta ? `\x1b[2m${violation.doc.meta.lineno}:${violation.doc.meta.columnno}\x1b[0m` : '';
+      const position =
+        violation.doc && violation.doc.meta
+          ? `\x1b[2m${violation.doc.meta.lineno}:${violation.doc.meta.columnno}\x1b[0m`
+          : '';
       const rule = `\x1b[2m${violation.rule}\x1b[0m`;
       const severity = violation.severity === 2 ? '\x1b[31merror\x1b[0m' : '\x1b[33mwarn\x1b[0m';
       const message = `  ${position}\t${severity}\t${violation.message}\t${rule}`;
@@ -38,7 +41,9 @@ function printViolations(violations, logger = console) {
   console.log('\n');
 
   if (errs || warnings) {
-    console.log(`${errs ? '\x1b[91m' : '\x1b[93m'}✖ ${errs + warnings} Problem${plural(errs + warnings)} ${str}\x1b[39m`);
+    console.log(
+      `${errs ? '\x1b[91m' : '\x1b[93m'}✖ ${errs + warnings} Problem${plural(errs + warnings)} ${str}\x1b[39m`
+    );
   } else {
     console.log('\x1b[92m✔ Success\x1b[0m');
   }
@@ -126,7 +131,8 @@ function collect(doclets, cfg, entity = entities.doclet) {
       }
       d.__isEntry = (doc.tags || []).filter(tag => tag.originalTitle === 'entry').length > 0;
 
-      if (ids[d.__id] && ids[d.__id][0] && ids[d.__id][0].kind === 'module') { // 'd' is a default export from a module
+      if (ids[d.__id] && ids[d.__id][0] && ids[d.__id][0].kind === 'module') {
+        // 'd' is a default export from a module
         d.__memberOf = d.__id;
         d.__memberScope = 'static';
         d.__scopeName = '@default';
@@ -162,70 +168,72 @@ function collect(doclets, cfg, entity = entities.doclet) {
 function transform({ ids, priv }, cfg) {
   const entries = {};
   const definitions = {};
-  Object.keys(ids).sort((a, b) => {
-    const aa = a.toLowerCase();
-    const bb = b.toLowerCase();
+  Object.keys(ids)
+    .sort((a, b) => {
+      const aa = a.toLowerCase();
+      const bb = b.toLowerCase();
     return aa > bb ? 1 : (bb > aa ? -1 : 0); // eslint-disable-line
-  }).forEach(longname => {
-    ids[longname].forEach((d, idx) => {
-      // const d = ids[longname];
-      const pr = priv[longname][idx];
-      const memberOf = pr.__memberOf;
-      const memberDefault = `${memberOf}@default`;
-      const memberScope = pr.__memberScope;
-      const scopeName = pr.__scopeName;
-      let parent = ids[memberOf] && ids[memberOf][0];
-      const access = pr.__access;
-      // const isDefinition = pr.__isDefinition;
-      const isEntry = pr.__isEntry;
+    })
+    .forEach(longname => {
+      ids[longname].forEach((d, idx) => {
+        // const d = ids[longname];
+        const pr = priv[longname][idx];
+        const memberOf = pr.__memberOf;
+        const memberDefault = `${memberOf}@default`;
+        const memberScope = pr.__memberScope;
+        const scopeName = pr.__scopeName;
+        let parent = ids[memberOf] && ids[memberOf][0];
+        const access = pr.__access;
+        // const isDefinition = pr.__isDefinition;
+        const isEntry = pr.__isEntry;
 
-      const parentMaybeDefault = ids[memberDefault] && ids[memberDefault][0];
-      if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
-        if (!/^exports/.test(pr.__meta.code.name)) {
-          [parent] = ids[memberDefault];
-          pr.__id = pr.__id.replace(memberOf, memberDefault);
+        const parentMaybeDefault = ids[memberDefault] && ids[memberDefault][0];
+        if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
+          if (!/^exports/.test(pr.__meta.code.name)) {
+            [parent] = ids[memberDefault];
+            pr.__id = pr.__id.replace(memberOf, memberDefault);
+          }
         }
-      }
 
-      let memberProperty;
+        let memberProperty;
 
-      if (access === 'private') {
-        return;
-      }
+        if (access === 'private') {
+          return;
+        }
 
-      if (parent) {
-        if (d.kind === 'event') {
-          memberProperty = 'events';
-        } else if (memberScope === 'static' && parent && parent.kind === 'class') {
-          memberProperty = 'staticEntries';
-        } else if (memberScope === 'inner') {
-          memberProperty = 'definitions';
+        if (parent) {
+          if (d.kind === 'event') {
+            memberProperty = 'events';
+          } else if (memberScope === 'static' && parent && parent.kind === 'class') {
+            memberProperty = 'staticEntries';
+          } else if (memberScope === 'inner') {
+            memberProperty = 'definitions';
+          } else {
+            memberProperty = 'entries';
+          }
+
+          parent[memberProperty] = parent[memberProperty] || {};
+          const ref = `${priv[memberOf][0].__ref}/${memberProperty}/${scopeName}`;
+          if (parent[memberProperty][scopeName]) {
+            // TODO - add multiple signatures if kind === 'function' ?
+            parent[memberProperty][scopeName] = parent[memberProperty][scopeName] || {};
+            extend(true, parent[memberProperty][scopeName], d);
+            ids[longname][idx] = parent[memberProperty][scopeName]; // eslint-disable-line no-param-reassign
+            pr.__ref = ref;
+          } else {
+            parent[memberProperty][scopeName] = d;
+            pr.__ref = ref;
+          }
+        } else if (d.kind !== 'module' && (memberScope === 'inner' || !isEntry)) {
+          definitions[pr.__id] = d;
+          pr.__ref = `#/definitions/${pr.__id}`;
         } else {
-          memberProperty = 'entries';
+          const id = d.kind === 'module' ? pr.__scopeName : pr.__id;
+          entries[id] = d;
+          pr.__ref = `#/entries/${id}`;
         }
-
-        parent[memberProperty] = parent[memberProperty] || {};
-        const ref = `${priv[memberOf][0].__ref}/${memberProperty}/${scopeName}`;
-        if (parent[memberProperty][scopeName]) {
-          // TODO - add multiple signatures if kind === 'function' ?
-          parent[memberProperty][scopeName] = parent[memberProperty][scopeName] || {};
-          extend(true, parent[memberProperty][scopeName], d);
-          ids[longname][idx] = parent[memberProperty][scopeName]; // eslint-disable-line no-param-reassign
-          pr.__ref = ref;
-        } else {
-          parent[memberProperty][scopeName] = d;
-          pr.__ref = ref;
-        }
-      } else if (d.kind !== 'module' && (memberScope === 'inner' || !isEntry)) {
-        definitions[pr.__id] = d;
-        pr.__ref = `#/definitions/${pr.__id}`;
-      } else {
-        const id = d.kind === 'module' ? pr.__scopeName : pr.__id;
-        entries[id] = d;
-        pr.__ref = `#/entries/${id}`;
-      }
+      });
     });
-  });
 
   // console.log(priv);
   checkTypes(entries, priv, cfg);
@@ -237,12 +245,7 @@ function transform({ ids, priv }, cfg) {
   };
 }
 
-function specification({
-  entries = {},
-  definitions = {},
-  pack = {},
-  version,
-} = {}, opts) {
+function specification({ entries = {}, definitions = {}, pack = {}, version } = {}, opts) {
   const spec = {
     scriptappy: version || schema.properties.scriptappy.const,
     info: {
@@ -268,11 +271,7 @@ function write(JSONSpec, destination) {
   fs.writeFileSync(destination, JSONSpec);
 }
 
-function generate({
-  data,
-  config,
-  version,
-}) {
+function generate({ data, config, version }) {
   // filter doclets
   const doclets = filterDoclets(data);
 
@@ -286,35 +285,45 @@ function generate({
   const { entries, definitions } = transform(collected, config);
 
   // create spec
-  const spec = specification({
-    entries,
-    definitions,
-    pack: collected.pack,
-    version,
-  }, config);
+  const spec = specification(
+    {
+      entries,
+      definitions,
+      pack: collected.pack,
+      version,
+    },
+    config
+  );
 
   const errors = printViolations(violations);
 
-  const unversioned = JSON.stringify(extend(true, {}, spec, {
-    info: {
-      version: '',
-    },
-  }));
+  const unversioned = JSON.stringify(
+    extend(true, {}, spec, {
+      info: {
+        version: '',
+      },
+    })
+  );
 
   let oldSpec = {};
   if (!config.x && config.output && fs.existsSync(config.output.file)) {
     oldSpec = JSON.parse(fs.readFileSync(config.output.file));
   }
-  const unversionedOld = JSON.stringify(extend(true, {}, oldSpec, {
-    info: {
-      version: '',
-    },
-  }));
+  const unversionedOld = JSON.stringify(
+    extend(true, {}, oldSpec, {
+      info: {
+        version: '',
+      },
+    })
+  );
 
   const isDifferent = unversioned !== unversionedOld;
 
   // validate spec against schema
-  if ((config.spec.validate === 'diff' && isDifferent) || (config.spec.validate !== false && config.spec.validate !== 'diff')) {
+  if (
+    (config.spec.validate === 'diff' && isDifferent) ||
+    (config.spec.validate !== false && config.spec.validate !== 'diff')
+  ) {
     tools.validate(schema, spec);
   } else {
     console.log('No API changes - skippping validation');

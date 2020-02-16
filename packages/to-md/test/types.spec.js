@@ -22,50 +22,70 @@ describe('types', () => {
   });
 
   it('should return internal type "[Person]"', () => {
-    expect(t.getType({
-      ...spec.entries.dude,
-      name: 'dude',
-    })).to.equal('[Person]');
+    expect(
+      t.getType({
+        ...spec.entries.dude,
+        name: 'dude',
+      })
+    ).to.equal('[Person]');
   });
 
   it('should return known data structure', () => {
-    expect(t.getType({
-      kind: 'boolean',
-    })).to.equal('[boolean]');
-    expect(t.getType({
-      kind: 'string',
-    })).to.equal('[string]');
-    expect(t.getType({
-      kind: 'number',
-    })).to.equal('[number]');
+    expect(
+      t.getType({
+        kind: 'boolean',
+      })
+    ).to.equal('[boolean]');
+    expect(
+      t.getType({
+        kind: 'string',
+      })
+    ).to.equal('[string]');
+    expect(
+      t.getType({
+        kind: 'number',
+      })
+    ).to.equal('[number]');
 
-    expect(t.getType({
-      kind: 'class',
-    })).to.equal('[class]');
+    expect(
+      t.getType({
+        kind: 'class',
+      })
+    ).to.equal('[class]');
   });
 
   it('should return known builtin object', () => {
-    expect(t.getType({
-      kind: 'function',
-    })).to.equal('[Function]');
+    expect(
+      t.getType({
+        kind: 'function',
+      })
+    ).to.equal('[Function]');
 
-    expect(t.getType({
-      kind: 'RangeError',
-    })).to.equal('[RangeError]');
+    expect(
+      t.getType({
+        kind: 'RangeError',
+      })
+    ).to.equal('[RangeError]');
 
-    expect(t.getType({
-      kind: 'object',
-    })).to.equal('[Object]');
+    expect(
+      t.getType({
+        kind: 'object',
+      })
+    ).to.equal('[Object]');
 
-    expect(t.getType({
-      kind: 'math',
-    })).to.equal('[Math]');
+    expect(
+      t.getType({
+        kind: 'math',
+      })
+    ).to.equal('[Math]');
   });
 
   it('should return simple unknown type', () => {
-    expect(t.getType({
-      kind: 'foo',
-    })).to.equal('`foo`');
+    expect(
+      t.getType({
+        kind: 'foo',
+      })
+    ).to.equal('`foo`');
   });
 
   it('should prefix ... for variable type', () => {
@@ -87,21 +107,25 @@ describe('types', () => {
   });
 
   it('should return internal references with assigned slugs', () => {
-    t.assignSlug({
-      path: '#/definitions/Person',
-    }, '#class-person');
+    t.assignSlug(
+      {
+        path: '#/definitions/Person',
+      },
+      '#class-person'
+    );
 
-    t.assignSlug({
-      path: '#/definitions/Car',
-    }, '#class-car');
+    t.assignSlug(
+      {
+        path: '#/definitions/Car',
+      },
+      '#class-car'
+    );
 
     t.getType({
       type: '#/definitions/Person',
     });
 
-    expect(t.getReferences()).to.eql([
-      { key: 'Person', link: '#class-person' },
-    ]);
+    expect(t.getReferences()).to.eql([{ key: 'Person', link: '#class-person' }]);
   });
 
   it('should return builtin references', () => {
@@ -115,7 +139,10 @@ describe('types', () => {
 
     expect(t.getReferences()).to.eql([
       { key: 'Set', link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set' },
-      { key: 'SyntaxError', link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError' },
+      {
+        key: 'SyntaxError',
+        link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError',
+      },
     ]);
   });
 });

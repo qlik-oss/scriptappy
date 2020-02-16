@@ -87,7 +87,8 @@ function entityTier(entity, k) {
 
   references.push(reference(k));
 
-  s += 'This tier is a collection of other entities, wherever this tier is referenced, the following entities are allowed:\n';
+  s +=
+    'This tier is a collection of other entities, wherever this tier is referenced, the following entities are allowed:\n';
 
   s += '\n';
   s += entity.oneOf.map(type).join(' | ');
@@ -150,13 +151,17 @@ definition(schema.definitions.common, 'type');
 definition(schema.definitions.availability, 'availability');
 definition(schema.definitions.deprecated, 'deprecated');
 
-Object.keys(schema.definitions).filter(key => /^entity-tier/.test(key)).forEach(key => {
-  entityTier(schema.definitions[key], key);
-});
+Object.keys(schema.definitions)
+  .filter(key => /^entity-tier/.test(key))
+  .forEach(key => {
+    entityTier(schema.definitions[key], key);
+  });
 
-Object.keys(schema.definitions).filter(key => /^kind\./.test(key) || key === 'constructor').forEach(key => {
-  kind(schema.definitions[key], key);
-});
+Object.keys(schema.definitions)
+  .filter(key => /^kind\./.test(key) || key === 'constructor')
+  .forEach(key => {
+    kind(schema.definitions[key], key);
+  });
 
 const TOC = references.map(r => `    - ${r}`).join('\n');
 

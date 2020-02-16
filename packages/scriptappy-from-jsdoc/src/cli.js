@@ -56,8 +56,7 @@ const conf = yargs // eslint-disable-line no-unused-expressions
       default: false,
     },
   })
-  .wrap(Math.min(120, yargs.terminalWidth()))
-  .argv;
+  .wrap(Math.min(120, yargs.terminalWidth())).argv;
 
 const configs = [defaultConfig];
 
@@ -71,14 +70,14 @@ if (typeof conf.c === 'string') {
 configs.push(conf);
 const config = extend(true, {}, ...configs);
 
-const run = (data) => {
+const run = data => {
   generate({
     data: data.docs || data,
     config,
   });
 };
 
-const runWithJSDoc = (files) => {
+const runWithJSDoc = files => {
   let s = '';
   const cfg = {
     source: {
@@ -115,7 +114,8 @@ const runWithJSDoc = (files) => {
 };
 
 if (require.main === module) {
-  if (typeof config.jsdoc === 'string') { // assume path to jsdoc-json file
+  if (typeof config.jsdoc === 'string') {
+    // assume path to jsdoc-json file
     const p = path.resolve(process.cwd(), config.jsdoc);
     if (!fs.existsSync(p)) {
       throw new Error(`jsdoc ${p} not found`);
@@ -125,9 +125,13 @@ if (require.main === module) {
     const withJSDoc = async () => {
       const cwd = process.cwd();
       const pkg = config.package ? path.resolve(cwd, config.package) : [];
-      const files = (await globby(config.glob, {
-        gitignore: false,
-      })).concat(pkg).map(f => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
+      const files = (
+        await globby(config.glob, {
+          gitignore: false,
+        })
+      )
+        .concat(pkg)
+        .map(f => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
       runWithJSDoc(files);
 
       if (config.w) {
@@ -139,22 +143,27 @@ if (require.main === module) {
     };
 
     // if stdin is piped in, assume its a jsdoc-json file
-    (!process.stdin.isTTY ? new Promise((resolve, reject) => {
-      let data = '';
+    (!process.stdin.isTTY
+      ? new Promise((resolve, reject) => {
+          let data = '';
 
-      process.stdin.on('data', (chunk) => {
-        data += chunk;
-      });
+          process.stdin.on('data', chunk => {
+            data += chunk;
+          });
 
-      process.stdin.on('end', () => {
-        if (!data) {
-          reject();
-        } else {
-          resolve(JSON.parse(data));
-        }
+          process.stdin.on('end', () => {
+            if (!data) {
+              reject();
+            } else {
+              resolve(JSON.parse(data));
+            }
+          });
+        })
+      : Promise.reject()
+    )
+      .then(jsdoc => run(jsdoc))
+      .catch(() => {
+        withJSDoc();
       });
-    }) : Promise.reject()).then(jsdoc => run(jsdoc)).catch(() => {
-      withJSDoc();
-    });
   }
 }

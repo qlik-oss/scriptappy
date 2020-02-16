@@ -5,10 +5,13 @@ describe('transformer', () => {
   before(() => {
     sandbox = sinon.createSandbox();
     // doclet = sandbox.stub();
-    [t] = aw.mock([
-      ['**/check-types.js', () => () => {}],
-      // ['**/entities.js', () => ({ doclet })],
-    ], ['../src/transformer']);
+    [t] = aw.mock(
+      [
+        ['**/check-types.js', () => () => {}],
+        // ['**/entities.js', () => ({ doclet })],
+      ],
+      ['../src/transformer']
+    );
   });
 
   afterEach(() => {
@@ -54,7 +57,7 @@ describe('transformer', () => {
         { kind: 'foo', longname: 'j' },
       ];
 
-      const d = (doclet) => doclet;
+      const d = doclet => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(Object.keys(ids)).to.eql(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']);
@@ -66,7 +69,7 @@ describe('transformer', () => {
         { kind: 'function', longname: 'd', descr: 'second' },
       ];
 
-      const d = (doclet) => doclet;
+      const d = doclet => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(ids.d).to.eql([
@@ -76,9 +79,7 @@ describe('transformer', () => {
     });
 
     it('should recognize package', () => {
-      const doclets = [
-        { kind: 'package' },
-      ];
+      const doclets = [{ kind: 'package' }];
 
       const { pack } = t.collect(doclets, cfg, () => {});
       expect(pack).to.eql({ kind: 'package' });
@@ -92,7 +93,7 @@ describe('transformer', () => {
         },
       ];
 
-      const d = (doclet) => doclet;
+      const d = doclet => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(Object.keys(ids).length).to.equal(0);
@@ -104,7 +105,7 @@ describe('transformer', () => {
         { kind: 'function', longname: 'module:mod' },
       ];
 
-      const d = (doclet) => doclet;
+      const d = doclet => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(ids['module:mod@default'][0]).to.eql({
@@ -114,17 +115,15 @@ describe('transformer', () => {
     });
 
     it('should mark filtered doclets as private', () => {
-      const doclets = [
-        { longname: 'f', kind: 'member' },
-      ];
+      const doclets = [{ longname: 'f', kind: 'member' }];
 
-      const d = (doclet) => doclet;
+      const d = doclet => doclet;
 
       const c = {
         ...cfg,
         parse: {
           ...cfg.parse,
-          filter: (doc) => doc.longname !== 'f',
+          filter: doc => doc.longname !== 'f',
         },
       };
 
@@ -137,37 +136,51 @@ describe('transformer', () => {
     it('should log error', () => {
       const violations = {};
       const doc = { meta: { path: 'a', filename: 'b' } };
-      t.logRule({
-        logger: {},
-        parse: {
-          types: {},
-          rules: {
-            'my-rule': 2,
+      t.logRule(
+        {
+          logger: {},
+          parse: {
+            types: {},
+            rules: {
+              'my-rule': 2,
+            },
           },
         },
-      }, doc, 'my-rule', 'oops', violations);
+        doc,
+        'my-rule',
+        'oops',
+        violations
+      );
 
       expect(violations).eql({
-        'a/b': [{
-          doc,
-          message: 'oops',
-          rule: 'my-rule',
-          severity: 2,
-        }],
+        'a/b': [
+          {
+            doc,
+            message: 'oops',
+            rule: 'my-rule',
+            severity: 2,
+          },
+        ],
       });
     });
 
     it('should not log with severity <= 0', () => {
       const violations = {};
-      t.logRule({
-        logger: {},
-        parse: {
-          types: {},
-          rules: {
-            'my-rule': 0,
+      t.logRule(
+        {
+          logger: {},
+          parse: {
+            types: {},
+            rules: {
+              'my-rule': 0,
+            },
           },
         },
-      }, {}, 'my-rule', 'oops', violations);
+        {},
+        'my-rule',
+        'oops',
+        violations
+      );
 
       expect(violations).to.eql({});
     });
@@ -302,12 +315,14 @@ describe('transformer', () => {
         priv: {
           'module:fs': [{ __id: 'module:fs', __scopeName: 'fs' }],
           'module:fs@default': [{ __scopeName: '@default', __memberOf: 'module:fs' }],
-          'module:fs.name': [{
-            __id: 'module:fs.name',
-            __scopeName: 'name',
-            __memberOf: 'module:fs',
-            __meta: { code: { name: '' } },
-          }],
+          'module:fs.name': [
+            {
+              __id: 'module:fs.name',
+              __scopeName: 'name',
+              __memberOf: 'module:fs',
+              __meta: { code: { name: '' } },
+            },
+          ],
         },
       });
 
@@ -344,14 +359,17 @@ describe('transformer', () => {
     });
 
     it.skip('should rewrite types', () => {
-      const transformed = t.transform({
-        ids: {
-          c: [{ type: 'Carr' }],
+      const transformed = t.transform(
+        {
+          ids: {
+            c: [{ type: 'Carr' }],
+          },
+          priv: {
+            c: [{ __id: 'cc' }],
+          },
         },
-        priv: {
-          c: [{ __id: 'cc' }],
-        },
-      }, cfg);
+        cfg
+      );
 
       expect(transformed.definitions.cc).to.eql({
         type: 'car',
@@ -359,22 +377,30 @@ describe('transformer', () => {
     });
 
     it('should deep merge entities', () => {
-      const { entries } = t.transform({
-        ids: {
-          component: [{
-            entries: {
-              settings: { type: 'object' },
-            },
-          }],
-          'component.settings': [{ description: 'settings', entries: {} }],
-          'component.settings.shape': [{ description: 'shape' }, { type: 'string' }],
+      const { entries } = t.transform(
+        {
+          ids: {
+            component: [
+              {
+                entries: {
+                  settings: { type: 'object' },
+                },
+              },
+            ],
+            'component.settings': [{ description: 'settings', entries: {} }],
+            'component.settings.shape': [{ description: 'shape' }, { type: 'string' }],
+          },
+          priv: {
+            component: [{ __id: 'component', __isEntry: true }],
+            'component.settings': [{ __scopeName: 'settings', __memberOf: 'component' }],
+            'component.settings.shape': [
+              { __scopeName: 'shape', __memberOf: 'component.settings' },
+              { __scopeName: 'shape', __memberOf: 'component.settings' },
+            ],
+          },
         },
-        priv: {
-          component: [{ __id: 'component', __isEntry: true }],
-          'component.settings': [{ __scopeName: 'settings', __memberOf: 'component' }],
-          'component.settings.shape': [{ __scopeName: 'shape', __memberOf: 'component.settings' }, { __scopeName: 'shape', __memberOf: 'component.settings' }],
-        },
-      }, cfg);
+        cfg
+      );
 
       expect(entries).to.eql({
         component: {
@@ -397,29 +423,37 @@ describe('transformer', () => {
 
   describe('generate', () => {
     it('spec', () => {
-      const doclets = [{
-        meta: { code: { name: '' } },
-        kind: 'module',
-        name: 'fs',
-        longname: 'module:fs',
-      }, {
-        meta: { code: { name: '' } },
-        kind: 'member',
-        type: { names: ['string'] },
-        longname: 'def',
-        scope: 'inner',
-      }, {
-        kind: 'package',
-        name: 'api',
-        longname: 'does not matter',
-        version: '3.7.0',
-        licenses: [{ type: 'yes' }],
-      }];
-      const spec = JSON.parse(JSON.stringify(t.generate({
-        data: doclets,
-        config: cfg,
-        version: 'x.y.z',
-      })));
+      const doclets = [
+        {
+          meta: { code: { name: '' } },
+          kind: 'module',
+          name: 'fs',
+          longname: 'module:fs',
+        },
+        {
+          meta: { code: { name: '' } },
+          kind: 'member',
+          type: { names: ['string'] },
+          longname: 'def',
+          scope: 'inner',
+        },
+        {
+          kind: 'package',
+          name: 'api',
+          longname: 'does not matter',
+          version: '3.7.0',
+          licenses: [{ type: 'yes' }],
+        },
+      ];
+      const spec = JSON.parse(
+        JSON.stringify(
+          t.generate({
+            data: doclets,
+            config: cfg,
+            version: 'x.y.z',
+          })
+        )
+      );
 
       expect(spec).to.eql({
         scriptappy: 'x.y.z',
@@ -438,25 +472,29 @@ describe('transformer', () => {
     });
 
     it('refs', () => {
-      const doclets = [{
-        meta: { code: { name: '' } },
-        tags: [{ originalTitle: 'entry', title: 'entry' }],
-        kind: 'typedef',
-        type: { names: ['object'] },
-        longname: 'data-source',
-      }, {
-        meta: { code: { name: '' } },
-        kind: 'typedef',
-        type: { names: ['object'] },
-        longname: 'chart-definition',
-      }, {
-        meta: { code: { name: '' } },
-        kind: 'typedef',
-        type: { names: ['Array.<data-source>'] },
-        name: 'data',
-        memberof: 'chart-definition',
-        longname: 'chart-definition.data',
-      }];
+      const doclets = [
+        {
+          meta: { code: { name: '' } },
+          tags: [{ originalTitle: 'entry', title: 'entry' }],
+          kind: 'typedef',
+          type: { names: ['object'] },
+          longname: 'data-source',
+        },
+        {
+          meta: { code: { name: '' } },
+          kind: 'typedef',
+          type: { names: ['object'] },
+          longname: 'chart-definition',
+        },
+        {
+          meta: { code: { name: '' } },
+          kind: 'typedef',
+          type: { names: ['Array.<data-source>'] },
+          name: 'data',
+          memberof: 'chart-definition',
+          longname: 'chart-definition.data',
+        },
+      ];
       const spec = t.generate({
         data: doclets,
         config: cfg,

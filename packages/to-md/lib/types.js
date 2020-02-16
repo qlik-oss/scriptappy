@@ -6,7 +6,7 @@ const knownReferences = {
 };
 
 // TODO - separate nodejs builtins vs web builtins
-const builtInType = (t) => `https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/${t}`;
+const builtInType = t => `https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/${t}`;
 
 function types(spec) {
   const internal = {
@@ -27,11 +27,11 @@ function types(spec) {
 
   const getReferences = () => {
     const refs = [];
-    Object.keys(typeMap).forEach((key) => {
+    Object.keys(typeMap).forEach(key => {
       refs.push({ key, link: knownRefs[key] });
     });
 
-    Object.keys(internal.paths).forEach((key) => {
+    Object.keys(internal.paths).forEach(key => {
       if (internal.paths[key].slug && internal.paths[key].referenced) {
         refs.push({ key: internal.paths[key].name, link: internal.paths[key].slug });
       }
@@ -40,7 +40,7 @@ function types(spec) {
     return refs;
   };
 
-  const getType = (entry) => {
+  const getType = entry => {
     const prefix = `${entry.variable ? '...' : ''}${entry.nullable ? '?' : ''}`;
     if (entry.type && internal.paths[entry.type]) {
       internal.paths[entry.type].referenced = true;
@@ -77,7 +77,7 @@ function types(spec) {
       }
       internal.paths[entry.path] = { name };
     }
-    ['entries', 'events', 'definitions'].forEach((prop) => {
+    ['entries', 'events', 'definitions'].forEach(prop => {
       if (entry[prop]) {
         Object.keys(entry[prop]).forEach(key => {
           const n = {

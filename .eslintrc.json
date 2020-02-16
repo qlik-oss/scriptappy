@@ -3,18 +3,28 @@
   "env": {
     "node": true
   },
-  "extends": "airbnb-base",
+  "extends": ["airbnb-base", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
-    "arrow-parens": "off",
-    "no-underscore-dangle": "off",
-    "max-len": "off",
-    "no-use-before-define": "off"
+    "no-plusplus": 0,
+    "no-use-before-define": 0,
+    "no-underscore-dangle": 0,
+    "prettier/prettier": 2
   },
   "overrides": [
     {
+      "files": ["packages/scriptappy-schema/**"],
+      "rules": {
+        "import/no-extraneous-dependencies": [2, { "devDependencies": true }]
+      }
+    },
+    {
       "files": ["**/*.spec.js"],
+      "plugins": ["mocha"],
+      "rules": {
+        "mocha/no-exclusive-tests": 2
+      },
       "env": {
-        "browser": false,
         "node": true,
         "mocha": true
       },

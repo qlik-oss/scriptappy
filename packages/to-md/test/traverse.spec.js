@@ -10,7 +10,7 @@ describe('traverse', () => {
     };
   });
 
-  ['staticEntries', 'entries', 'events', 'definitions'].forEach((prop) => {
+  ['staticEntries', 'entries', 'events', 'definitions'].forEach(prop => {
     it(`should traverse ${prop}`, () => {
       const root = {
         [prop]: {
@@ -20,13 +20,19 @@ describe('traverse', () => {
       };
       traverse(root, undefined, helpers);
       expect(entry.callCount).to.equal(2);
-      expect(entry.getCall(0)).to.have.been.calledWithExactly({
-        name: 'A', foo: 'a', path: `#/${prop}/A`,
-      }, {
-        depth: 0,
-        indent: 0,
-        parent: root,
-      }, helpers);
+      expect(entry.getCall(0)).to.have.been.calledWithExactly(
+        {
+          name: 'A',
+          foo: 'a',
+          path: `#/${prop}/A`,
+        },
+        {
+          depth: 0,
+          indent: 0,
+          parent: root,
+        },
+        helpers
+      );
     });
   });
 
@@ -37,17 +43,27 @@ describe('traverse', () => {
         params: 'p',
       },
     };
-    traverse(root, {
-      depth: 3,
-      indent: 2,
-    }, helpers);
-    expect(entry.getCall(0)).to.have.been.calledWithExactly({
-      name: 'Bike', params: 'p', kind: 'constructor',
-    }, {
-      depth: 3,
-      indent: 2,
-      parent: root,
-    }, helpers);
+    traverse(
+      root,
+      {
+        depth: 3,
+        indent: 2,
+      },
+      helpers
+    );
+    expect(entry.getCall(0)).to.have.been.calledWithExactly(
+      {
+        name: 'Bike',
+        params: 'p',
+        kind: 'constructor',
+      },
+      {
+        depth: 3,
+        indent: 2,
+        parent: root,
+      },
+      helpers
+    );
   });
 
   it('should recurse', () => {
@@ -63,14 +79,20 @@ describe('traverse', () => {
     };
     traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
     expect(entry.callCount).to.equal(3);
-    expect(entry.getCall(2)).to.have.been.calledWithExactly({
-      name: 'bb', kind: 'function', path: '#/entries/B/definitions/bb',
-    }, {
-      depth: 1,
-      indent: 0,
-      mode: undefined,
-      parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
-    }, helpers);
+    expect(entry.getCall(2)).to.have.been.calledWithExactly(
+      {
+        name: 'bb',
+        kind: 'function',
+        path: '#/entries/B/definitions/bb',
+      },
+      {
+        depth: 1,
+        indent: 0,
+        mode: undefined,
+        parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
+      },
+      helpers
+    );
   });
 
   it('should switch to list mode when kind is object', () => {
@@ -86,14 +108,20 @@ describe('traverse', () => {
     };
     traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
     expect(entry.callCount).to.equal(2);
-    expect(entry.getCall(1)).to.have.been.calledWithExactly({
-      name: 'bb', kind: 'a', path: '#/entries/B/entries/bb',
-    }, {
-      depth: 1,
-      indent: 0,
-      mode: 'list',
-      parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
-    }, helpers);
+    expect(entry.getCall(1)).to.have.been.calledWithExactly(
+      {
+        name: 'bb',
+        kind: 'a',
+        path: '#/entries/B/entries/bb',
+      },
+      {
+        depth: 1,
+        indent: 0,
+        mode: 'list',
+        parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
+      },
+      helpers
+    );
   });
 
   it('should increase indent when in list mode', () => {
@@ -109,13 +137,18 @@ describe('traverse', () => {
     };
     traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
     expect(entry.callCount).to.equal(3);
-    expect(entry.getCall(2)).to.have.been.calledWithExactly({
-      name: 'cc', path: '#/entries/B/entries/bb/entries/cc',
-    }, {
-      depth: 2,
-      indent: 1,
-      mode: 'list',
-      parent: { ...root.entries.B.entries.bb, name: 'bb', path: '#/entries/B/entries/bb' },
-    }, helpers);
+    expect(entry.getCall(2)).to.have.been.calledWithExactly(
+      {
+        name: 'cc',
+        path: '#/entries/B/entries/bb/entries/cc',
+      },
+      {
+        depth: 2,
+        indent: 1,
+        mode: 'list',
+        parent: { ...root.entries.B.entries.bb, name: 'bb', path: '#/entries/B/entries/bb' },
+      },
+      helpers
+    );
   });
 });

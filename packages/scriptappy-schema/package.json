@@ -20,12 +20,11 @@
   "main": "./schema.json",
   "scripts": {
     "generate": "./scripts/generate-schema.js && ./scripts/generate-spec.js",
-    "lint": "eslint scripts test",
     "version": "npm run generate && git add ."
   },
   "devDependencies": {
-    "ajv": "^6.10.0",
-    "extend": "^3.0.1",
-    "scriptappy-tools": "^0.5.0"
+    "ajv": "6.11.0",
+    "extend": "3.0.2",
+    "scriptappy-tools": "0.5.0"
   }
 }

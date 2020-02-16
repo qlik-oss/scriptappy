@@ -38,7 +38,11 @@ function tags(doc, cfg) {
     } else if (tag.title === 'template') {
       // reserve for later - TODO
       // o.templates = tag.value.split(/,\s*/);
-    } else if (EXCLUDE_TAGS.indexOf(tag.title) !== -1 || (include && include.indexOf(tag.title) === -1) || (exclude && exclude.indexOf(tag.title) !== -1)) {
+    } else if (
+      EXCLUDE_TAGS.indexOf(tag.title) !== -1 ||
+      (include && include.indexOf(tag.title) === -1) ||
+      (exclude && exclude.indexOf(tag.title) !== -1)
+    ) {
       // do nothing
     } else if (VENDOR_TAG_RX.test(tag.title)) {
       o[tag.title] = typeof tag.value !== 'undefined' ? tag.value : true;
@@ -73,7 +77,6 @@ function availability(doc /* opts */) {
 
   return o;
 }
-
 
 function collectAndNest(params, cfg, opts, isParams = false) {
   const paramMap = {};
@@ -155,7 +158,7 @@ function getTypeFromCodeMeta(doc /* opts */) {
 }
 
 function literal(v) {
-  if (v[0] === '\'' || v[0] === '"') {
+  if (v[0] === "'" || v[0] === '"') {
     return 'string';
   }
   if (v === 'false' || v === 'true') {
@@ -190,7 +193,7 @@ function simpleType(type, cfg) {
 function commonType(names) {
   const types = {};
 
-  names.forEach((v) => {
+  names.forEach(v => {
     const lit = literal(v) || 'any';
     types[lit] = (types[lit] || 0) + 1;
   });
@@ -217,9 +220,13 @@ function unwrapArrayGeneric(type, cfg, opts) {
     typedef.items = itemtype.split(/\s*,\s*/).map(t => getTypedef({ type: { names: [t] } }));
   } else {
     itemtype = itemtype.replace(/\s*\(\s*|\s*\)/g, '').split(/\s*\|\s*/);
-    typedef.items = getTypedef({
-      type: { names: itemtype },
-    }, cfg, opts);
+    typedef.items = getTypedef(
+      {
+        type: { names: itemtype },
+      },
+      cfg,
+      opts
+    );
   }
 
   return typedef;
@@ -279,7 +286,15 @@ function getTypedef(doc, cfg, opts) {
   if (!doc.type || !doc.type.names) {
     const t = getTypeFromCodeMeta(doc, cfg, opts);
     if (!t.kind) {
-      if (doc.kind === 'member' && doc.params && doc.meta && doc.meta.code && doc.meta.code.paramnames && doc.meta.code.paramnames.length === 1) { // property setter
+      if (
+        doc.kind === 'member' &&
+        doc.params &&
+        doc.meta &&
+        doc.meta.code &&
+        doc.meta.code.paramnames &&
+        doc.meta.code.paramnames.length === 1
+      ) {
+        // property setter
         const something = typeOrKind(doc.params[0].type.names);
         if (something.kind) {
           typedef.kind = something.kind;
@@ -308,9 +323,11 @@ function getTypedef(doc, cfg, opts) {
     }
   } else if (doc.type.names.length === 1) {
     if (doc.type.names[0] === 'function') {
-      return doc.kind === 'typedef' ? kindFunction(doc, cfg, opts) : {
-        type: 'function',
-      };
+      return doc.kind === 'typedef'
+        ? kindFunction(doc, cfg, opts)
+        : {
+            type: 'function',
+          };
     }
     const something = typeOrKind(doc.type.names, cfg, opts);
     if (something.kind === 'literal') {
@@ -337,7 +354,8 @@ function getTypedef(doc, cfg, opts) {
   if (/^Array\.</.test(type) || type === 'array') {
     return unwrapArrayGeneric(type, cfg, opts);
   }
-  if (/\.</.test(type)) { // generic
+  if (/\.</.test(type)) {
+    // generic
     const t = unwrapGeneric(type, cfg, opts);
     if (t.type === 'object' && doc.properties) {
       t.entries = collectProps(doc.properties, cfg, opts);
@@ -347,10 +365,12 @@ function getTypedef(doc, cfg, opts) {
   if (/\|/.exec(type)) {
     return {
       kind: 'union',
-      items: type.split(/\s*\|\s*/).map(t => getTypedef({ type: { names: [t.replace(/^\s*\(?\s*|\s*\)?\s*$/g, '')] } }, cfg, opts)),
+      items: type
+        .split(/\s*\|\s*/)
+        .map(t => getTypedef({ type: { names: [t.replace(/^\s*\(?\s*|\s*\)?\s*$/g, '')] } }, cfg, opts)),
     };
   }
-  if (type && ((type !== typedef.kind) || !typedef.kind)) {
+  if (type && (type !== typedef.kind || !typedef.kind)) {
     typedef.type = type;
   }
 
@@ -437,12 +457,14 @@ function kindInterface(doc, cfg, opts) {
     kind: 'interface',
   };
   let numProps = 0; // number of props specific to the function kind (except params)
-  Object.keys(fn).filter(key => key !== 'kind').forEach(key => {
-    obj[key] = fn[key];
-    if (key !== 'params') {
-      numProps++;
-    }
-  });
+  Object.keys(fn)
+    .filter(key => key !== 'kind')
+    .forEach(key => {
+      obj[key] = fn[key];
+      if (key !== 'params') {
+        numProps++;
+      }
+    });
 
   // if the entity is a comment only and does not have an AST node,
   // do not treat it as a functional interface if it does not have any
@@ -457,12 +479,7 @@ function kindInterface(doc, cfg, opts) {
   return obj;
 }
 
-const inlineTags = [
-  'since',
-  'deprecated',
-  STABILITY,
-  ...STABILITY_TAGS,
-].map(t => ({
+const inlineTags = ['since', 'deprecated', STABILITY, ...STABILITY_TAGS].map(t => ({
   rx: new RegExp(`\\s*\\{@${t}\\s*([^}]*)\\}`),
   tag: t,
 }));
@@ -539,9 +556,16 @@ function entity(doc, cfg = {}, opts = {}) {
 
   if (doc.type && doc.meta && doc.meta.code && doc.meta.code.type === 'Literal') {
     ent.defaultValue = doc.meta.code.value;
-  } else if (doc.type && doc.meta && doc.meta.code && doc.meta.code.type === 'UnaryExpression' && typedef.type === 'number') {
+  } else if (
+    doc.type &&
+    doc.meta &&
+    doc.meta.code &&
+    doc.meta.code.type === 'UnaryExpression' &&
+    typedef.type === 'number'
+  ) {
     ent.defaultValue = Number(doc.meta.code.value);
-  } else if ('defaultvalue' in doc) { // note - small 'v' is used in jsdoc
+  } else if ('defaultvalue' in doc) {
+    // note - small 'v' is used in jsdoc
     if (typedef.type === 'boolean') {
       ent.defaultValue = doc.defaultvalue === true || doc.defaultvalue === 'true';
     } else {

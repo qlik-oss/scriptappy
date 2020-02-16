@@ -117,7 +117,6 @@ const references = `
 [Bike]: #class-bike
 `;
 
-
 describe('to markdown', () => {
   describe('with defaults', () => {
     const m = toMarkdown(spec);
@@ -136,23 +135,26 @@ describe('to markdown', () => {
   });
 
   describe('with custom templates', () => {
-    const m = toMarkdown({
-      entries: {
-        Bike: {
-          entries: {
-            ride: {},
+    const m = toMarkdown(
+      {
+        entries: {
+          Bike: {
+            entries: {
+              ride: {},
+            },
           },
         },
       },
-    }, {
-      templates: {
-        default: {
-          pre: '#',
-          indent: '>',
-          label: (entry) => entry.name,
+      {
+        templates: {
+          default: {
+            pre: '#',
+            indent: '>',
+            label: entry => entry.name,
+          },
         },
-      },
-    });
+      }
+    );
 
     it('should output custom content', () => {
       expect(m.content()).to.equal(`

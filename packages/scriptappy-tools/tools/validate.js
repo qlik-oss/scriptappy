@@ -29,14 +29,10 @@ function toJSONPointer(path) {
     s += char;
   });
 
-  return s
-    .replace(/\[(\d+)\]/g, '/$1')
-    .replace(/\['([#A-z0-9:_<>.-]+)'\]/g, '/$1');
+  return s.replace(/\[(\d+)\]/g, '/$1').replace(/\['([#A-z0-9:_<>.-]+)'\]/g, '/$1');
 }
 
-function message(err, {
-  s = '',
-} = {}) {
+function message(err, { s = '' } = {}) {
   switch (err.keyword) {
     case 'additionalProperties':
       return chalk.red(`    ${s}${err.dataPath} ${err.message}: '${err.params.additionalProperty}'`);
@@ -76,7 +72,9 @@ function validateSpec(spec, schema) {
   const valid = validate(spec);
   console.log('\n');
   if (!valid) {
-    const sorted = validate.errors.map(err => ({ depth: err.dataPath.split('.').length, e: err })).sort((a, b) => b.depth - a.depth);
+    const sorted = validate.errors
+      .map(err => ({ depth: err.dataPath.split('.').length, e: err }))
+      .sort((a, b) => b.depth - a.depth);
 
     // subschema validation
     const top = sorted[0];

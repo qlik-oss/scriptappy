@@ -1,4 +1,8 @@
-const slugify = (s) => `#${s.replace(/[^A-Z0-9\s-]/gi, '').replace(/\s+/g, '-').toLowerCase()}`;
+const slugify = s =>
+  `#${s
+    .replace(/[^A-Z0-9\s-]/gi, '')
+    .replace(/\s+/g, '-')
+    .toLowerCase()}`;
 
 const type = (entry, cfg, helpers) => {
   let subType = '';
@@ -24,7 +28,6 @@ const type = (entry, cfg, helpers) => {
   return `<${helpers.getType(entry)}${subType}>`;
 };
 
-
 const SEP_RX = /[.!?]$/;
 const SPACE_RX = /\s+$/;
 const DEFAULT_RX = /default/i;
@@ -42,7 +45,8 @@ const templates = {
     /** */
     listItem(entry, cfg, helpers) {
       const prefix = entry.variable ? '...' : '';
-      const value = !DEFAULT_RX.test(entry.description) && entry.defaultValue ? ` Defaults to \`${entry.defaultValue}\`` : '';
+      const value =
+        !DEFAULT_RX.test(entry.description) && entry.defaultValue ? ` Defaults to \`${entry.defaultValue}\`` : '';
       const descr = `${entry.description ? ` ${entry.description.replace(SPACE_RX, '')}` : ''}`;
       const separator = value && descr && !SEP_RX.test(descr) ? '.' : '';
       const t = entry.name ? `\`${prefix}${entry.name}\` ` : '';
@@ -58,7 +62,7 @@ const templates = {
       if (cfg.parent) {
         let prefix = cfg.parent.name;
         if (!isStatic && ['interface', 'class'].indexOf(cfg.parent.kind) !== -1) {
-          prefix = (cfg.parent.name[0].toLowerCase() + cfg.parent.name.substring(1));
+          prefix = cfg.parent.name[0].toLowerCase() + cfg.parent.name.substring(1);
         }
         if (prefix) {
           return `${prefix}.${entry.name}`;
@@ -92,7 +96,10 @@ const templates = {
         if (entry.availability.deprecated === true) {
           s.push('> Deprecated');
         } else if (entry.availability.deprecated) {
-          s.push(`> Deprecated: ${entry.availability.deprecated.description || `since ${entry.availability.deprecated.since}`}`);
+          s.push(
+            `> Deprecated: ${entry.availability.deprecated.description ||
+              `since ${entry.availability.deprecated.since}`}`
+          );
         }
       }
 
@@ -108,7 +115,7 @@ const templates = {
       return `${s}${entry.description || ''}`;
     },
     /** */
-    paramSignature: (entry) => {
+    paramSignature: entry => {
       let s = '';
       let optional = '';
       (entry.params || []).forEach((p, i, arr) => {
@@ -138,7 +145,7 @@ const templates = {
     /** */
     paramDetails(entry, cfg, helpers) {
       const sig = [];
-      entry.params.forEach((p) => {
+      entry.params.forEach(p => {
         sig.push(helpers.entry(p, { ...cfg, mode: 'list' }, helpers));
         sig.push(helpers.traverse(p, { ...cfg, mode: 'list', indent: cfg.indent + 1 }, helpers));
       });
@@ -179,10 +186,9 @@ const templates = {
       const code = title ? x.replace(title[0], '') : x;
       const codified = /```/.exec(code);
 
-      return [
-        title ? `**${title[1]}**` : '',
-        codified ? `${code}` : `\`\`\`js\n${code}\n\`\`\``,
-      ].filter(Boolean).join('\n\n');
+      return [title ? `**${title[1]}**` : '', codified ? `${code}` : `\`\`\`js\n${code}\n\`\`\``]
+        .filter(Boolean)
+        .join('\n\n');
     },
     /** */
     examples(entry /* , cfg, helpers */) {
@@ -190,11 +196,14 @@ const templates = {
         return '';
       }
 
-      return entry.examples.map(x => this.example(x)).filter(Boolean).join('\n\n');
+      return entry.examples
+        .map(x => this.example(x))
+        .filter(Boolean)
+        .join('\n\n');
     },
   },
   constructor: {
-    label: (entry) => `new ${entry.name}`,
+    label: entry => `new ${entry.name}`,
   },
   /** */
   event: {
@@ -208,7 +217,7 @@ const templates = {
   method: {
     label(entry, cfg) {
       const isStatic = (entry.path || '').split('/').slice(-2)[0] === 'staticEntries';
-      const prefix = isStatic ? cfg.parent.name : (cfg.parent.name[0].toLowerCase() + cfg.parent.name.substring(1));
+      const prefix = isStatic ? cfg.parent.name : cfg.parent.name[0].toLowerCase() + cfg.parent.name.substring(1);
       return `${prefix}.${entry.name}`;
     },
   },

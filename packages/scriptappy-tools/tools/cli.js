@@ -27,8 +27,7 @@ const args = yargs
   })
   .wrap(Math.min(120, yargs.terminalWidth()))
   .help('help')
-  .alias('h', 'help')
-  .argv;
+  .alias('h', 'help').argv;
 
 const p = path.resolve(process.cwd(), args.s);
 if (!fs.existsSync(p)) {

@@ -59,10 +59,21 @@ const tiers = [
 const validSubKinds = {
   function: { entries: [...tiers[3]], definitions: [...tiers[3]], events: [...tiers[4]] },
   class: {
-    entries: [...tiers[3]], definitions: [...tiers[2], ...tiers[3]], staticEntries: [...tiers[3]], events: [...tiers[4]],
+    entries: [...tiers[3]],
+    definitions: [...tiers[2], ...tiers[3]],
+    staticEntries: [...tiers[3]],
+    events: [...tiers[4]],
   },
-  module: { entries: [...tiers[1], ...tiers[2], ...tiers[3]], definitions: [...tiers[1], ...tiers[2], ...tiers[3]], events: [...tiers[4]] },
-  namespace: { entries: [...tiers[1], ...tiers[2], ...tiers[3]], definitions: [...tiers[1], ...tiers[2], ...tiers[3]], events: [...tiers[4]] },
+  module: {
+    entries: [...tiers[1], ...tiers[2], ...tiers[3]],
+    definitions: [...tiers[1], ...tiers[2], ...tiers[3]],
+    events: [...tiers[4]],
+  },
+  namespace: {
+    entries: [...tiers[1], ...tiers[2], ...tiers[3]],
+    definitions: [...tiers[1], ...tiers[2], ...tiers[3]],
+    events: [...tiers[4]],
+  },
   interface: { entries: [...tiers[3]], definitions: [...tiers[2], ...tiers[3]], events: [...tiers[4]] },
   object: { entries: [...tiers[3]], definitions: [...tiers[3]], events: [...tiers[4]] },
   literal: { entries: [], definitions: [] },
@@ -165,22 +176,29 @@ describe('kinds', () => {
             const allowed = validSubKinds[key][prop];
             allowed.forEach(s => {
               it(`should allow kind '${s}'`, () => {
-                validate(key, extend({}, validKinds[key], {
-                  [prop]: {
-                    a: validKinds[s],
-                  },
-                }));
+                validate(
+                  key,
+                  extend({}, validKinds[key], {
+                    [prop]: {
+                      a: validKinds[s],
+                    },
+                  })
+                );
               });
             });
 
             const notAllowed = allKinds.filter(k => validSubKinds[key][prop].indexOf(k) === -1);
             notAllowed.forEach(s => {
               it(`should NOT allow kind '${s}'`, () => {
-                validate(key, extend({}, validKinds[key], {
-                  [prop]: {
-                    a: validKinds[s],
-                  },
-                }), 'fail');
+                validate(
+                  key,
+                  extend({}, validKinds[key], {
+                    [prop]: {
+                      a: validKinds[s],
+                    },
+                  }),
+                  'fail'
+                );
               });
             });
           });
@@ -207,9 +225,11 @@ describe('kinds', () => {
       it(`subtype - ${t}`, () => {
         const value = {
           kind: 'function',
-          params: [extend({}, validKinds[t], {
-            variable: true,
-          })],
+          params: [
+            extend({}, validKinds[t], {
+              variable: true,
+            }),
+          ],
           generics: [validKinds[t]],
           yields: [validKinds[t]],
           returns: validKinds[t],

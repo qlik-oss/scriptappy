@@ -52,79 +52,111 @@ describe('availability', () => {
 
 describe('tags', () => {
   it('excluded', () => {
-    const a = types.tags({
-      tags: [{
-        title: 'a',
-      }, {
-        title: 'b',
-      }],
-    }, {
-      parse: {
-        tags: { exclude: ['b'] },
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'a',
+          },
+          {
+            title: 'b',
+          },
+        ],
       },
-    });
+      {
+        parse: {
+          tags: { exclude: ['b'] },
+        },
+      }
+    );
     expect(a).to.eql({
       'x-a': true,
     });
   });
 
   it('included', () => {
-    const a = types.tags({
-      tags: [{
-        title: 'a',
-      }, {
-        title: 'b',
-      }],
-    }, {
-      parse: {
-        tags: { include: ['b'], exclude: ['b'] }, // include should be prioritized over exclude
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'a',
+          },
+          {
+            title: 'b',
+          },
+        ],
       },
-    });
+      {
+        parse: {
+          tags: { include: ['b'], exclude: ['b'] }, // include should be prioritized over exclude
+        },
+      }
+    );
     expect(a).to.eql({
       'x-b': true,
     });
   });
 
   it('stability - locked', () => {
-    const a = types.tags({
-      tags: [{
-        title: 'locked',
-      }],
-    }, { logger });
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'locked',
+          },
+        ],
+      },
+      { logger }
+    );
     expect(a).to.eql({
       stability: 'locked',
     });
   });
 
   it('stability - stable', () => {
-    const a = types.tags({
-      tags: [{
-        title: 'stable',
-      }],
-    }, { logger, parse: { tags: { exclude: ['stable'] } } });
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'stable',
+          },
+        ],
+      },
+      { logger, parse: { tags: { exclude: ['stable'] } } }
+    );
     expect(a).to.eql({
       stability: 'stable',
     });
   });
 
   it('stability - experimental', () => {
-    const a = types.tags({
-      tags: [{
-        title: 'experimental',
-      }],
-    }, { logger });
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'experimental',
+          },
+        ],
+      },
+      { logger }
+    );
     expect(a).to.eql({
       stability: 'experimental',
     });
   });
 
   it('stability - by value', () => {
-    const a = types.tags({
-      tags: [{
-        title: 'stability',
-        value: 'stable',
-      }],
-    }, { logger, parse: { tags: { exclude: ['stability'] } } });
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'stability',
+            value: 'stable',
+          },
+        ],
+      },
+      { logger, parse: { tags: { exclude: ['stability'] } } }
+    );
     expect(a).to.eql({
       stability: 'stable',
     });
@@ -132,12 +164,15 @@ describe('tags', () => {
 
   it('vendor', () => {
     const a = types.tags({
-      tags: [{
-        title: 'random-tag',
-        value: 'yes',
-      }, {
-        title: 'custom-tag',
-      }],
+      tags: [
+        {
+          title: 'random-tag',
+          value: 'yes',
+        },
+        {
+          title: 'custom-tag',
+        },
+      ],
     });
     expect(a).to.eql({
       'x-random-tag': 'yes',
@@ -147,12 +182,15 @@ describe('tags', () => {
 
   it('x-vendor', () => {
     const a = types.tags({
-      tags: [{
-        title: 'x-random-tag',
-        value: 'yes',
-      }, {
-        title: 'x-custom-tag',
-      }],
+      tags: [
+        {
+          title: 'x-random-tag',
+          value: 'yes',
+        },
+        {
+          title: 'x-custom-tag',
+        },
+      ],
     });
     expect(a).to.eql({
       'x-random-tag': 'yes',
@@ -162,18 +200,24 @@ describe('tags', () => {
 
   it('ignored', () => {
     const a = types.tags({
-      tags: [{
-        title: 'entry',
-        value: 'foo',
-      }],
+      tags: [
+        {
+          title: 'entry',
+          value: 'foo',
+        },
+      ],
     });
     expect(a).to.eql({});
   });
 
   it('inline', () => {
-    const o = types.entity({
-      description: 'descr {@deprecated since 2.0.0}{@since 1.2.0}{@stable}',
-    }, cfg, { includeName: true });
+    const o = types.entity(
+      {
+        description: 'descr {@deprecated since 2.0.0}{@since 1.2.0}{@stable}',
+      },
+      cfg,
+      { includeName: true }
+    );
 
     expect(o).to.eql({
       description: 'descr',
@@ -192,55 +236,62 @@ describe('tags', () => {
 
 describe('collect params', () => {
   it('one', () => {
-    const params = types.collectParams([{
-      type: {
-        names: ['object'],
+    const params = types.collectParams([
+      {
+        type: {
+          names: ['object'],
+        },
+        variable: true,
+        defaultvalue: 3,
+        description: 'descr',
+        name: 'param name',
       },
-      variable: true,
-      defaultvalue: 3,
-      description: 'descr',
-      name: 'param name',
-    }]);
+    ]);
 
-    expect(params).to.eql([{
-      description: 'descr',
-      name: 'param name',
-      defaultValue: 3,
-      variable: true,
-      type: 'object',
-    }]);
+    expect(params).to.eql([
+      {
+        description: 'descr',
+        name: 'param name',
+        defaultValue: 3,
+        variable: true,
+        type: 'object',
+      },
+    ]);
   });
 
-
   it('nested', () => {
-    const params = types.collectParams([{
-      type: {
-        names: ['object'],
+    const params = types.collectParams([
+      {
+        type: {
+          names: ['object'],
+        },
+        nullable: true,
+        description: 'descr',
+        name: 'options',
       },
-      nullable: true,
-      description: 'descr',
-      name: 'options',
-    },
-    {
-      type: {
-        names: ['string'],
+      {
+        type: {
+          names: ['string'],
+        },
+        optional: true,
+        name: 'options.model',
       },
-      optional: true,
-      name: 'options.model',
-    }]);
+    ]);
 
-    expect(params).to.eql([{
-      name: 'options',
-      description: 'descr',
-      nullable: true,
-      kind: 'object',
-      entries: {
-        model: {
-          optional: true,
-          type: 'string',
+    expect(params).to.eql([
+      {
+        name: 'options',
+        description: 'descr',
+        nullable: true,
+        kind: 'object',
+        entries: {
+          model: {
+            optional: true,
+            type: 'string',
+          },
         },
       },
-    }]);
+    ]);
   });
 
   it('nested array', () => {
@@ -261,20 +312,22 @@ describe('collect params', () => {
       },
     ]);
 
-    expect(params).to.eql([{
-      name: 'options',
-      description: 'descr',
-      kind: 'array',
-      items: {
-        kind: 'object',
-        entries: {
-          model: {
-            description: 'descript',
-            type: 'string',
+    expect(params).to.eql([
+      {
+        name: 'options',
+        description: 'descr',
+        kind: 'array',
+        items: {
+          kind: 'object',
+          entries: {
+            model: {
+              description: 'descript',
+              type: 'string',
+            },
           },
         },
       },
-    }]);
+    ]);
   });
 });
 
@@ -317,8 +370,7 @@ describe('collect props', () => {
 
 describe('type', () => {
   it('any', () => {
-    const o = types.typedef({
-    }, cfg);
+    const o = types.typedef({}, cfg);
 
     expect(o).to.eql({
       type: 'any',
@@ -465,44 +517,56 @@ describe('type', () => {
   });
 
   it('generics', () => {
-    const o = types.typedef({
-      type: { names: ['Promise.<object.<boolean>, Array.<(string|number)>>'] },
-    }, { logRule: () => {} });
+    const o = types.typedef(
+      {
+        type: { names: ['Promise.<object.<boolean>, Array.<(string|number)>>'] },
+      },
+      { logRule: () => {} }
+    );
 
     expect(o).to.eql({
       type: 'Promise',
-      generics: [{
-        type: 'object',
-        generics: [{ type: 'boolean' }],
-      }, {
-        kind: 'array',
-        items: {
-          kind: 'union',
-          type: 'any',
-          items: [{ type: 'string' }, { type: 'number' }],
+      generics: [
+        {
+          type: 'object',
+          generics: [{ type: 'boolean' }],
         },
-      }],
+        {
+          kind: 'array',
+          items: {
+            kind: 'union',
+            type: 'any',
+            items: [{ type: 'string' }, { type: 'number' }],
+          },
+        },
+      ],
     });
   });
 
   it('generics - properties', () => {
-    const o = types.typedef({
-      type: { names: ['Object.<string, number>'] },
-      properties: [
-        {
-          type: { names: ['string'] },
-          name: 'first',
-        },
-      ],
-    }, { logRule: () => {} });
+    const o = types.typedef(
+      {
+        type: { names: ['Object.<string, number>'] },
+        properties: [
+          {
+            type: { names: ['string'] },
+            name: 'first',
+          },
+        ],
+      },
+      { logRule: () => {} }
+    );
 
     expect(o).to.eql({
       type: 'object',
-      generics: [{
-        type: 'string',
-      }, {
-        type: 'number',
-      }],
+      generics: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'number',
+        },
+      ],
       entries: {
         first: {
           type: 'string',
@@ -512,16 +576,22 @@ describe('type', () => {
   });
 
   it('generics - union', () => {
-    const o = types.typedef({
-      type: { names: ['Promise.<  ( string|  number) | boolean, number  >'] },
-    }, { logRule: () => {} });
+    const o = types.typedef(
+      {
+        type: { names: ['Promise.<  ( string|  number) | boolean, number  >'] },
+      },
+      { logRule: () => {} }
+    );
 
     expect(o).to.eql({
       type: 'Promise',
-      generics: [{
-        kind: 'union',
-        items: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
-      }, { type: 'number' }],
+      generics: [
+        {
+          kind: 'union',
+          items: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
+        },
+        { type: 'number' },
+      ],
     });
   });
 
@@ -537,21 +607,24 @@ describe('type', () => {
   });
 
   it('object - setter', () => {
-    const o = types.typedef({
-      meta: {
-        code: { paramnames: ['v'] },
-      },
-      kind: 'member',
-      params: [
-        {
-          type: {
-            names: ['string'],
-          },
-          description: 'the nam',
-          name: 'v',
+    const o = types.typedef(
+      {
+        meta: {
+          code: { paramnames: ['v'] },
         },
-      ],
-    }, { logger });
+        kind: 'member',
+        params: [
+          {
+            type: {
+              names: ['string'],
+            },
+            description: 'the nam',
+            name: 'v',
+          },
+        ],
+      },
+      { logger }
+    );
 
     expect(o).to.eql({
       type: 'string',
@@ -566,30 +639,36 @@ describe('type', () => {
       async: true,
       params: [],
       this: 'Person',
-      fires: [
-        'generate#event:start',
-      ],
-      exceptions: [{
-        type: { names: ['NullPointerException'] },
-        description: 'oops',
-      }],
-      returns: [{
-        type: {
-          names: ['Promise.<string>'],
+      fires: ['generate#event:start'],
+      exceptions: [
+        {
+          type: { names: ['NullPointerException'] },
+          description: 'oops',
         },
-        description: 'a promise',
-      }],
+      ],
+      returns: [
+        {
+          type: {
+            names: ['Promise.<string>'],
+          },
+          description: 'a promise',
+        },
+      ],
     });
 
     expect(o).to.eql({
       kind: 'function',
-      emits: [{
-        type: 'generate#event:start',
-      }],
-      throws: [{
-        description: 'oops',
-        type: 'NullPointerException',
-      }],
+      emits: [
+        {
+          type: 'generate#event:start',
+        },
+      ],
+      throws: [
+        {
+          description: 'oops',
+          type: 'NullPointerException',
+        },
+      ],
       params: [],
       returns: {
         description: 'a promise',
@@ -644,37 +723,36 @@ describe('type', () => {
       generator: true,
       yields: {
         kind: 'union',
-        items: [
-          { type: 'number' },
-          { type: 'string' },
-        ],
+        items: [{ type: 'number' }, { type: 'string' }],
       },
     });
   });
-
 
   it('event', () => {
     const o = types.typedef({
       kind: 'event',
       name: 'start',
       description: 'descr',
-      params: [{
-        type: {
-          names: ['string'],
+      params: [
+        {
+          type: {
+            names: ['string'],
+          },
+          name: 'first',
         },
-        name: 'first',
-      }],
+      ],
     });
 
     expect(o).to.eql({
       kind: 'event',
-      params: [{
-        name: 'first',
-        type: 'string',
-      }],
+      params: [
+        {
+          name: 'first',
+          type: 'string',
+        },
+      ],
     });
   });
-
 
   it('module', () => {
     const o = types.typedef({
@@ -715,10 +793,12 @@ describe('type', () => {
 
     expect(o).to.eql({
       kind: 'interface',
-      params: [{
-        name: 'first',
-        type: 'string',
-      }],
+      params: [
+        {
+          name: 'first',
+          type: 'string',
+        },
+      ],
       entries: {},
     });
   });
@@ -778,10 +858,12 @@ describe('type', () => {
       constructor: {
         kind: 'function',
         description: 'Constructor descr',
-        params: [{
-          name: 'first',
-          type: 'string',
-        }],
+        params: [
+          {
+            name: 'first',
+            type: 'string',
+          },
+        ],
       },
       entries: {
         first: {
@@ -805,26 +887,27 @@ describe('type', () => {
     expect(o).to.eql({
       kind: 'union',
       type: 'any',
-      items: [
-        { type: 'string' },
-        { kind: 'array', items: { type: 'string' } },
-      ],
+      items: [{ type: 'string' }, { kind: 'array', items: { type: 'string' } }],
     });
   });
 });
 
 describe('entity', () => {
   it('base', () => {
-    const o = types.entity({
-      name: 'Person',
-      description: 'descr',
-      optional: true,
-      nullable: true,
-      variable: true,
-      examples: 'ex',
-      implements: ['Iterable'],
-      augments: ['Dummy'],
-    }, cfg, { includeName: true });
+    const o = types.entity(
+      {
+        name: 'Person',
+        description: 'descr',
+        optional: true,
+        nullable: true,
+        variable: true,
+        examples: 'ex',
+        implements: ['Iterable'],
+        augments: ['Dummy'],
+      },
+      cfg,
+      { includeName: true }
+    );
 
     expect(o).to.eql({
       name: 'Person',
@@ -849,9 +932,12 @@ describe('entity', () => {
   });
 
   it('defaultValue', () => {
-    const o = types.entity({
-      defaultvalue: 'def',
-    }, cfg);
+    const o = types.entity(
+      {
+        defaultvalue: 'def',
+      },
+      cfg
+    );
 
     expect(o.defaultValue).to.equal('def');
   });

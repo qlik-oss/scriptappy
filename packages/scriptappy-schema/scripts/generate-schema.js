@@ -19,25 +19,30 @@ const common = {
     },
     type: { type: 'string', description: 'The type of this entity.' },
     name: { type: 'string', description: 'Name of this entity.' },
-    optional: { type: 'boolean', description: 'Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry.' },
-    nullable: { type: 'boolean', description: 'Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry.' },
-    variable: { type: 'boolean', description: 'Variability of this entity. Used to indicate when the entity is repeatable as a method parameter.' },
+    optional: {
+      type: 'boolean',
+      description:
+        'Optionality of this entity. Used to indicate when the entity is optional as a method parameter or an object entry.',
+    },
+    nullable: {
+      type: 'boolean',
+      description:
+        'Nullability of this entity. Used to indicate when the entity is nullable as a method parameter or an object entry.',
+    },
+    variable: {
+      type: 'boolean',
+      description: 'Variability of this entity. Used to indicate when the entity is repeatable as a method parameter.',
+    },
     generics: {
       type: 'array',
       description: 'Generic types.',
       items: {
-        allOf: [
-          { $ref: '#/definitions/entity-tier3' },
-        ],
+        allOf: [{ $ref: '#/definitions/entity-tier3' }],
       },
     },
     defaultValue: {
       description: 'Default value for this entity. Used when the entity is optional.',
-      oneOf: [
-        { type: 'number' },
-        { type: 'boolean' },
-        { type: 'string' },
-      ],
+      oneOf: [{ type: 'number' }, { type: 'boolean' }, { type: 'string' }],
     },
   },
   patternProperties: {
@@ -84,9 +89,11 @@ const signature = {
       description: 'The parameters for this entity.',
       type: 'array',
       items: {
-        allOf: [{
-          $ref: '#/definitions/entity-tier3',
-        }],
+        allOf: [
+          {
+            $ref: '#/definitions/entity-tier3',
+          },
+        ],
       },
     },
     returns: {
@@ -148,13 +155,12 @@ function addToTier(ref, tier) {
     },
   });
 
-  Object.keys(common.properties).forEach(key => { def.properties[key] = true; });
+  Object.keys(common.properties).forEach(key => {
+    def.properties[key] = true;
+  });
 
   schema.definitions.type = {
-    allOf: [
-      { $ref: '#/definitions/common' },
-      def,
-    ],
+    allOf: [{ $ref: '#/definitions/common' }, def],
   };
   addToTier('type', 3);
 })();
@@ -200,25 +206,29 @@ function addKind(k, tier, ...props) {
     required: ['kind'],
   };
 
-  const def = extend(true, {
-    type: 'object',
-    properties: {
-      kind: {
-        const: k,
+  const def = extend(
+    true,
+    {
+      type: 'object',
+      properties: {
+        kind: {
+          const: k,
+        },
       },
     },
-  }, entityProps, ...props);
+    entityProps,
+    ...props
+  );
 
   const { examples } = def;
   delete def.examples;
 
-  Object.keys(common.properties).forEach(key => { def.properties[key] = true; });
+  Object.keys(common.properties).forEach(key => {
+    def.properties[key] = true;
+  });
 
   schema.definitions[`kind.${k}`] = {
-    allOf: [
-      { $ref: '#/definitions/common' },
-      def,
-    ],
+    allOf: [{ $ref: '#/definitions/common' }, def],
     examples,
   };
 
@@ -228,11 +238,7 @@ function addKind(k, tier, ...props) {
 addKind('literal', 3, {
   properties: {
     value: {
-      oneOf: [
-        { type: 'number' },
-        { type: 'boolean' },
-        { type: 'string' },
-      ],
+      oneOf: [{ type: 'number' }, { type: 'boolean' }, { type: 'string' }],
     },
   },
   required: ['kind', 'value'],
@@ -336,7 +342,6 @@ addKind('function', 3, signature, {
   ],
 });
 
-
 function constr() {
   const entityProps = {
     type: 'object',
@@ -350,31 +355,36 @@ function constr() {
     required: ['kind'],
   };
 
-  const def = extend(true, {
-    type: 'object',
-    properties: {
-      kind: {
-        const: 'function',
-      },
-      params: {
-        description: 'The parameters for this entity.',
-        type: 'array',
-        items: {
-          allOf: [{
-            $ref: '#/definitions/entity-tier3',
-          }],
+  const def = extend(
+    true,
+    {
+      type: 'object',
+      properties: {
+        kind: {
+          const: 'function',
+        },
+        params: {
+          description: 'The parameters for this entity.',
+          type: 'array',
+          items: {
+            allOf: [
+              {
+                $ref: '#/definitions/entity-tier3',
+              },
+            ],
+          },
         },
       },
     },
-  }, entityProps);
+    entityProps
+  );
 
-  Object.keys(common.properties).forEach(key => { def.properties[key] = true; });
+  Object.keys(common.properties).forEach(key => {
+    def.properties[key] = true;
+  });
 
   schema.definitions.constructor = {
-    allOf: [
-      { $ref: '#/definitions/common' },
-      def,
-    ],
+    allOf: [{ $ref: '#/definitions/common' }, def],
   };
 
   return def;

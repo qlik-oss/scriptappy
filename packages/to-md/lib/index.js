@@ -5,7 +5,6 @@ const entryFn = require('./entry');
 const typesFn = require('./types');
 const log = require('./log');
 
-
 /**
  * @entry
  * @param {object} spec
@@ -13,13 +12,11 @@ const log = require('./log');
  * @param {templates} [config.templates]
  * @returns {module:to-md~md}
  */
-module.exports = function toMarkdown(spec, {
-  templates,
-} = {}) {
+module.exports = function toMarkdown(spec, { templates } = {}) {
   const toc = [];
   const types = typesFn(spec);
 
-  const addToToc = (s) => {
+  const addToToc = s => {
     toc.push(s);
   };
 
@@ -27,17 +24,21 @@ module.exports = function toMarkdown(spec, {
 
   const entry = entryFn(templ);
 
-  const content = traverse(spec, {
-    parent: null,
-    depth: 0,
-    indent: 0,
-  }, {
-    traverse,
-    entry,
-    addToToc,
-    getType: types.getType,
-    assignSlug: types.assignSlug,
-  });
+  const content = traverse(
+    spec,
+    {
+      parent: null,
+      depth: 0,
+      indent: 0,
+    },
+    {
+      traverse,
+      entry,
+      addToToc,
+      getType: types.getType,
+      assignSlug: types.assignSlug,
+    }
+  );
 
   /**
    * @interface md
@@ -54,6 +55,10 @@ module.exports = function toMarkdown(spec, {
     /**
      * @returns {string}
      */
-    references: () => `\n${types.getReferences().map(ref => `[${ref.key}]: ${ref.link}`).join('\n')}\n`,
+    references: () =>
+      `\n${types
+        .getReferences()
+        .map(ref => `[${ref.key}]: ${ref.link}`)
+        .join('\n')}\n`,
   };
 };

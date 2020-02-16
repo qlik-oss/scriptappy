@@ -1,3 +1,4 @@
+/* eslint no-useless-catch: 0 */
 const { templates } = require('../lib/log');
 
 describe('log', () => {
@@ -34,7 +35,8 @@ describe('log', () => {
     it('listItem', () => {
       const typeStub = sinon.stub(d, 'type');
       typeStub.callsFake(() => 't');
-      try { // run inside try catch to make sure restore() happens when expect fails
+      try {
+        // run inside try catch to make sure restore() happens when expect fails
         expect(d.listItem({ name: 'item', description: 'd' }, { indent: 3 })).to.equal('      - `item` t d');
       } catch (e) {
         throw e;
@@ -46,8 +48,11 @@ describe('log', () => {
     it('listItem with defaultValue', () => {
       const typeStub = sinon.stub(d, 'type');
       typeStub.callsFake(() => 't');
-      try { // run inside try catch to make sure restore() happens when expect fails
-        expect(d.listItem({ name: 'item', description: 'd', defaultValue: 'def' }, { indent: 3 })).to.equal('      - `item` t d. Defaults to `def`');
+      try {
+        // run inside try catch to make sure restore() happens when expect fails
+        expect(d.listItem({ name: 'item', description: 'd', defaultValue: 'def' }, { indent: 3 })).to.equal(
+          '      - `item` t d. Defaults to `def`'
+        );
       } catch (e) {
         throw e;
       } finally {
@@ -58,7 +63,8 @@ describe('log', () => {
     it('listItem without name', () => {
       const typeStub = sinon.stub(d, 'type');
       typeStub.callsFake(() => 't');
-      try { // run inside try catch to make sure restore() happens when expect fails
+      try {
+        // run inside try catch to make sure restore() happens when expect fails
         expect(d.listItem({ description: 'd' }, { indent: 1 })).to.equal('  - t d');
       } catch (e) {
         throw e;
@@ -70,12 +76,18 @@ describe('log', () => {
     it('listItem with default described in description', () => {
       const typeStub = sinon.stub(d, 'type');
       typeStub.callsFake(() => 't');
-      try { // run inside try catch to make sure restore() happens when expect fails
-        expect(d.listItem({
-          name: 'item',
-          description: 'bla bla defaults to bla bla',
-          defaultValue: 'def',
-        }, { indent: 3 })).to.equal('      - `item` t bla bla defaults to bla bla');
+      try {
+        // run inside try catch to make sure restore() happens when expect fails
+        expect(
+          d.listItem(
+            {
+              name: 'item',
+              description: 'bla bla defaults to bla bla',
+              defaultValue: 'def',
+            },
+            { indent: 3 }
+          )
+        ).to.equal('      - `item` t bla bla defaults to bla bla');
       } catch (e) {
         throw e;
       } finally {
@@ -93,11 +105,15 @@ describe('log', () => {
     });
 
     it('label as static entry', () => {
-      expect(d.label({ kind: 'k', name: 'n', path: 'a/b/staticEntries/n' }, { parent: { name: 'Foo', kind: 'interface' } })).to.equal('Foo.n');
+      expect(
+        d.label({ kind: 'k', name: 'n', path: 'a/b/staticEntries/n' }, { parent: { name: 'Foo', kind: 'interface' } })
+      ).to.equal('Foo.n');
     });
 
     it('label as definition', () => {
-      expect(d.label({ kind: 'k', name: 'n', path: 'a/b/definitions/n' }, { parent: { name: 'Foo', kind: 'interface' } })).to.equal('k: n');
+      expect(
+        d.label({ kind: 'k', name: 'n', path: 'a/b/definitions/n' }, { parent: { name: 'Foo', kind: 'interface' } })
+      ).to.equal('k: n');
     });
 
     it('label without kind', () => {
@@ -117,61 +133,64 @@ describe('log', () => {
     });
 
     it('meta', () => {
-      expect(d.meta({
-        stability: 'stable',
-        availability: { since: '0.1.0' },
-      })).to.equal('> Stability: `stable`\n>\n> Since: `0.1.0`');
+      expect(
+        d.meta({
+          stability: 'stable',
+          availability: { since: '0.1.0' },
+        })
+      ).to.equal('> Stability: `stable`\n>\n> Since: `0.1.0`');
     });
 
     it('meta deprecated', () => {
-      expect(d.meta({
-        availability: { deprecated: true },
-      })).to.equal('> Deprecated');
+      expect(
+        d.meta({
+          availability: { deprecated: true },
+        })
+      ).to.equal('> Deprecated');
 
-      expect(d.meta({
-        availability: { deprecated: { since: '0.2.0' } },
-      })).to.equal('> Deprecated: since 0.2.0');
+      expect(
+        d.meta({
+          availability: { deprecated: { since: '0.2.0' } },
+        })
+      ).to.equal('> Deprecated: since 0.2.0');
 
-      expect(d.meta({
-        availability: { deprecated: { description: 'Use something else' } },
-      })).to.equal('> Deprecated: Use something else');
+      expect(
+        d.meta({
+          availability: { deprecated: { description: 'Use something else' } },
+        })
+      ).to.equal('> Deprecated: Use something else');
     });
 
     it('paramSignature', () => {
-      expect(d.paramSignature({
-        params: [
-          { name: 'first' },
-          { name: 'second' },
-        ],
-      })).to.equal('first, second');
+      expect(
+        d.paramSignature({
+          params: [{ name: 'first' }, { name: 'second' }],
+        })
+      ).to.equal('first, second');
     });
 
     it('paramSignature multiple optional', () => {
-      expect(d.paramSignature({
-        params: [
-          { name: 'first' },
-          { name: 'second', optional: true },
-          { name: 'third', optional: true },
-        ],
-      })).to.equal('first[, second[, third]]');
+      expect(
+        d.paramSignature({
+          params: [{ name: 'first' }, { name: 'second', optional: true }, { name: 'third', optional: true }],
+        })
+      ).to.equal('first[, second[, third]]');
     });
 
     it('paramSignature with first param optional', () => {
-      expect(d.paramSignature({
-        params: [
-          { name: 'first', optional: true },
-        ],
-      })).to.equal('[first]');
+      expect(
+        d.paramSignature({
+          params: [{ name: 'first', optional: true }],
+        })
+      ).to.equal('[first]');
     });
 
     it('paramSignature with bad optional order', () => {
-      expect(d.paramSignature({
-        params: [
-          { name: 'first' },
-          { name: 'second', optional: true },
-          { name: 'third' },
-        ],
-      })).to.equal('first[, second], third');
+      expect(
+        d.paramSignature({
+          params: [{ name: 'first' }, { name: 'second', optional: true }, { name: 'third' }],
+        })
+      ).to.equal('first[, second], third');
     });
 
     it('paramDetails', () => {
@@ -185,11 +204,27 @@ describe('log', () => {
       const params = [{ name: 'first' }, { name: 'second' }];
       expect(d.paramDetails({ params, returns: { type: 'string' } }, cfg, helpers)).to.equal('ptptpt');
 
-      expect(helpers.entry.getCall(0)).to.have.been.calledWithExactly({ name: 'first' }, { ...cfg, mode: 'list' }, helpers);
-      expect(helpers.traverse.getCall(0)).to.have.been.calledWithExactly({ name: 'first' }, { ...cfg, mode: 'list', indent: 2 }, helpers);
+      expect(helpers.entry.getCall(0)).to.have.been.calledWithExactly(
+        { name: 'first' },
+        { ...cfg, mode: 'list' },
+        helpers
+      );
+      expect(helpers.traverse.getCall(0)).to.have.been.calledWithExactly(
+        { name: 'first' },
+        { ...cfg, mode: 'list', indent: 2 },
+        helpers
+      );
 
-      expect(helpers.entry.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list' }, helpers);
-      expect(helpers.traverse.getCall(2)).to.have.been.calledWithExactly({ name: 'returns:', type: 'string' }, { ...cfg, mode: 'list', indent: 2 }, helpers);
+      expect(helpers.entry.getCall(2)).to.have.been.calledWithExactly(
+        { name: 'returns:', type: 'string' },
+        { ...cfg, mode: 'list' },
+        helpers
+      );
+      expect(helpers.traverse.getCall(2)).to.have.been.calledWithExactly(
+        { name: 'returns:', type: 'string' },
+        { ...cfg, mode: 'list', indent: 2 },
+        helpers
+      );
     });
 
     it('paramDetails of async function should return Promise if return is not specified', () => {
@@ -202,7 +237,11 @@ describe('log', () => {
       };
       expect(d.paramDetails({ async: true, params: [] }, cfg, helpers)).to.equal('p');
 
-      expect(helpers.entry.getCall(0)).to.have.been.calledWithExactly({ name: 'returns:', type: 'Promise' }, { ...cfg, mode: 'list' }, helpers);
+      expect(helpers.entry.getCall(0)).to.have.been.calledWithExactly(
+        { name: 'returns:', type: 'Promise' },
+        { ...cfg, mode: 'list' },
+        helpers
+      );
     });
 
     it('paramDetails emits', () => {
@@ -212,7 +251,7 @@ describe('log', () => {
       const helpers = {
         entry: sinon.stub().returns('p'),
         traverse: sinon.stub().returns('t'),
-        getType: (entry) => `$${entry.type}`,
+        getType: entry => `$${entry.type}`,
       };
       const entry = {
         params: [],
@@ -228,7 +267,7 @@ describe('log', () => {
       const helpers = {
         entry: sinon.stub().returns('p'),
         traverse: sinon.stub().returns('t'),
-        getType: (entry) => `$${entry.type}`,
+        getType: entry => `$${entry.type}`,
       };
       const entry = {
         params: [],
@@ -238,25 +277,22 @@ describe('log', () => {
     });
 
     it('example with simple string', () => {
-      expect(d.example('code'))
-        .to.equal('```js\ncode\n```');
+      expect(d.example('code')).to.equal('```js\ncode\n```');
     });
 
     it('example with caption', () => {
-      expect(d.example('<caption>Title</caption>code'))
-        .to.equal('**Title**\n\n```js\ncode\n```');
+      expect(d.example('<caption>Title</caption>code')).to.equal('**Title**\n\n```js\ncode\n```');
     });
 
     it('example with backticks', () => {
-      expect(d.example('```sh\ncode\n```'))
-        .to.equal('```sh\ncode\n```');
+      expect(d.example('```sh\ncode\n```')).to.equal('```sh\ncode\n```');
     });
   });
 
   describe('event', () => {
     const m = templates.event;
     it('label', () => {
-      expect(m.label({ name: 'open' })).to.equal('event: \'open\'');
+      expect(m.label({ name: 'open' })).to.equal("event: 'open'");
     });
 
     it('paramSignature', () => {
@@ -271,7 +307,9 @@ describe('log', () => {
     });
 
     it('static label', () => {
-      expect(m.label({ name: 'open', path: 'foo/staticEntries/open' }, { parent: { name: 'Session' } })).to.equal('Session.open');
+      expect(m.label({ name: 'open', path: 'foo/staticEntries/open' }, { parent: { name: 'Session' } })).to.equal(
+        'Session.open'
+      );
     });
   });
 

@@ -3,9 +3,7 @@ describe('check-types', () => {
   let sandbox;
   before(() => {
     sandbox = sinon.createSandbox();
-    [t] = aw.mock([
-      ['**/types.js', () => (['mine'])],
-    ], ['../src/check-types']);
+    [t] = aw.mock([['**/types.js', () => ['mine']]], ['../src/check-types']);
   });
 
   afterEach(() => {
@@ -14,7 +12,9 @@ describe('check-types', () => {
 
   it('should rewrite types', () => {
     const cfg = {
-      logRule() { throw new Error('oops'); },
+      logRule() {
+        throw new Error('oops');
+      },
       parse: {
         types: {
           Carr: {
@@ -37,7 +37,9 @@ describe('check-types', () => {
 
   it('should rewrite generic types', () => {
     const cfg = {
-      logRule() { throw new Error('oops'); },
+      logRule() {
+        throw new Error('oops');
+      },
       parse: {
         types: {
           Car: {
@@ -60,17 +62,22 @@ describe('check-types', () => {
 
   it('should rewrite to existing ref', () => {
     const cfg = {
-      logRule() { throw new Error('oops'); },
+      logRule() {
+        throw new Error('oops');
+      },
     };
 
     const obj = {
       a: [{ type: 'Car' }],
     };
 
-    t(obj, {
-      Car: [{ __ref: '#/def/Car' }],
-    },
-    cfg);
+    t(
+      obj,
+      {
+        Car: [{ __ref: '#/def/Car' }],
+      },
+      cfg
+    );
 
     expect(obj.a[0]).to.eql({
       type: '#/def/Car',
@@ -79,7 +86,9 @@ describe('check-types', () => {
 
   it('should not log for known types', () => {
     const cfg = {
-      logRule(a, b, c) { throw new Error(c); },
+      logRule(a, b, c) {
+        throw new Error(c);
+      },
       parse: { types: {} },
     };
 
@@ -111,6 +120,6 @@ describe('check-types', () => {
     };
     t({ a: [{ type: 'meh' }] }, {}, cfg);
 
-    expect(cfg.logRule).to.have.been.calledWithExactly(null, 'no-unknown-types', 'Type unknown: \'meh\'');
+    expect(cfg.logRule).to.have.been.calledWithExactly(null, 'no-unknown-types', "Type unknown: 'meh'");
   });
 });
