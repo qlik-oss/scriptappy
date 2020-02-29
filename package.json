@@ -29,7 +29,8 @@
     "clean": "lerna clean",
     "lint": "eslint packages",
     "test": "aw --glob packages/*/test/**/*.spec.js",
-    "spec": "lerna run spec"
+    "spec": "lerna run spec",
+    "dts": "lerna run dts"
   },
   "workspaces": [
     "packages/*",

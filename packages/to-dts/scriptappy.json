@@ -1,0 +1,54 @@
+{
+  "scriptappy": "1.0.0",
+  "info": {
+    "name": "@scriptappy/to-dts",
+    "description": "Generate TypeScript definitions from a scriptappy specification",
+    "version": "0.0.2",
+    "license": "MIT"
+  },
+  "entries": {
+    "toDts": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "specification",
+          "type": "object"
+        },
+        {
+          "name": "config",
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "umd": {
+              "optional": true,
+              "type": "string"
+            },
+            "export": {
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'named'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'exports'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'default'"
+                }
+              ],
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {}
+}
