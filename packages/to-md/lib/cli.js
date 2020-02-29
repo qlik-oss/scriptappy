@@ -9,7 +9,7 @@ const toMd = require('./index');
 
 const toMdCommand = {
   command: 'to-md',
-  desc: 'Build supernova',
+  desc: 'Generate API reference in markdown',
   builder(y) {
     y.option('spec', {
       type: 'string',
