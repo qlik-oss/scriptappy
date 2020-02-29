@@ -67,7 +67,29 @@ function subValidateKind(spec, schema, jsonPointer) {
   return true;
 }
 
-function validateSpec(spec, schema) {
+const obj = {};
+
+function traverse(spec) {
+  ['entries', 'definitions'].forEach(sub =>
+    Object.keys(spec[sub] || {}).forEach(key => {
+      const d = spec[sub][key];
+      if (d.kind === 'class' && !obj.hasOwnProperty.call(d, 'constructor')) {
+        d.constructor = { kind: 'function', params: [] };
+      }
+      if (d.entries || d.definitions) {
+        traverse(d);
+      }
+    })
+  );
+}
+
+function validateSpec(ss, schema) {
+  // classes that don't have an own 'constructor' property will receive the constructor
+  // value from the prototype chain, which will cause validation to fail.
+  // to remedy this issue, we need to traverse spec and inject a dummy constructor for classes that don't have them
+  const spec = JSON.parse(JSON.stringify(ss));
+  traverse(spec);
+
   const validate = ajv.compile(schema);
   const valid = validate(spec);
   console.log('\n');

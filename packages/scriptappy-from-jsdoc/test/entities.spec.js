@@ -879,6 +879,19 @@ describe('type', () => {
     });
   });
 
+  it('class with hideconstructor', () => {
+    const o = types.typedef({
+      name: 'Person',
+      kind: 'class',
+      hideconstructor: true,
+    });
+
+    expect(o).to.eql({
+      kind: 'class',
+      entries: {},
+    });
+  });
+
   it('union', () => {
     const o = types.typedef({
       type: { names: ['string', 'Array.<string>'] },
