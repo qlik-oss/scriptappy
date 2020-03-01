@@ -232,6 +232,57 @@ describe('tags', () => {
       type: 'any',
     });
   });
+
+  it('template', () => {
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'template',
+            value: { name: 'T' },
+          },
+        ],
+      },
+      { logger }
+    );
+    expect(a).to.eql({
+      templates: [{ name: 'T' }],
+    });
+  });
+
+  it('template - default value', () => {
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'template',
+            value: { name: 'T', defaultvalue: false },
+          },
+        ],
+      },
+      { logger }
+    );
+    expect(a).to.eql({
+      templates: [{ name: 'T', defaultValue: false }],
+    });
+  });
+
+  it('template - type', () => {
+    const a = types.tags(
+      {
+        tags: [
+          {
+            title: 'template',
+            value: { name: 'T', type: { names: ['number'] } },
+          },
+        ],
+      },
+      { logger }
+    );
+    expect(a).to.eql({
+      templates: [{ name: 'T', type: 'number' }],
+    });
+  });
 });
 
 describe('collect params', () => {

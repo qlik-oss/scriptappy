@@ -6,7 +6,6 @@ describe('function', () => {
   let params;
   before(() => {
     sandbox = sinon.createSandbox();
-    getType = sandbox.stub();
     params = sandbox.stub();
 
     [fn] = aw.mock([['**/*/params.js', () => params]], ['../lib/types/function']);

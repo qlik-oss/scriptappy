@@ -224,6 +224,20 @@
               "type": "string"
             }
           ]
+        },
+        "templates": {
+          "description": "The generic templates for this entity.",
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/named"
+              },
+              {
+                "$ref": "#/definitions/entity-tier3"
+              }
+            ]
+          }
         }
       },
       "patternProperties": {
@@ -311,7 +325,8 @@
             "nullable": true,
             "variable": true,
             "generics": true,
-            "defaultValue": true
+            "defaultValue": true,
+            "templates": true
           },
           "required": [
             "type"
@@ -319,6 +334,39 @@
           "not": {
             "required": [
               "kind"
+            ]
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          }
+        }
+      ]
+    },
+    "named": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "examples": true,
+            "name": true,
+            "generics": true,
+            "defaultValue": true
+          },
+          "required": [
+            "name"
+          ],
+          "not": {
+            "required": [
+              "type"
             ]
           },
           "additionalProperties": false,
@@ -523,7 +571,8 @@
             "nullable": true,
             "variable": true,
             "generics": true,
-            "defaultValue": true
+            "defaultValue": true,
+            "templates": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -711,7 +760,8 @@
             "nullable": true,
             "variable": true,
             "generics": true,
-            "defaultValue": true
+            "defaultValue": true,
+            "templates": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -809,7 +859,8 @@
             "nullable": true,
             "variable": true,
             "generics": true,
-            "defaultValue": true
+            "defaultValue": true,
+            "templates": true
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -957,7 +1008,8 @@
             "nullable": true,
             "variable": true,
             "generics": true,
-            "defaultValue": true
+            "defaultValue": true,
+            "templates": true
           },
           "additionalProperties": false,
           "patternProperties": {

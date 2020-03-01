@@ -36,8 +36,22 @@ function tags(doc, cfg) {
     } else if (STABILITY_TAGS.indexOf(tag.title) !== -1) {
       o.stability = tag.title;
     } else if (tag.title === 'template') {
-      // reserve for later - TODO
-      // o.templates = tag.value.split(/,\s*/);
+      o.templates = o.templates || [];
+      let tt = {
+        name: tag.value.name,
+      };
+      // add dummy type to avoid missing type warning
+      const ttt = entity({ type: { names: ['string'] }, ...tag.value }, cfg);
+      if (tag.value.type) {
+        tt = {
+          name: tag.value.name,
+          ...ttt,
+        };
+      }
+      if (typeof ttt.defaultValue !== 'undefined') {
+        tt.defaultValue = ttt.defaultValue;
+      }
+      o.templates.push(tt);
     } else if (
       EXCLUDE_TAGS.indexOf(tag.title) !== -1 ||
       (include && include.indexOf(tag.title) === -1) ||

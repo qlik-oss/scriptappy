@@ -15,12 +15,16 @@ const BASIC_TYPES = [
 
 const GLOB = global;
 
-function checkTypes(obj, priv, cfg) {
+function checkTypes(obj, priv, cfg, scopeTypes = []) {
   let prop;
   Object.keys(obj).forEach(key => {
     prop = obj[key];
     if (prop == null || typeof prop !== 'object') {
       return;
+    }
+    const st = scopeTypes;
+    if (prop.templates && prop.kind && !['namespace', 'module'].includes(prop.kind)) {
+      st.push(...prop.templates.map(n => n.name));
     }
     if (typeof prop.type === 'string') {
       const generic = prop.type.match(/<.*>/); // find generic
@@ -31,12 +35,14 @@ function checkTypes(obj, priv, cfg) {
         if (cfg.parse.types[t].rewrite) {
           prop.type = `${cfg.parse.types[t].rewrite}${generic ? generic[0] : ''}`;
         }
-      } else if (BASIC_TYPES.indexOf(t) === -1 && typeof GLOB[t] === 'undefined') {
+      } else if (st.includes(t)) {
+        // do nothing
+      } else if (!BASIC_TYPES.includes(t) && typeof GLOB[t] === 'undefined') {
         cfg.logRule(null, 'no-unknown-types', `Type unknown: '${prop.type}'`);
       }
     }
 
-    checkTypes(prop, priv, cfg);
+    checkTypes(prop, priv, cfg, st);
   });
 }
 

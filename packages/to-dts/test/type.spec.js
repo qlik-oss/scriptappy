@@ -9,6 +9,7 @@ describe('type', () => {
   let union;
   let typeFn;
   let event;
+  let typeParams;
   let comments;
   let g;
   before(() => {
@@ -20,6 +21,7 @@ describe('type', () => {
     reference = sandbox.stub();
     union = sandbox.stub();
     event = sandbox.stub();
+    typeParams = sandbox.stub();
     comments = sandbox.stub();
 
     [typeFn] = aw.mock(
@@ -31,6 +33,7 @@ describe('type', () => {
         ['**/types/reference.js', () => reference],
         ['**/types/union.js', () => union],
         ['**/types/event.js', () => event],
+        ['**/types/type-params.js', () => typeParams],
         ['**/comments.js', () => comments],
       ],
       ['../lib/type']
@@ -187,6 +190,18 @@ describe('type', () => {
       kind: 'name',
       name: 'Promise',
       typeArguments: ['string'],
+    });
+  });
+
+  it('should attach type parameters', () => {
+    const def = {
+      kind: 'function',
+      templates: 'temps',
+    };
+    fn.withArgs(def, 'p', g).returns({ typeParameters: [] });
+    typeParams.withArgs('temps', { typeParameters: [] }, g).returns(['template params']);
+    expect(getType(def, 'p')).to.eql({
+      typeParameters: ['template params'],
     });
   });
 

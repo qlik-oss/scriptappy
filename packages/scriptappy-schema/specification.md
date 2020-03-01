@@ -109,6 +109,7 @@ nullable|`boolean`|Nullability of this entity. Used to indicate when the entity 
 variable|`boolean`|Variability of this entity. Used to indicate when the entity is repeatable as a method parameter.
 generics|Array&lt;[Entity Tier 3](#entity-tier3)&gt;|Generic types.
 defaultValue|`number` \| `boolean` \| `string`|Default value for this entity. Used when the entity is optional.
+templates|Array&lt;[Named Object](#named) \| [Entity Tier 3](#entity-tier3)&gt;|The generic templates for this entity.
 
 ##### Example
 

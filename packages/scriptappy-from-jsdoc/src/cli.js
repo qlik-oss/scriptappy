@@ -83,6 +83,7 @@ const runWithJSDoc = files => {
     source: {
       include: files,
     },
+    plugins: [path.resolve(__dirname, '../plugins/plug.js')],
   };
   if (typeof config.jsdoc === 'object') {
     const plugins = (config.jsdoc.plugins || []).map(f => path.resolve(process.cwd(), f));

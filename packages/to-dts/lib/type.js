@@ -7,6 +7,7 @@ const klass = require('./types/class');
 const reference = require('./types/reference');
 const union = require('./types/union');
 const event = require('./types/event');
+const typeParams = require('./types/type-params');
 
 const comments = require('./comments');
 
@@ -95,6 +96,10 @@ function typeFn(g) {
       def.generics.forEach(gen => {
         t.typeArguments.push(g.getType(gen));
       });
+    }
+
+    if (def.templates && t.typeParameters) {
+      t.typeParameters = typeParams(def.templates, t, g);
     }
 
     const com = comments(def, t);

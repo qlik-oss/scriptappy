@@ -44,6 +44,20 @@ const common = {
       description: 'Default value for this entity. Used when the entity is optional.',
       oneOf: [{ type: 'number' }, { type: 'boolean' }, { type: 'string' }],
     },
+    templates: {
+      description: 'The generic templates for this entity.',
+      type: 'array',
+      items: {
+        oneOf: [
+          {
+            $ref: '#/definitions/named',
+          },
+          {
+            $ref: '#/definitions/entity-tier3',
+          },
+        ],
+      },
+    },
   },
   patternProperties: {
     '^x-': {
@@ -156,6 +170,9 @@ function addToTier(ref, tier) {
   });
 
   Object.keys(common.properties).forEach(key => {
+    // if (key === 'templates') {
+    //   return;
+    // }
     def.properties[key] = true;
   });
 
@@ -163,6 +180,27 @@ function addToTier(ref, tier) {
     allOf: [{ $ref: '#/definitions/common' }, def],
   };
   addToTier('type', 3);
+
+  schema.definitions.named = {
+    allOf: [
+      { $ref: '#/definitions/common' },
+      extend({}, def, {
+        required: ['name'],
+        not: {
+          required: ['type'],
+        },
+        properties: {
+          description: true,
+          stability: true,
+          availability: true,
+          examples: true,
+          name: true,
+          generics: true,
+          defaultValue: true,
+        },
+      }),
+    ],
+  };
 })();
 
 // kinds
@@ -224,6 +262,9 @@ function addKind(k, tier, ...props) {
   delete def.examples;
 
   Object.keys(common.properties).forEach(key => {
+    if (key === 'templates' && !['class', 'function', 'interface', 'object'].includes(k)) {
+      return;
+    }
     def.properties[key] = true;
   });
 
@@ -380,6 +421,9 @@ function constr() {
   );
 
   Object.keys(common.properties).forEach(key => {
+    if (key === 'templates') {
+      return;
+    }
     def.properties[key] = true;
   });
 

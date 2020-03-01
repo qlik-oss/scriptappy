@@ -106,10 +106,12 @@ describe('check-types', () => {
       'undefined',
       // custom types
       'mine',
+      // template
+      'T',
       // native
       'Math',
     ].forEach(known => {
-      t({ a: [{ type: known }] }, {}, cfg);
+      t({ a: { kind: 'interface', templates: [{ name: 'T' }], type: known } }, {}, cfg);
     });
   });
 

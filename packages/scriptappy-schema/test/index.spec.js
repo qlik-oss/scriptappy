@@ -110,6 +110,39 @@ describe('base', () => {
   });
 });
 
+describe('types', () => {
+  function validate(def, obj, should = 'pass') {
+    const validator = new Ajv({ allErrors: true, verbose: true, jsonPointers: true });
+    const subschema = {
+      $ref: `#/definitions/${def}`,
+      definitions: schema.definitions,
+    };
+    const isValid = validator.validate(subschema, obj);
+    if (!isValid && should === 'pass') {
+      vv.validate(schema, {
+        scriptappy: pkg.version,
+        info: { name: 'a', version: '1.1.0' },
+        entries: {
+          a: obj,
+        },
+        definitions: {},
+      });
+    } else {
+      // nothing
+    }
+    expect(isValid).to.equal(should === 'pass');
+  }
+
+  it('named', () => {
+    validate('named', { name: 'n' });
+  });
+
+  it('templates', () => {
+    validate('common/properties/templates', [{ name: 'n' }]);
+    validate('common/properties/templates', [{ name: 'n', defaultValue: 'd', type: 'number' }]);
+  });
+});
+
 describe('kinds', () => {
   const common = {
     description: 'descr',
@@ -163,6 +196,16 @@ describe('kinds', () => {
         validate(key, extend({}, validKinds[key], { random: true }), 'fail');
       });
     });
+  });
+
+  describe('should allow templates for', () => {
+    Object.keys(validKinds)
+      .filter(k => ['class', 'function', 'interface', 'object'].includes(k))
+      .forEach(key => {
+        it(key, () => {
+          validate(key, extend({}, validKinds[key], { templates: [] }), 'pass');
+        });
+      });
   });
 
   describe('descendants', () => {

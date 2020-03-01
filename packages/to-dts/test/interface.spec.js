@@ -2,11 +2,19 @@ describe('class', () => {
   let sandbox;
   let iface;
   let params;
+  let typeParams;
   before(() => {
     sandbox = sinon.createSandbox();
     params = sandbox.stub();
+    typeParams = sandbox.stub();
 
-    [iface] = aw.mock([['**/*/params.js', () => params]], ['../lib/types/interface']);
+    [iface] = aw.mock(
+      [
+        ['**/*/params.js', () => params],
+        ['**/*/type-params.js', () => typeParams],
+      ],
+      ['../lib/types/interface']
+    );
   });
   afterEach(() => {
     sandbox.reset();
@@ -73,6 +81,32 @@ describe('class', () => {
           parameters: ['parm'],
           returnType: 'num',
           typeParameters: [],
+        },
+      ],
+    });
+  });
+
+  it('should attach template to call signature', () => {
+    const def = {
+      name: 'foo',
+      params: 'par',
+      this: 'self',
+      templates: 'te',
+    };
+    params.withArgs('par', 'self', 'g').returns([]);
+    typeParams.withArgs('te', false, 'g').returns(['type params']);
+    const v = iface(def, {}, 'g');
+    expect(v).to.eql({
+      baseTypes: [],
+      kind: 'interface',
+      name: 'foo',
+      flags: 0,
+      members: [
+        {
+          kind: 'call-signature',
+          parameters: [],
+          returnType: 'void',
+          typeParameters: ['type params'],
         },
       ],
     });
