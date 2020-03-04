@@ -3,8 +3,6 @@
 /* eslint prefer-destructuring: 0 */
 
 // TODO
-// symbols
-// generic templates
 // meta - see, links
 
 const EXCLUDE_TAGS = ['entry'];
@@ -14,6 +12,8 @@ const STABILITY_TAGS = ['experimental', 'stable', 'locked'];
 const STABILITY = 'stability';
 
 let currentMetaDoc;
+
+const { sortObject } = require('./sort');
 
 function tags(doc, cfg) {
   const o = {};
@@ -147,12 +147,16 @@ function collectAndNest(params, cfg, opts, isParams = false) {
 }
 
 function collectParams(params, cfg, opts) {
-  return collectAndNest(params, cfg, opts, true);
+  const par = collectAndNest(params, cfg, opts, true);
+  par.forEach(p => sortObject(p));
+  return par;
 }
 
 // collect nested properties
 function collectProps(props, cfg, opts) {
-  return collectAndNest(props, cfg, opts);
+  const o = { entries: collectAndNest(props, cfg, opts) };
+  sortObject(o);
+  return o.entries;
 }
 
 function getTypeFromCodeMeta(doc /* opts */) {

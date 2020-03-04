@@ -113,14 +113,14 @@
             "address": {
               "kind": "object",
               "entries": {
-                "port": {
-                  "type": "number"
+                "address": {
+                  "type": "string"
                 },
                 "family": {
                   "type": "string"
                 },
-                "address": {
-                  "type": "string"
+                "port": {
+                  "type": "number"
                 }
               }
             }

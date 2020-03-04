@@ -6,6 +6,7 @@ const tools = require('scriptappy-tools');
 const schema = require('scriptappy-schema');
 const entities = require('./entities');
 const checkTypes = require('./check-types');
+const { sortAlphabetically } = require('./sort');
 const defaultConfig = require('../spec.config.js');
 
 function printViolations(violations, logger = console) {
@@ -169,11 +170,7 @@ function transform({ ids, priv }, cfg) {
   const entries = {};
   const definitions = {};
   Object.keys(ids)
-    .sort((a, b) => {
-      const aa = a.toLowerCase();
-      const bb = b.toLowerCase();
-      return aa > bb ? 1 : bb > aa ? -1 : 0; // eslint-disable-line
-    })
+    .sort(sortAlphabetically)
     .forEach(longname => {
       ids[longname].forEach((d, idx) => {
         // const d = ids[longname];
