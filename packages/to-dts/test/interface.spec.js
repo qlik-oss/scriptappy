@@ -86,32 +86,6 @@ describe('class', () => {
     });
   });
 
-  it('should attach template to call signature', () => {
-    const def = {
-      name: 'foo',
-      params: 'par',
-      this: 'self',
-      templates: 'te',
-    };
-    params.withArgs('par', 'self', 'g').returns([]);
-    typeParams.withArgs('te', false, 'g').returns(['type params']);
-    const v = iface(def, {}, 'g');
-    expect(v).to.eql({
-      baseTypes: [],
-      kind: 'interface',
-      name: 'foo',
-      flags: 0,
-      members: [
-        {
-          kind: 'call-signature',
-          parameters: [],
-          returnType: 'void',
-          typeParameters: ['type params'],
-        },
-      ],
-    });
-  });
-
   it('should extend from multiple types', () => {
     const def = { name: 'Dog', extends: ['Animal', 'Mammal'] };
     const g = {
@@ -126,6 +100,33 @@ describe('class', () => {
       flags: 0,
       members: [],
       baseTypes: ['Anim', 'Mam'],
+    });
+  });
+
+  it('should attach type parameters', () => {
+    const def = {
+      name: 'foo',
+      templates: 'te',
+    };
+    typeParams.withArgs('te', false, 'g').returns([
+      {
+        kind: 'type-parameter',
+        name: 'T',
+      },
+      {
+        kind: 'type-parameter',
+        name: 'K',
+        baseType: 'U<S>',
+        defaultType: 'P',
+      },
+    ]);
+    const v = iface(def, {}, 'g');
+    expect(v).to.eql({
+      baseTypes: [],
+      kind: 'interface',
+      name: 'foo<T, K extends U<S> = P>',
+      members: [],
+      flags: 0,
     });
   });
 });

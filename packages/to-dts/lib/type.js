@@ -30,10 +30,11 @@ function typeFn(g) {
 
   const getBase = (def, tsParent) => {
     if (!def.kind && /^#\//.test(def.type)) {
-      if (!refs[def.type]) {
-        refs[def.type] = reference(def.type, tsParent, g);
+      const uid = `${def.type}${def.generics ? JSON.stringify(def.generics) : ''}`;
+      if (!refs[uid]) {
+        refs[uid] = reference(def.type, tsParent, g);
       }
-      return refs[def.type];
+      return refs[uid];
     }
 
     let t;
