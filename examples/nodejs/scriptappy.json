@@ -160,8 +160,7 @@
         },
         "win32": {
           "description": "Provides acces to Window-specific implementations of the `path` methods",
-          "kind": "object",
-          "entries": {}
+          "type": "object"
         }
       }
     }

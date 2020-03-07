@@ -1,14 +1,16 @@
 describe('transformer', () => {
   let t;
   let sandbox;
-  // let doclet;
+  let entities;
   before(() => {
     sandbox = sinon.createSandbox();
-    // doclet = sandbox.stub();
+    entities = {
+      doclet: sandbox.stub(),
+    };
     [t] = aw.mock(
       [
         ['**/check-types.js', () => () => {}],
-        // ['**/entities.js', () => ({ doclet })],
+        ['**/entities.js', () => entities],
       ],
       ['../src/transformer']
     );
@@ -458,15 +460,12 @@ describe('transformer', () => {
     it('spec', () => {
       const doclets = [
         {
-          meta: { code: { name: '' } },
           kind: 'module',
           name: 'fs',
           longname: 'module:fs',
         },
         {
-          meta: { code: { name: '' } },
           kind: 'member',
-          type: { names: ['string'] },
           longname: 'def',
           scope: 'inner',
         },
@@ -478,6 +477,13 @@ describe('transformer', () => {
           licenses: [{ type: 'yes' }],
         },
       ];
+      entities.doclet.withArgs(doclets[0]).returns({
+        kind: 'module',
+        entries: {},
+      });
+      entities.doclet.withArgs(doclets[1]).returns({
+        type: 'string',
+      });
       const spec = JSON.parse(
         JSON.stringify(
           t.generate({
@@ -507,27 +513,33 @@ describe('transformer', () => {
     it('refs', () => {
       const doclets = [
         {
-          meta: { code: { name: '' } },
           tags: [{ originalTitle: 'entry', title: 'entry' }],
           kind: 'typedef',
-          type: { names: ['object'] },
           longname: 'data-source',
         },
         {
-          meta: { code: { name: '' } },
           kind: 'typedef',
-          type: { names: ['object'] },
           longname: 'chart-definition',
         },
         {
-          meta: { code: { name: '' } },
           kind: 'typedef',
-          type: { names: ['Array.<data-source>'] },
           name: 'data',
           memberof: 'chart-definition',
           longname: 'chart-definition.data',
         },
       ];
+      entities.doclet.withArgs(doclets[0]).returns({
+        kind: 'object',
+        entries: {},
+      });
+      entities.doclet.withArgs(doclets[1]).returns({
+        kind: 'object',
+        entries: {},
+      });
+      entities.doclet.withArgs(doclets[2]).returns({
+        kind: 'array',
+        items: { type: 'data-source' },
+      });
       const spec = t.generate({
         data: doclets,
         config: cfg,

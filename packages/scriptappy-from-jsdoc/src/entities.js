@@ -13,7 +13,10 @@ const STABILITY = 'stability';
 
 let currentMetaDoc;
 
-const { sortObject } = require('./sort');
+const { parse, getTypeFromCodeMeta } = require('./type-parser');
+const collector = require('./collector');
+
+const { collectPropsFromDoc, collectParamsFromDoc } = collector({ entity });
 
 function tags(doc, cfg) {
   const o = {};
@@ -92,89 +95,6 @@ function availability(doc /* opts */) {
   return o;
 }
 
-function collectAndNest(params, cfg, opts, isParams = false) {
-  const paramMap = {};
-  const res = [];
-  (params || []).forEach(par => {
-    const s = par.name.split('.');
-    let parent = paramMap;
-    let i = 0;
-    for (i = 0; i < s.length - 1; i += 1) {
-      const subNameType = s[i];
-      const isParentArray = /\[\]$/.test(subNameType);
-      const subName = isParentArray ? subNameType.replace(/\[\]$/, '') : subNameType;
-      if (!parent[subName]) {
-        parent[subName] = {};
-      }
-      parent = parent[subName];
-      if (!parent.kind) {
-        parent.kind = isParentArray ? 'array' : 'object';
-        delete parent.type;
-      }
-      if (isParentArray && !parent.items) {
-        parent.items = {
-          kind: 'object',
-          entries: {},
-        };
-      } else if (isParentArray && !parent.items.entries) {
-        parent.items.entries = {};
-        if (!parent.items.kind) {
-          parent.items.kind = 'object';
-          delete parent.items.type;
-        }
-      } else if (!isParentArray && !parent.entries) {
-        // if (!parent.kind) {
-        //   parent.kind = 'object';
-        //   delete parent.type;
-        // }
-        parent.entries = {};
-      }
-      delete parent.type;
-      parent = isParentArray ? parent.items.entries : parent.entries;
-    }
-    const obj = {};
-    if (isParams && i === 0 && par.name) {
-      obj.name = par.name;
-    }
-    parent[s[i]] = Object.assign(obj, entity(par, cfg, opts));
-
-    if (i === 0) {
-      res.push(parent[s[i]]);
-    }
-  });
-
-  return isParams ? res : paramMap;
-}
-
-function collectParams(params, cfg, opts) {
-  const par = collectAndNest(params, cfg, opts, true);
-  par.forEach(p => sortObject(p));
-  return par;
-}
-
-// collect nested properties
-function collectProps(props, cfg, opts) {
-  const o = { entries: collectAndNest(props, cfg, opts) };
-  sortObject(o);
-  return o.entries;
-}
-
-function getTypeFromCodeMeta(doc /* opts */) {
-  const o = {};
-  if (!doc.meta || !doc.meta.code) {
-    // console.warn('--UNKNOWN--', doc.longname);
-    return o;
-  }
-  if (doc.meta.code.type === 'ObjectExpression') {
-    o.kind = 'object';
-  } else if (doc.meta.code.type === 'Literal') {
-    o.kind = 'literal';
-    o.value = doc.meta.code.value;
-  }
-
-  return o;
-}
-
 function literal(v) {
   if (v[0] === "'" || v[0] === '"') {
     return 'string';
@@ -208,79 +128,13 @@ function simpleType(type, cfg) {
   return t;
 }
 
-function commonType(names) {
-  const types = {};
-
-  names.forEach(v => {
-    const lit = literal(v) || 'any';
-    types[lit] = (types[lit] || 0) + 1;
-  });
-  const frequency = Object.keys(types).sort((a, b) => types[a] - types[b]);
-
-  return frequency.length === 1 ? frequency[0] : undefined;
-}
-
-function parseName(type) {
-  return type.split(/\s*,\s*/).map(t => getTypedef({ type: { names: [t.replace(/\s*/g, '')] } }));
-}
-
-function unwrapArrayGeneric(type, cfg, opts) {
-  const typedef = {};
-  let itemtype = type.match(/<(.+)>/);
-  if (itemtype) {
-    [, itemtype] = itemtype;
-  } else {
-    itemtype = 'any';
-  }
-  const isTuple = /,/.test(itemtype);
-  typedef.kind = 'array';
-  if (isTuple) {
-    typedef.items = itemtype.split(/\s*,\s*/).map(t => getTypedef({ type: { names: [t] } }));
-  } else {
-    itemtype = itemtype.replace(/\s*\(\s*|\s*\)/g, '').split(/\s*\|\s*/);
-    typedef.items = getTypedef(
-      {
-        type: { names: itemtype },
-      },
-      cfg,
-      opts
-    );
-  }
-
-  return typedef;
-}
-
-function unwrapGeneric(type, cfg, opts) {
-  const itemtype = type.match(/<(.+)>/);
-  if (itemtype) {
-    const t = type.replace(itemtype[0], '').replace(/\.$/g, '');
+function getTypedef(doc, cfg, opts) {
+  let typedef;
+  if (!doc.kind && !doc.type && !doc.meta) {
     return {
-      type: t === 'Object' ? 'object' : t,
-      generics: parseName(itemtype[1], cfg, opts),
+      type: 'any',
     };
   }
-  return {
-    type: 'any',
-  };
-}
-
-function typeOrKind(names, cfg, opts) {
-  if (names.length === 0) {
-    throw new Error('ooops');
-  }
-  if (names.length === 1) {
-    return simpleType(names[0], cfg, opts);
-  }
-  return {
-    kind: 'union',
-    type: commonType(names),
-    items: names.map(t => getTypedef({ type: { names: [t] } }, cfg, opts)),
-  };
-}
-
-function getTypedef(doc, cfg, opts) {
-  let type;
-  const typedef = {};
   if (doc.kind === 'module') {
     return kindModule(doc, cfg, opts);
   }
@@ -301,95 +155,39 @@ function getTypedef(doc, cfg, opts) {
   if (doc.kind === 'interface') {
     return kindInterface(doc, cfg, opts);
   }
+  if (doc.kind === 'typedef' && doc.type && doc.type.names && doc.type.names.includes('function')) {
+    return kindFunction(doc, cfg, opts);
+  }
   if (!doc.type || !doc.type.names) {
     const t = getTypeFromCodeMeta(doc, cfg, opts);
-    if (!t.kind) {
-      if (
-        doc.kind === 'member' &&
-        doc.params &&
-        doc.meta &&
-        doc.meta.code &&
-        doc.meta.code.paramnames &&
-        doc.meta.code.paramnames.length === 1
-      ) {
-        // property setter
-        const something = typeOrKind(doc.params[0].type.names);
-        if (something.kind) {
-          typedef.kind = something.kind;
-          typedef.items = something.items;
-        } else if (something.type) {
-          type = something.type;
+    if (!t.kind && !t.type) {
+      if (!cfg.__private) {
+        if (doc && doc.meta && doc.name) {
+          cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
+        } else {
+          cfg.logRule(currentMetaDoc, 'no-missing-types', 'Missing type');
         }
-      } else {
-        if (!cfg.__private) {
-          if (doc && doc.meta && doc.name) {
-            cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
-          } else {
-            cfg.logRule(currentMetaDoc, 'no-missing-types', 'Missing type');
-          }
-        }
-        type = 'any';
       }
     } else {
-      type = t.kind;
-      typedef.kind = type;
-      if (type === 'literal' && 'value' in t) {
-        typedef.value = t.value;
-        typedef.kind = t.kind;
-        return typedef;
-      }
+      typedef = t;
     }
   } else if (doc.type.names.length === 1) {
-    if (doc.type.names[0] === 'function') {
-      return doc.kind === 'typedef'
-        ? kindFunction(doc, cfg, opts)
-        : {
-            type: 'function',
-          };
-    }
-    const something = typeOrKind(doc.type.names, cfg, opts);
-    if (something.kind === 'literal') {
-      typedef.kind = something.kind;
-      typedef.value = something.value;
-      return typedef;
-    }
-    [type] = doc.type.names;
+    typedef = parse(doc.type.names[0]);
   } else {
-    const something = typeOrKind(doc.type.names, cfg, opts);
-    typedef.kind = something.kind;
-    typedef.items = something.items;
-    typedef.type = something.type;
-  }
-
-  if (type && type.toLowerCase() === 'object') {
-    const entries = collectProps(doc.properties, cfg, opts);
-    if (doc.kind || Object.keys(entries).length) {
-      typedef.kind = 'object';
-      typedef.entries = entries;
-    }
-  }
-
-  if (/^Array\.</.test(type) || type === 'array') {
-    return unwrapArrayGeneric(type, cfg, opts);
-  }
-  if (/\.</.test(type)) {
-    // generic
-    const t = unwrapGeneric(type, cfg, opts);
-    if (t.type === 'object' && doc.properties) {
-      t.entries = collectProps(doc.properties, cfg, opts);
-    }
-    return t;
-  }
-  if (/\|/.exec(type)) {
-    return {
+    typedef = {
       kind: 'union',
-      items: type
-        .split(/\s*\|\s*/)
-        .map(t => getTypedef({ type: { names: [t.replace(/^\s*\(?\s*|\s*\)?\s*$/g, '')] } }, cfg, opts)),
+      items: doc.type.names.map(t => parse(t)),
     };
   }
-  if (type && (type !== typedef.kind || !typedef.kind)) {
-    typedef.type = type;
+
+  if (!typedef) {
+    typedef = { type: 'any' };
+  }
+
+  if ((typedef.kind === 'object' || typedef.type === 'object') && doc.properties) {
+    delete typedef.type;
+    typedef.kind = 'object';
+    typedef.entries = collectPropsFromDoc(doc, cfg, opts);
   }
 
   return typedef;
@@ -401,7 +199,7 @@ function kindFunction(doc, cfg, opts) {
     params: [],
   };
 
-  f.params.push(...collectParams(doc.params || [], cfg, opts));
+  f.params.push(...collectParamsFromDoc(doc, cfg, opts));
 
   if (doc.returns) {
     if (doc.returns.length > 1) {
@@ -457,7 +255,7 @@ function kindNamespace() {
 
 function kindClass(doc, cfg, opts) {
   const constr = kindFunction(doc, cfg, opts);
-  const entries = doc.properties ? collectProps(doc.properties, cfg, opts) : {};
+  const entries = doc.properties ? collectPropsFromDoc(doc, cfg, opts) : {};
   return {
     kind: 'class',
     ...(doc.hideconstructor
@@ -497,7 +295,7 @@ function kindInterface(doc, cfg, opts) {
     delete obj.params;
   }
 
-  obj.entries = doc.properties ? collectProps(doc.properties, cfg, opts) : {};
+  obj.entries = doc.properties ? collectPropsFromDoc(doc, cfg, opts) : {};
   return obj;
 }
 
@@ -611,8 +409,6 @@ function doclet(doc, cfg) {
 }
 
 module.exports = {
-  collectParams,
-  collectProps,
   entity,
   doclet,
   availability,
