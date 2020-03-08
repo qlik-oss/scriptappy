@@ -37,6 +37,15 @@ describe('function', () => {
     });
   });
 
+  it('should create as function-type when parent is union, array or parameter', () => {
+    const def = {};
+    params.returns([]);
+    ['union', 'array', 'parameter'].forEach(p => {
+      const v = fn(def, { kind: p });
+      expect(v.kind).to.eql('function-type');
+    });
+  });
+
   it('should have params', () => {
     const def = {
       params: 'par',

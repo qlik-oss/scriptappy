@@ -9,7 +9,7 @@ function params(pars = [], thisContext, g) {
     if (p.variable) {
       flags |= dom.ParameterFlags.Rest;
     }
-    const t = g.getType(p);
+    const t = g.getType(p, { kind: 'parameter' });
     if (t.kind === 'object' && p.entries) {
       g.traverse(p.entries, { parent: t, path: '', flags: 0 });
     } else if (p.entries) {

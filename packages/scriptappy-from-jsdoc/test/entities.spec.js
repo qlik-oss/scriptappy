@@ -321,6 +321,22 @@ describe('entities', () => {
       });
     });
 
+    it('exp', () => {
+      parse.withArgs('xx').returns({
+        type: 'expression',
+      });
+      const o = types.typedef(
+        {
+          exp: 'xx',
+        },
+        cfg
+      );
+
+      expect(o).to.eql({
+        type: 'expression',
+      });
+    });
+
     it.skip('literal', () => {
       parse.withArgs("'foo'").returns({ kind: 'literal', value: 'foo' });
       const o = types.typedef({

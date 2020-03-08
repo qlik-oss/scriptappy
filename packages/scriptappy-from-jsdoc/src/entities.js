@@ -130,6 +130,9 @@ function simpleType(type, cfg) {
 
 function getTypedef(doc, cfg, opts) {
   let typedef;
+  if (doc.exp) {
+    return parse(doc.exp);
+  }
   if (!doc.kind && !doc.type && !doc.meta) {
     return {
       type: 'any',

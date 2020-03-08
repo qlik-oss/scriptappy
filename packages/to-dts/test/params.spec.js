@@ -38,7 +38,7 @@ describe('params', () => {
 
   it('should return nameless parameter', () => {
     const p = {};
-    getType.withArgs(p).returns('tt');
+    getType.withArgs(p, { kind: 'parameter' }).returns('tt');
     const v = params([p], false, g);
     expect(v).to.eql([{ kind: 'parameter', name: '', type: 'tt', flags: 0 }]);
   });

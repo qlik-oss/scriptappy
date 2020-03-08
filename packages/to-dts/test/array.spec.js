@@ -18,7 +18,7 @@ describe('array', () => {
 
   it('should create with same type', () => {
     const g = { getType: sandbox.stub() };
-    g.getType.withArgs('its').returns('s');
+    g.getType.withArgs('its', { kind: 'array' }).returns('s');
     expect(arr({ items: 'its' }, false, g)).to.eql({
       kind: 'array',
       type: 's',
@@ -27,8 +27,8 @@ describe('array', () => {
 
   it('should create tuple', () => {
     const g = { getType: sandbox.stub() };
-    g.getType.withArgs('first').returns('string');
-    g.getType.withArgs('2nd').returns('boolean | number');
+    g.getType.withArgs('first', { kind: 'array' }).returns('string');
+    g.getType.withArgs('2nd', { kind: 'array' }).returns('boolean | number');
     expect(arr({ items: ['first', '2nd'] }, false, g)).to.eql('[string, boolean | number]');
   });
 });
