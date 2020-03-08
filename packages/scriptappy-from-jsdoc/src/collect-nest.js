@@ -1,4 +1,4 @@
-function collectAndNest({ doc, list, asArray }, cfg, opts, entity) {
+function collectAndNest({ list, asArray }, cfg, opts, entity) {
   const paramMap = {};
   const res = [];
   (list || []).forEach(par => {
