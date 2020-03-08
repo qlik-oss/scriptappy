@@ -15,7 +15,7 @@ function params(pars = [], thisContext, g) {
     } else if (p.entries) {
       console.warn('unhandled entries');
     }
-    return dom.create.parameter(p.name || '', t, flags);
+    return dom.create.parameter(p.name || '$', t, flags);
   });
   return thisContext ? [dom.create.parameter('this', g.getType(thisContext)), ...ret] : ret;
 }
