@@ -7,7 +7,7 @@ module.exports = function fn(def, tsParent, g) {
   if (tsParent && ['class', 'interface', 'object'].includes(tsParent.kind)) {
     return dom.create.method(def.name, par, ret);
   }
-  if (tsParent && ['union', 'array', 'parameter'].includes(tsParent.kind)) {
+  if (tsParent && ['union', 'array', 'parameter', 'alias'].includes(tsParent.kind)) {
     return dom.create.functionType(par, ret);
   }
 

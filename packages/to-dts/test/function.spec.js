@@ -37,10 +37,10 @@ describe('function', () => {
     });
   });
 
-  it('should create as function-type when parent is union, array or parameter', () => {
+  it('should create as function-type when parent is union, array, parameter or alias', () => {
     const def = {};
     params.returns([]);
-    ['union', 'array', 'parameter'].forEach(p => {
+    ['union', 'array', 'parameter', 'alias'].forEach(p => {
       const v = fn(def, { kind: p });
       expect(v.kind).to.eql('function-type');
     });

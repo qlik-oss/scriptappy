@@ -4,6 +4,7 @@ describe('type', () => {
   let arr;
   let fn;
   let iface;
+  let alias;
   let klass;
   let reference;
   let union;
@@ -17,6 +18,7 @@ describe('type', () => {
     arr = sandbox.stub();
     fn = sandbox.stub();
     iface = sandbox.stub();
+    alias = sandbox.stub();
     klass = sandbox.stub();
     reference = sandbox.stub();
     union = sandbox.stub();
@@ -29,6 +31,7 @@ describe('type', () => {
         ['**/types/array.js', () => arr],
         ['**/types/function.js', () => fn],
         ['**/types/interface.js', () => iface],
+        ['**/types/alias.js', () => alias],
         ['**/types/class.js', () => klass],
         ['**/types/reference.js', () => reference],
         ['**/types/union.js', () => union],
@@ -82,6 +85,12 @@ describe('type', () => {
     });
   });
 
+  it('should create alias', () => {
+    const def = { kind: 'alias' };
+    alias.withArgs(def, 'p', g).returns('a');
+    expect(getType(def, 'p')).to.eql('a');
+  });
+
   it('should create class', () => {
     const def = { kind: 'class' };
     klass.withArgs(def, 'p', g).returns('k');
@@ -120,7 +129,10 @@ describe('type', () => {
 
   it('should create literal', () => {
     const def = { kind: 'literal', value: 'v' };
-    expect(getType(def, 'p')).to.eql('v');
+    expect(getType(def, 'p')).to.eql({
+      kind: 'string-literal',
+      value: 'v',
+    });
   });
 
   it('should create function type', () => {

@@ -262,7 +262,7 @@ function addKind(k, tier, ...props) {
   delete def.examples;
 
   Object.keys(common.properties).forEach(key => {
-    if (key === 'templates' && !['class', 'function', 'interface', 'object'].includes(k)) {
+    if (key === 'templates' && !['class', 'function', 'interface', 'object', 'alias'].includes(k)) {
       return;
     }
     def.properties[key] = true;
@@ -275,6 +275,24 @@ function addKind(k, tier, ...props) {
 
   addToTier(`kind.${k}`, tier);
 }
+
+addKind('alias', 2, {
+  properties: {
+    items: {
+      $ref: '#/definitions/entity-tier3',
+    },
+  },
+  required: ['kind', 'items'],
+  examples: [
+    `
+  "kind": "alias",
+  "items": {
+    "kind": "union",
+    "items": [{ "type": "string" }, { "type": "number" }]
+  }
+`,
+  ],
+});
 
 addKind('literal', 3, {
   properties: {

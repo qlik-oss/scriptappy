@@ -36,11 +36,11 @@ describe('params', () => {
     expect(v).to.eql([{ kind: 'parameter', name: 'a', type: 'tt', flags: 0 }]);
   });
 
-  it('should return nameless parameter', () => {
+  it('should add parameter name when misskng', () => {
     const p = {};
     getType.withArgs(p, { kind: 'parameter' }).returns('tt');
     const v = params([p], false, g);
-    expect(v).to.eql([{ kind: 'parameter', name: '', type: 'tt', flags: 0 }]);
+    expect(v).to.eql([{ kind: 'parameter', name: '$', type: 'tt', flags: 0 }]);
   });
 
   it('should add optional flag', () => {

@@ -3,6 +3,7 @@ const dom = require('dts-dom');
 const arr = require('./types/array');
 const fn = require('./types/function');
 const iface = require('./types/interface');
+const alias = require('./types/alias');
 const klass = require('./types/class');
 const reference = require('./types/reference');
 const union = require('./types/union');
@@ -47,6 +48,8 @@ function typeFn(g) {
         return dom.create.namespace(def.name);
       case 'object':
         return dom.create.objectType([]);
+      case 'alias':
+        return alias(def, tsParent, g);
       case 'class':
         return klass(def, tsParent, g);
       case 'function':
@@ -63,7 +66,7 @@ function typeFn(g) {
     }
 
     if (def.kind === 'literal') {
-      return def.value;
+      return dom.type.stringLiteral(def.value);
     }
 
     // ====== types ===========

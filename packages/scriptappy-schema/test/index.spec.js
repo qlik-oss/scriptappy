@@ -46,12 +46,16 @@ const validKinds = {
     kind: 'event',
     params: [],
   },
+  alias: {
+    kind: 'alias',
+    items: { type: 'string' },
+  },
 };
 
 const tiers = [
   ['module'],
   ['namespace'],
-  ['class', 'interface'],
+  ['alias', 'class', 'interface'],
   ['object', 'function', 'array', 'union', 'literal'],
   ['event'],
 ];
@@ -77,6 +81,7 @@ const validSubKinds = {
   interface: { entries: [...tiers[3]], definitions: [...tiers[2], ...tiers[3]], events: [...tiers[4]] },
   object: { entries: [...tiers[3]], definitions: [...tiers[3]], events: [...tiers[4]] },
   literal: { entries: [], definitions: [] },
+  alias: { entries: [], definitions: [] },
   union: { entries: [], definitions: [...tiers[3]] },
   array: { entries: [], definitions: [...tiers[3]] },
   event: { entries: [...tiers[3]], definitions: [...tiers[3]] },

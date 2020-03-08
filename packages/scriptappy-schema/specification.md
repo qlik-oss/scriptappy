@@ -23,6 +23,7 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
     - [Entity Tier 2](#entity-tier2)
     - [Entity Tier 3](#entity-tier3)
     - [Entity Tier 4](#entity-tier4)
+    - [Alias](#kind.alias)
     - [Literal](#kind.literal)
     - [Module](#kind.module)
     - [Object](#kind.object)
@@ -171,7 +172,7 @@ This tier is a collection of other entities, wherever this tier is referenced, t
 #### <a name="entity-tier2"></a> Entity Tier 2
 This tier is a collection of other entities, wherever this tier is referenced, the following entities are allowed:
 
-[Class](#kind.class) | [Interface](#kind.interface)
+[Alias](#kind.alias) | [Class](#kind.class) | [Interface](#kind.interface)
 
 #### <a name="entity-tier3"></a> Entity Tier 3
 This tier is a collection of other entities, wherever this tier is referenced, the following entities are allowed:
@@ -182,6 +183,27 @@ This tier is a collection of other entities, wherever this tier is referenced, t
 This tier is a collection of other entities, wherever this tier is referenced, the following entities are allowed:
 
 [Event](#kind.event)
+
+#### <a name="kind.alias"></a> Alias
+
+> This entity extends from [Entity Base](#type) and accepts all its fields as well.
+
+Field|Type|Description
+---|---|---
+kind|`const` `'alias'`|**REQUIRED.** 
+items|[Entity Tier 3](#entity-tier3)|**REQUIRED.** 
+
+##### Example
+
+```js
+{
+  "kind": "alias",
+  "items": {
+    "kind": "union",
+    "items": [{ "type": "string" }, { "type": "number" }]
+  }
+}
+```
 
 #### <a name="kind.literal"></a> Literal
 

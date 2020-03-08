@@ -128,6 +128,14 @@ function simpleType(type, cfg) {
   return t;
 }
 
+function augmentObject(typedef, doc, cfg, opts) {
+  if ((typedef.kind === 'object' || typedef.type === 'object') && doc.properties) {
+    delete typedef.type;
+    typedef.kind = 'object';
+    typedef.entries = collectPropsFromDoc(doc, cfg, opts);
+  }
+}
+
 function getTypedef(doc, cfg, opts) {
   let typedef;
   if (doc.exp) {
@@ -164,39 +172,38 @@ function getTypedef(doc, cfg, opts) {
   if (doc.kind === 'typedef' && doc.comment && doc.comment.match(/@typedef/)) {
     const exp = getTypedefFromComment(doc.comment);
     typedef = parse(exp);
+    augmentObject(typedef, doc, cfg, opts);
+    if (doc.scope === 'global') {
+      return kindAlias(typedef);
+    }
+    return typedef;
+  }
+  if (!doc.type || !doc.type.names) {
+    const t = getTypeFromCodeMeta(doc, cfg, opts);
+    if (!t.kind && !t.type) {
+      if (!cfg.__private) {
+        if (doc && doc.meta && doc.name) {
+          cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
+        } else {
+          cfg.logRule(currentMetaDoc, 'no-missing-types', 'Missing type');
+        }
+      }
+    } else {
+      typedef = t;
+    }
+  } else if (doc.type.names.length === 1) {
+    typedef = parse(doc.type.names[0]);
+  } else {
+    typedef = {
+      kind: 'union',
+      items: doc.type.names.map(t => parse(t)),
+    };
   }
   if (!typedef) {
-    if (!doc.type || !doc.type.names) {
-      const t = getTypeFromCodeMeta(doc, cfg, opts);
-      if (!t.kind && !t.type) {
-        if (!cfg.__private) {
-          if (doc && doc.meta && doc.name) {
-            cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
-          } else {
-            cfg.logRule(currentMetaDoc, 'no-missing-types', 'Missing type');
-          }
-        }
-      } else {
-        typedef = t;
-      }
-    } else if (doc.type.names.length === 1) {
-      typedef = parse(doc.type.names[0]);
-    } else {
-      typedef = {
-        kind: 'union',
-        items: doc.type.names.map(t => parse(t)),
-      };
-    }
-    if (!typedef) {
-      typedef = { type: 'any' };
-    }
+    typedef = { type: 'any' };
   }
 
-  if ((typedef.kind === 'object' || typedef.type === 'object') && doc.properties) {
-    delete typedef.type;
-    typedef.kind = 'object';
-    typedef.entries = collectPropsFromDoc(doc, cfg, opts);
-  }
+  augmentObject(typedef, doc, cfg, opts);
 
   return typedef;
 }
@@ -258,6 +265,13 @@ function kindNamespace() {
   return {
     kind: 'namespace',
     entries: {},
+  };
+}
+
+function kindAlias(type) {
+  return {
+    kind: 'alias',
+    items: type,
   };
 }
 

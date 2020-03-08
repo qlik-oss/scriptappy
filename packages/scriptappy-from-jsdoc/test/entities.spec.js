@@ -597,16 +597,20 @@ describe('entities', () => {
       });
     });
 
-    it('typedef as type', () => {
+    it('typedef as alias type', () => {
       const doc = {
         comment: '/**\n*@typedef*/',
         kind: 'typedef',
+        scope: 'global',
       };
       getTypedefFromComment.withArgs(doc.comment).returns('something');
       parse.withArgs('something').returns({ magic: 'stuff' });
       const o = types.typedef(doc);
       expect(o).to.eql({
-        magic: 'stuff',
+        kind: 'alias',
+        items: {
+          magic: 'stuff',
+        },
       });
     });
 

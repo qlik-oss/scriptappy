@@ -269,6 +269,9 @@
       "type": "object",
       "oneOf": [
         {
+          "$ref": "#/definitions/kind.alias"
+        },
+        {
           "$ref": "#/definitions/kind.class"
         },
         {
@@ -376,6 +379,49 @@
             }
           }
         }
+      ]
+    },
+    "kind.alias": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "alias"
+            },
+            "items": {
+              "$ref": "#/definitions/entity-tier3"
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "examples": true,
+            "type": true,
+            "name": true,
+            "optional": true,
+            "nullable": true,
+            "variable": true,
+            "generics": true,
+            "defaultValue": true,
+            "templates": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind",
+            "items"
+          ]
+        }
+      ],
+      "examples": [
+        "\n  \"kind\": \"alias\",\n  \"items\": {\n    \"kind\": \"union\",\n    \"items\": [{ \"type\": \"string\" }, { \"type\": \"number\" }]\n  }\n"
       ]
     },
     "kind.literal": {
