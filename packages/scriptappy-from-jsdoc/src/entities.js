@@ -13,7 +13,7 @@ const STABILITY = 'stability';
 
 let currentMetaDoc;
 
-const { parse, getTypeFromCodeMeta } = require('./type-parser');
+const { parse, getTypeFromCodeMeta, getTypedefFromComment } = require('./type-parser');
 const collector = require('./collector');
 
 const { collectPropsFromDoc, collectParamsFromDoc } = collector({ entity });
@@ -158,33 +158,38 @@ function getTypedef(doc, cfg, opts) {
   if (doc.kind === 'interface') {
     return kindInterface(doc, cfg, opts);
   }
-  if (doc.kind === 'typedef' && doc.type && doc.type.names && doc.type.names.includes('function')) {
+  if (doc.kind === 'typedef' && (doc.params || /@callback/.test(doc.comment))) {
     return kindFunction(doc, cfg, opts);
   }
-  if (!doc.type || !doc.type.names) {
-    const t = getTypeFromCodeMeta(doc, cfg, opts);
-    if (!t.kind && !t.type) {
-      if (!cfg.__private) {
-        if (doc && doc.meta && doc.name) {
-          cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
-        } else {
-          cfg.logRule(currentMetaDoc, 'no-missing-types', 'Missing type');
-        }
-      }
-    } else {
-      typedef = t;
-    }
-  } else if (doc.type.names.length === 1) {
-    typedef = parse(doc.type.names[0]);
-  } else {
-    typedef = {
-      kind: 'union',
-      items: doc.type.names.map(t => parse(t)),
-    };
+  if (doc.kind === 'typedef' && doc.comment && doc.comment.match(/@typedef/)) {
+    const exp = getTypedefFromComment(doc.comment);
+    typedef = parse(exp);
   }
-
   if (!typedef) {
-    typedef = { type: 'any' };
+    if (!doc.type || !doc.type.names) {
+      const t = getTypeFromCodeMeta(doc, cfg, opts);
+      if (!t.kind && !t.type) {
+        if (!cfg.__private) {
+          if (doc && doc.meta && doc.name) {
+            cfg.logRule(doc, 'no-missing-types', `Missing type on '${doc.name}'`);
+          } else {
+            cfg.logRule(currentMetaDoc, 'no-missing-types', 'Missing type');
+          }
+        }
+      } else {
+        typedef = t;
+      }
+    } else if (doc.type.names.length === 1) {
+      typedef = parse(doc.type.names[0]);
+    } else {
+      typedef = {
+        kind: 'union',
+        items: doc.type.names.map(t => parse(t)),
+      };
+    }
+    if (!typedef) {
+      typedef = { type: 'any' };
+    }
   }
 
   if ((typedef.kind === 'object' || typedef.type === 'object') && doc.properties) {

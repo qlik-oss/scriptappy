@@ -117,6 +117,18 @@ const getParamFromComment = (name, c) => {
   return undefined;
 };
 
+const getTypedefFromComment = c => {
+  const rx = new RegExp(`^\\s*\\*\\s*@typedef\\s+(.*)\\s*`);
+  const rows = c.split('\n');
+  for (let i = 0; i < rows.length; i++) {
+    const m = rx.exec(rows[i]);
+    if (m) {
+      return getTypeExpression(m[1]);
+    }
+  }
+  return undefined;
+};
+
 function getTypeFromCodeMeta(doc /* opts */) {
   const o = {};
   if (!doc.meta || !doc.meta.code) {
@@ -148,5 +160,6 @@ module.exports = {
   getTypeFromCodeMeta,
   getTypeExpression,
   getParamFromComment,
+  getTypedefFromComment,
   parse,
 };

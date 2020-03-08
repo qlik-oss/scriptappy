@@ -15,6 +15,7 @@ describe('entities', () => {
   let types;
   let parse;
   let getTypeFromCodeMeta;
+  let getTypedefFromComment;
   let collectPropsFromDoc;
   let collectParamsFromDoc;
   before(() => {
@@ -23,9 +24,10 @@ describe('entities', () => {
     collectParamsFromDoc = sandbox.stub();
     parse = sandbox.stub();
     getTypeFromCodeMeta = sandbox.stub();
+    getTypedefFromComment = sandbox.stub();
     [types] = aw.mock(
       [
-        ['**/type-parser.js', () => ({ parse, getTypeFromCodeMeta })],
+        ['**/type-parser.js', () => ({ parse, getTypeFromCodeMeta, getTypedefFromComment })],
         ['**/collector.js', () => () => ({ collectParamsFromDoc, collectPropsFromDoc })],
       ],
       ['../src/entities']
@@ -570,7 +572,7 @@ describe('entities', () => {
     //   });
     // });
 
-    it('callback', () => {
+    it('typedef with params should be a function kind', () => {
       collectParamsFromDoc.returns(['par']);
       const o = types.typedef({
         kind: 'typedef',
@@ -580,6 +582,47 @@ describe('entities', () => {
       expect(o).to.eql({
         kind: 'function',
         params: ['par'],
+      });
+    });
+
+    it('typedef as callback should be a function kind', () => {
+      collectParamsFromDoc.returns(['par']);
+      const o = types.typedef({
+        comment: 'bla @callback',
+        kind: 'typedef',
+      });
+      expect(o).to.eql({
+        kind: 'function',
+        params: ['par'],
+      });
+    });
+
+    it('typedef as type', () => {
+      const doc = {
+        comment: '/**\n*@typedef*/',
+        kind: 'typedef',
+      };
+      getTypedefFromComment.withArgs(doc.comment).returns('something');
+      parse.withArgs('something').returns({ magic: 'stuff' });
+      const o = types.typedef(doc);
+      expect(o).to.eql({
+        magic: 'stuff',
+      });
+    });
+
+    it('typedef as object kind', () => {
+      const doc = {
+        comment: '/**\n*@typedef*/',
+        kind: 'typedef',
+        properties: 'props',
+      };
+      getTypedefFromComment.withArgs(doc.comment).returns('object');
+      collectPropsFromDoc.returns('entr');
+      parse.withArgs('object').returns({ type: 'object' });
+      const o = types.typedef(doc);
+      expect(o).to.eql({
+        kind: 'object',
+        entries: 'entr',
       });
     });
 
