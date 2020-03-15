@@ -3,7 +3,7 @@
   "info": {
     "name": "@scriptappy/to-dts",
     "description": "Generate TypeScript definitions from a scriptappy specification",
-    "version": "0.0.2",
+    "version": "0.0.1",
     "license": "MIT"
   },
   "entries": {
@@ -19,10 +19,6 @@
           "optional": true,
           "kind": "object",
           "entries": {
-            "umd": {
-              "optional": true,
-              "type": "string"
-            },
             "export": {
               "optional": true,
               "kind": "union",
@@ -39,7 +35,10 @@
                   "kind": "literal",
                   "value": "'default'"
                 }
-              ],
+              ]
+            },
+            "umd": {
+              "optional": true,
               "type": "string"
             }
           }

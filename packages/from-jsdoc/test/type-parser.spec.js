@@ -1,4 +1,4 @@
-const { getParamFromComment, parse } = require('../src/type-parser');
+const { getParamFromComment, parse } = require('../lib/type-parser');
 
 describe('type-parser', () => {
   describe('comment', () => {

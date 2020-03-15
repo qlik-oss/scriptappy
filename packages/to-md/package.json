@@ -22,15 +22,11 @@
   "files": [
     "/lib"
   ],
-  "bin": {
-    "sy": "lib/cli.js"
-  },
   "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint lib"
+    "lint": "eslint lib test"
   },
   "dependencies": {
-    "extend": "3.0.2",
-    "yargs": "15.1.0"
+    "extend": "3.0.2"
   }
 }

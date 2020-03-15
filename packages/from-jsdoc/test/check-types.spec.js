@@ -3,7 +3,7 @@ describe('check-types', () => {
   let sandbox;
   before(() => {
     sandbox = sinon.createSandbox();
-    [t] = aw.mock([['**/types.js', () => ['mine']]], ['../src/check-types']);
+    [t] = aw.mock([['**/types.js', () => ['mine']]], ['../lib/check-types']);
   });
 
   afterEach(() => {

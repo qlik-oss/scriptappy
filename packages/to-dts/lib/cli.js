@@ -3,7 +3,6 @@
 
 const path = require('path');
 const fs = require('fs');
-const yargs = require('yargs');
 const parse = require('./index.js');
 
 const toDts = {
@@ -41,23 +40,4 @@ const toDts = {
   },
 };
 
-// const conf = yargs // eslint-disable-line no-unused-expressions
-//   .usage('to-dts')
-//   .help('help')
-//   .alias('h', 'help')
-//   .alias('v', 'version')
-//   .options({
-//     spec: {
-//       describe: 'Path to spec file',
-//       type: 'string',
-//       default: 'scriptappy.json',
-//     },
-//   })
-//   .wrap(Math.min(120, yargs.terminalWidth())).argv;
-
-yargs
-  .usage('sy <command> [options]')
-  .command(toDts)
-  .demandCommand()
-  .alias('h', 'help')
-  .wrap(Math.min(80, yargs.terminalWidth())).argv;
+module.exports = toDts;

@@ -30,7 +30,7 @@ describe('entities', () => {
         ['**/type-parser.js', () => ({ parse, getTypeFromCodeMeta, getTypedefFromComment })],
         ['**/collector.js', () => () => ({ collectParamsFromDoc, collectPropsFromDoc })],
       ],
-      ['../src/entities']
+      ['../lib/entities']
     );
   });
 

@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-
-/* eslint no-unused-expressions: 0 */
-const yargs = require('yargs');
 const fs = require('fs');
 const path = require('path');
 
@@ -45,9 +42,4 @@ ${md.references()}
   },
 };
 
-yargs
-  .usage('sy <command> [options]')
-  .command(toMdCommand)
-  .demandCommand()
-  .alias('h', 'help')
-  .wrap(Math.min(80, yargs.terminalWidth())).argv;
+module.exports = toMdCommand;

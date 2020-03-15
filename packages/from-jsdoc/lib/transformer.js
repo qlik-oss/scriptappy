@@ -324,18 +324,19 @@ function generate({ data, config, version }) {
   );
 
   const isDifferent = unversioned !== unversionedOld;
+  let exitCode = 0;
 
   // validate spec against schema
   if (
     (config.spec.validate === 'diff' && isDifferent) ||
     (config.spec.validate !== false && config.spec.validate !== 'diff')
   ) {
-    tools.validate(schema, spec);
+    exitCode = tools.validate(schema, spec);
   } else {
     console.log('No API changes - skippping validation');
   }
 
-  if (errors > 0) {
+  if (errors > 0 || exitCode > 0) {
     process.exitCode = 1;
   }
 

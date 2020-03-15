@@ -1,14 +1,14 @@
 {
-  "name": "scriptappy-from-jsdoc",
+  "name": "@scriptappy/from-jsdoc",
   "version": "0.7.0",
   "description": "",
   "main": "publish.js",
   "files": [
-    "/src",
+    "/lib",
     "spec.config.js"
   ],
   "scripts": {
-    "lint": "eslint src test",
+    "lint": "eslint lib test",
     "test": "aw -c aw.config.js",
     "test:watch": "aw -c aw.config.js -w",
     "test:coverage": "aw -c aw.config.js --coverage"
@@ -24,9 +24,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/miralemd/scriptappy.git"
-  },
-  "bin": {
-    "scriptappy-from-jsdoc": "./src/cli.js"
   },
   "engines": {
     "node": ">=7.6.0"

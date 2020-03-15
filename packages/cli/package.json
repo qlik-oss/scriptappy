@@ -1,0 +1,24 @@
+{
+  "name": "@scriptappy/cli",
+  "version": "0.0.1",
+  "description": "Scriptappy CLI",
+  "keywords": [
+    "jsdoc",
+    "generator",
+    "documentation"
+  ],
+  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "sy": "index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "import-cwd": "3.0.0",
+    "yargs": "11.0.0",
+    "@scriptappy/from-jsdoc": "0.7.0"
+  }
+}

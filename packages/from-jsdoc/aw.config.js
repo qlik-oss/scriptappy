@@ -1,7 +1,7 @@
 module.exports = {
-  src: ['src/**/*.js'],
+  src: ['lib/**/*.js'],
   glob: ['test/**/*.spec.js'],
-  watchGlob: ['src/**/*.js', 'test/**/*.spec.js'],
+  watchGlob: ['lib/**/*.js', 'test/**/*.spec.js'],
   mocha: {
     bail: false,
   },

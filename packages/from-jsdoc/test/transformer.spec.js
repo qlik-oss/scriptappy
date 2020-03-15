@@ -12,7 +12,7 @@ describe('transformer', () => {
         ['**/check-types.js', () => () => {}],
         ['**/entities.js', () => entities],
       ],
-      ['../src/transformer']
+      ['../lib/transformer']
     );
   });
 

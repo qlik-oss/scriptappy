@@ -1,4 +1,4 @@
-const { sortObject } = require('../src/sort');
+const { sortObject } = require('../lib/sort');
 
 describe('sort', () => {
   ['entries', 'staticEntries', 'definitions', 'events'].forEach(subentry => {

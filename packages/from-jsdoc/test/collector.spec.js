@@ -15,7 +15,7 @@ describe('collector', () => {
         ['**/type-parser.js', () => ({ getParamFromComment })],
         ['**/collect-nest.js', () => nest],
       ],
-      ['../src/collector']
+      ['../lib/collector']
     );
   });
 

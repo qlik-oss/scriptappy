@@ -1,4 +1,4 @@
-const collect = require('../src/collect-nest');
+const collect = require('../lib/collect-nest');
 
 describe('collect params', () => {
   it('one', () => {

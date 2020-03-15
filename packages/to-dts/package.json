@@ -11,9 +11,6 @@
   "author": "Miralem Drek <mm85dk+github@gmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
-  "bin": {
-    "sy": "lib/cli.js"
-  },
   "files": [
     "lib/",
     "index.d.ts"
@@ -21,12 +18,11 @@
   "typings": "index.d.ts",
   "scripts": {
     "dts": "lib/cli.js to-dts",
-    "spec": "../scriptappy-from-jsdoc/src/cli.js --glob 'lib/**/*.js'",
+    "spec": "sy from-jsdoc --glob 'lib/**/*.js'",
     "test": "aw node --glob 'test/**/*.spec.js' --src 'lib/**/*.js' --coverage",
     "prepublishOnly": "yarn run spec && yarn run dts"
   },
   "dependencies": {
-    "dts-dom": "^3.1.0",
-    "yargs": "^11.0.0"
+    "dts-dom": "^3.1.0"
   }
 }
