@@ -7,10 +7,25 @@ const yargs = require('yargs');
 yargs.usage('sy <command> [options]');
 
 const tryAddCommand = m => {
-  const c = importCwd.silent(`${m}/lib/cli`);
+  let c;
+  try {
+    c = require(`${m}/lib/cli`); // eslint-disable-line
+  } catch (e) {
+    c = importCwd.silent(`${m}/lib/cli`);
+  }
 
   if (c) {
     yargs.command(c);
+  } else {
+    const com = m.split('/')[1];
+    yargs.command({
+      command: com,
+      handler() {
+        throw new Error(
+          `Command \x1b[36m${com}\x1b[0m is missing, make sure to install \x1b[36m${m}\x1b[0m and then run again.`
+        );
+      },
+    });
   }
 };
 
