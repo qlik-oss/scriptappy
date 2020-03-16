@@ -25,7 +25,7 @@ describe('event', () => {
       {
         desc: 'd',
         name: 'on',
-        params: [{ name: 'event', kind: 'literal', value: '"closed"' }],
+        params: [{ name: 'event', kind: 'literal', value: 'closed' }],
         kind: 'function',
       },
       'parent'

@@ -6,7 +6,7 @@ module.exports = function event(def, tsParent, g) {
   const eventDef = {
     ...def,
     name: 'on',
-    params: [{ name: 'event', kind: 'literal', value: `"${def.name}"` }],
+    params: [{ name: 'event', kind: 'literal', value: `${def.name}` }],
     kind: 'function',
   };
   const eventType = g.getType(eventDef, tsParent);
