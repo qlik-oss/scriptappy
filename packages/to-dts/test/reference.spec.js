@@ -25,7 +25,11 @@ describe('reference', () => {
     expect(ref('#/entries/Animal/definitions/Dog', false, {})).to.eql('Animal.Dog');
   });
 
-  it('should return with namespace prefix', () => {
-    expect(ref('#/entries/Animal', false, { namespace: 'farm' })).to.eql('farm.Animal');
+  it('should return without namespace prefix when top path is entries', () => {
+    expect(ref('#/entries/Animal', false, { namespace: 'farm' })).to.eql('Animal');
+  });
+
+  it('should return with namespace prefix when top path is definitions', () => {
+    expect(ref('#/definitions/Animal', false, { namespace: 'farm' })).to.eql('farm.Animal');
   });
 });
