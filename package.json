@@ -28,7 +28,7 @@
   "scripts": {
     "clean": "lerna clean",
     "lint": "eslint packages",
-    "test": "aw --glob packages/*/test/**/*.spec.js",
+    "test": "aw --glob 'packages/*/test/**/*.spec.js' --src 'packages/*/lib/**/*.js'",
     "spec": "lerna run spec",
     "dts": "lerna run dts"
   },
