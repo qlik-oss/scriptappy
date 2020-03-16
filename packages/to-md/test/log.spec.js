@@ -319,4 +319,15 @@ describe('log', () => {
       expect(c.label({ name: 'Session' })).to.equal('new Session');
     });
   });
+
+  describe('alias', () => {
+    const c = templates.alias;
+    const ctx = {
+      type: sinon.stub(),
+    };
+    ctx.type.withArgs('items', 'cfg', 'helpers').returns('dummy');
+    it('label', () => {
+      expect(c.label.call(ctx, { name: 'Field', items: 'items' }, 'cfg', 'helpers')).to.equal('type Field = dummy');
+    });
+  });
 });

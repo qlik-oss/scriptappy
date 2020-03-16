@@ -221,6 +221,11 @@ const templates = {
       return `${prefix}.${entry.name}`;
     },
   },
+  alias: {
+    label(entry, cfg, helpers) {
+      return `type ${entry.name} = ${this.type(entry.items, cfg, helpers)}`;
+    },
+  },
 };
 
 module.exports = {
