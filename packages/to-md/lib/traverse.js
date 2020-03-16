@@ -7,7 +7,7 @@ function trav(n, entry, cfg, helpers) {
     },
     helpers
   );
-  const isList = cfg.mode === 'list' || ['object'].indexOf(n.kind) !== -1;
+  const isList = cfg.mode === 'list' || ['object', 'interface'].indexOf(n.kind) !== -1;
   s += traverse(
     n,
     {

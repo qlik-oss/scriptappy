@@ -95,33 +95,35 @@ describe('traverse', () => {
     );
   });
 
-  it('should switch to list mode when kind is object', () => {
-    const root = {
-      entries: {
-        B: {
-          kind: 'object',
-          entries: {
-            bb: { kind: 'a' },
+  ['object', 'interface'].forEach(kind => {
+    it(`should switch to list mode when kind is ${kind}`, () => {
+      const root = {
+        entries: {
+          B: {
+            kind,
+            entries: {
+              bb: { kind: 'a' },
+            },
           },
         },
-      },
-    };
-    traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
-    expect(entry.callCount).to.equal(2);
-    expect(entry.getCall(1)).to.have.been.calledWithExactly(
-      {
-        name: 'bb',
-        kind: 'a',
-        path: '#/entries/B/entries/bb',
-      },
-      {
-        depth: 1,
-        indent: 0,
-        mode: 'list',
-        parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
-      },
-      helpers
-    );
+      };
+      traverse(root, { depth: 0, indent: 0, parent: null }, helpers);
+      expect(entry.callCount).to.equal(2);
+      expect(entry.getCall(1)).to.have.been.calledWithExactly(
+        {
+          name: 'bb',
+          kind: 'a',
+          path: '#/entries/B/entries/bb',
+        },
+        {
+          depth: 1,
+          indent: 0,
+          mode: 'list',
+          parent: { ...root.entries.B, name: 'B', path: '#/entries/B' },
+        },
+        helpers
+      );
+    });
   });
 
   it('should increase indent when in list mode', () => {
