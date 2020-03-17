@@ -5,6 +5,7 @@ describe('type', () => {
   let fn;
   let iface;
   let alias;
+  let enm;
   let klass;
   let reference;
   let union;
@@ -19,6 +20,7 @@ describe('type', () => {
     fn = sandbox.stub();
     iface = sandbox.stub();
     alias = sandbox.stub();
+    enm = sandbox.stub();
     klass = sandbox.stub();
     reference = sandbox.stub();
     union = sandbox.stub();
@@ -33,6 +35,7 @@ describe('type', () => {
         ['**/types/interface.js', () => iface],
         ['**/types/alias.js', () => alias],
         ['**/types/class.js', () => klass],
+        ['**/types/enum.js', () => enm],
         ['**/types/reference.js', () => reference],
         ['**/types/union.js', () => union],
         ['**/types/event.js', () => event],
@@ -95,6 +98,21 @@ describe('type', () => {
     const def = { kind: 'class' };
     klass.withArgs(def, 'p', g).returns('k');
     expect(getType(def, 'p')).to.eql('k');
+  });
+
+  it('should create enum', () => {
+    const def = { kind: 'enum' };
+    enm.withArgs(def, 'p', g).returns('ee');
+    expect(getType(def, 'p')).to.eql('ee');
+  });
+
+  it('should create enum value', () => {
+    const def = { name: 'CODE', value: 'v' };
+    expect(getType(def, { kind: 'enum' })).to.eql({
+      name: 'CODE',
+      kind: 'enum-value',
+      value: 'v',
+    });
   });
 
   it('should create function', () => {

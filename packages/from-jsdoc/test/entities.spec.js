@@ -775,6 +775,20 @@ describe('entities', () => {
       });
     });
 
+    it('enum', () => {
+      const o = types.typedef({
+        name: 'STATS',
+        kind: 'doesntmatter',
+        description: 'descr',
+        isEnum: true,
+      });
+
+      expect(o).to.eql({
+        kind: 'enum',
+        entries: {},
+      });
+    });
+
     it('interface comment with params', () => {
       collectParamsFromDoc.returns(['par']);
       const o = types.typedef({
@@ -976,8 +990,8 @@ describe('entities', () => {
       expect(o.defaultValue).to.equal('def');
     });
 
-    it('defaultValue from literal meta', () => {
-      parse.withArgs('string').returns({ type: 'str' });
+    it('should add "value" when kind is literal', () => {
+      parse.withArgs('string').returns({ kind: 'literal' });
       const o = types.entity({
         meta: {
           code: {
@@ -989,8 +1003,8 @@ describe('entities', () => {
       });
 
       expect(o).to.eql({
-        type: 'str',
-        defaultValue: 'foo',
+        kind: 'literal',
+        value: 'foo',
       });
     });
 

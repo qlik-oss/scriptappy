@@ -24,6 +24,7 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
     - [Entity Tier 3](#entity-tier3)
     - [Entity Tier 4](#entity-tier4)
     - [Alias](#kind.alias)
+    - [Enum](#kind.enum)
     - [Literal](#kind.literal)
     - [Module](#kind.module)
     - [Object](#kind.object)
@@ -172,7 +173,7 @@ This tier is a collection of other entities, wherever this tier is referenced, t
 #### <a name="entity-tier2"></a> Entity Tier 2
 This tier is a collection of other entities, wherever this tier is referenced, the following entities are allowed:
 
-[Alias](#kind.alias) | [Class](#kind.class) | [Interface](#kind.interface)
+[Alias](#kind.alias) | [Enum](#kind.enum) | [Class](#kind.class) | [Interface](#kind.interface)
 
 #### <a name="entity-tier3"></a> Entity Tier 3
 This tier is a collection of other entities, wherever this tier is referenced, the following entities are allowed:
@@ -201,6 +202,29 @@ items|[Entity Tier 3](#entity-tier3)|**REQUIRED.**
   "items": {
     "kind": "union",
     "items": [{ "type": "string" }, { "type": "number" }]
+  }
+}
+```
+
+#### <a name="kind.enum"></a> Enum
+
+> This entity extends from [Entity Base](#type) and accepts all its fields as well.
+
+Field|Type|Description
+---|---|---
+kind|`const` `'enum'`|**REQUIRED.** 
+entries|Object&lt;`string`, [Literal](#kind.literal)&gt;|**REQUIRED.** An object.
+
+##### Example
+
+```js
+{
+  "kind": "enum",
+  "entries": {
+    "CODE": {
+      "kind": "literal",
+      "value": 2
+    }
   }
 }
 ```

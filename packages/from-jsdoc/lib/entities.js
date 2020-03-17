@@ -166,6 +166,9 @@ function getTypedef(doc, cfg, opts) {
   if (doc.kind === 'interface') {
     return kindInterface(doc, cfg, opts);
   }
+  if (doc.isEnum) {
+    return kindEnum();
+  }
   if (doc.kind === 'typedef' && (doc.params || /@callback/.test(doc.comment))) {
     return kindFunction(doc, cfg, opts);
   }
@@ -272,6 +275,13 @@ function kindAlias(type) {
   return {
     kind: 'alias',
     items: type,
+  };
+}
+
+function kindEnum() {
+  return {
+    kind: 'enum',
+    entries: {},
   };
 }
 
@@ -396,8 +406,10 @@ function entity(doc, cfg = {}, opts = {}) {
     cfg.logRule(currentMetaDoc, 'no-unknown-promise', 'Promise is missing type');
   }
 
+  const valueProp = typedef.kind === 'literal' ? 'value' : 'defaultValue';
+
   if (doc.type && doc.meta && doc.meta.code && doc.meta.code.type === 'Literal') {
-    ent.defaultValue = doc.meta.code.value;
+    ent[valueProp] = doc.meta.code.value;
   } else if (
     doc.type &&
     doc.meta &&
@@ -405,13 +417,13 @@ function entity(doc, cfg = {}, opts = {}) {
     doc.meta.code.type === 'UnaryExpression' &&
     typedef.type === 'number'
   ) {
-    ent.defaultValue = Number(doc.meta.code.value);
+    ent[valueProp] = Number(doc.meta.code.value);
   } else if ('defaultvalue' in doc) {
     // note - small 'v' is used in jsdoc
     if (typedef.type === 'boolean') {
-      ent.defaultValue = doc.defaultvalue === true || doc.defaultvalue === 'true';
+      ent[valueProp] = doc.defaultvalue === true || doc.defaultvalue === 'true';
     } else {
-      ent.defaultValue = doc.defaultvalue;
+      ent[valueProp] = doc.defaultvalue;
     }
   }
 

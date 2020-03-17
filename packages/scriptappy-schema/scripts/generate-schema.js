@@ -231,7 +231,7 @@ function entry(t) {
   };
 }
 
-function addKind(k, tier, ...props) {
+function addKind(k, tier, excludeProps, ...props) {
   const entityProps = {
     type: 'object',
     properties: {},
@@ -262,6 +262,9 @@ function addKind(k, tier, ...props) {
   delete def.examples;
 
   Object.keys(common.properties).forEach(key => {
+    if (excludeProps.includes(key)) {
+      return;
+    }
     if (key === 'templates' && !['class', 'function', 'interface', 'object', 'alias'].includes(k)) {
       return;
     }
@@ -276,7 +279,7 @@ function addKind(k, tier, ...props) {
   addToTier(`kind.${k}`, tier);
 }
 
-addKind('alias', 2, {
+addKind('alias', 2, [], {
   properties: {
     items: {
       $ref: '#/definitions/entity-tier3',
@@ -294,7 +297,25 @@ addKind('alias', 2, {
   ],
 });
 
-addKind('literal', 3, {
+addKind('enum', 2, ['defaultValue'], {
+  properties: {
+    entries: entry('literal'),
+  },
+  required: ['kind', 'entries'],
+  examples: [
+    `
+  "kind": "enum",
+  "entries": {
+    "CODE": {
+      "kind": "literal",
+      "value": 2
+    }
+  }
+`,
+  ],
+});
+
+addKind('literal', 3, ['defaultValue', 'generics'], {
   properties: {
     value: {
       oneOf: [{ type: 'number' }, { type: 'boolean' }, { type: 'string' }],
@@ -309,7 +330,7 @@ addKind('literal', 3, {
   ],
 });
 
-addKind('module', 0, {
+addKind('module', 0, [], {
   properties: {
     entries: entries(1),
     definitions: entries(1),
@@ -325,7 +346,7 @@ addKind('module', 0, {
 `,
   ],
 });
-addKind('object', 3, extendable, {
+addKind('object', 3, [], extendable, {
   properties: {
     entries: entries(3),
     definitions: entries(3),
@@ -340,7 +361,7 @@ addKind('object', 3, extendable, {
 `,
   ],
 });
-addKind('namespace', 1, {
+addKind('namespace', 1, [], {
   properties: {
     entries: entries(1),
     definitions: entries(1),
@@ -356,7 +377,7 @@ addKind('namespace', 1, {
   ],
 });
 
-addKind('function', 3, signature, {
+addKind('function', 3, [], signature, {
   properties: {
     async: { type: 'boolean', description: 'Indicates whether this function is asynchronous.' },
     // generator: { type: 'boolean' },
@@ -452,7 +473,7 @@ function constr() {
   return def;
 }
 
-addKind('class', 2, extendable, {
+addKind('class', 2, [], extendable, {
   properties: {
     constructor: {
       $ref: '#/definitions/constructor',
@@ -477,7 +498,7 @@ addKind('class', 2, extendable, {
 
 constr();
 
-addKind('interface', 2, signature, extendable, {
+addKind('interface', 2, [], signature, extendable, {
   properties: {
     entries: entries(3),
     definitions: entries(2),
@@ -494,7 +515,7 @@ addKind('interface', 2, signature, extendable, {
   ],
 });
 
-addKind('event', 4, signature, {
+addKind('event', 4, [], signature, {
   properties: {
     entries: entries(3),
     definitions: entries(3),
@@ -508,7 +529,7 @@ addKind('event', 4, signature, {
   ],
 });
 
-addKind('array', 3, {
+addKind('array', 3, [], {
   properties: {
     items: {
       oneOf: [
@@ -535,7 +556,7 @@ addKind('array', 3, {
   ],
 });
 
-addKind('union', 3, {
+addKind('union', 3, [], {
   properties: {
     items: {
       type: 'array',

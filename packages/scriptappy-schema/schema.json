@@ -272,6 +272,9 @@
           "$ref": "#/definitions/kind.alias"
         },
         {
+          "$ref": "#/definitions/kind.enum"
+        },
+        {
           "$ref": "#/definitions/kind.class"
         },
         {
@@ -424,6 +427,50 @@
         "\n  \"kind\": \"alias\",\n  \"items\": {\n    \"kind\": \"union\",\n    \"items\": [{ \"type\": \"string\" }, { \"type\": \"number\" }]\n  }\n"
       ]
     },
+    "kind.enum": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "enum"
+            },
+            "entries": {
+              "additionalProperties": {
+                "$ref": "#/definitions/kind.literal"
+              },
+              "description": "An object."
+            },
+            "description": true,
+            "stability": true,
+            "availability": true,
+            "examples": true,
+            "type": true,
+            "name": true,
+            "optional": true,
+            "nullable": true,
+            "variable": true,
+            "generics": true
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^x-": {
+              "$ref": "#/definitions/vendor"
+            }
+          },
+          "required": [
+            "kind",
+            "entries"
+          ]
+        }
+      ],
+      "examples": [
+        "\n  \"kind\": \"enum\",\n  \"entries\": {\n    \"CODE\": {\n      \"kind\": \"literal\",\n      \"value\": 2\n    }\n  }\n"
+      ]
+    },
     "kind.literal": {
       "allOf": [
         {
@@ -456,9 +503,7 @@
             "name": true,
             "optional": true,
             "nullable": true,
-            "variable": true,
-            "generics": true,
-            "defaultValue": true
+            "variable": true
           },
           "additionalProperties": false,
           "patternProperties": {

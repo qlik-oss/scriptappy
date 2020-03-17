@@ -50,12 +50,16 @@ const validKinds = {
     kind: 'alias',
     items: { type: 'string' },
   },
+  enum: {
+    kind: 'enum',
+    entries: {},
+  },
 };
 
 const tiers = [
   ['module'],
   ['namespace'],
-  ['alias', 'class', 'interface'],
+  ['alias', 'class', 'enum', 'interface'],
   ['object', 'function', 'array', 'union', 'literal'],
   ['event'],
 ];
@@ -82,6 +86,7 @@ const validSubKinds = {
   object: { entries: [...tiers[3]], definitions: [...tiers[3]], events: [...tiers[4]] },
   literal: { entries: [], definitions: [] },
   alias: { entries: [], definitions: [] },
+  enum: { entries: ['literal'], definitions: [] },
   union: { entries: [], definitions: [...tiers[3]] },
   array: { entries: [], definitions: [...tiers[3]] },
   event: { entries: [...tiers[3]], definitions: [...tiers[3]] },
@@ -161,7 +166,7 @@ describe('kinds', () => {
     type: 'number',
     optional: true,
     nullable: true,
-    defaultValue: true,
+    // defaultValue: true,
   };
 
   function validate(kind, obj, should = 'pass') {

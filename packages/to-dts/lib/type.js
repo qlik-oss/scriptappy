@@ -5,6 +5,7 @@ const fn = require('./types/function');
 const iface = require('./types/interface');
 const alias = require('./types/alias');
 const klass = require('./types/class');
+const enm = require('./types/enum');
 const reference = require('./types/reference');
 const union = require('./types/union');
 const event = require('./types/event');
@@ -52,6 +53,8 @@ function typeFn(g) {
         return alias(def, tsParent, g);
       case 'class':
         return klass(def, tsParent, g);
+      case 'enum':
+        return enm(def, tsParent, g);
       case 'function':
         return fn(def, tsParent, g);
       case 'interface':
@@ -63,6 +66,10 @@ function typeFn(g) {
       case 'event':
         return event(def, tsParent, g);
       default:
+    }
+
+    if (tsParent && tsParent.kind === 'enum') {
+      return dom.create.enumValue(def.name, def.value);
     }
 
     if (def.kind === 'literal') {

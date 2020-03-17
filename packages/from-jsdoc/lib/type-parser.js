@@ -140,6 +140,9 @@ function getTypeFromCodeMeta(doc /* opts */) {
   } else if (doc.meta.code.type === 'Literal') {
     o.kind = 'literal';
     o.value = doc.meta.code.value;
+  } else if (doc.meta.code.type === 'UnaryExpression') {
+    o.kind = 'literal';
+    o.value = doc.meta.code.value;
   }
 
   return o;
