@@ -18,7 +18,7 @@ describe('comments', () => {
   });
 
   it('should return parameters with description', () => {
-    expect(com({}, { parameters: [{ name: 'first', description: 'de' }] })).to.equal('@param first de');
+    expect(com({}, { parameters: [{ name: 'first', _description: 'de' }] })).to.equal('@param first de');
   });
 
   it('should not return with "this" parameter', () => {

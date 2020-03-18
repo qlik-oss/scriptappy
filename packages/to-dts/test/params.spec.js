@@ -75,4 +75,11 @@ describe('params', () => {
       { kind: 'parameter', name: 'a', type: 'tt', flags: 2 },
     ]);
   });
+
+  it('should attach description', () => {
+    const p = { name: 'a', description: 'desc' };
+    getType.withArgs(p).returns('tt');
+    const v = params([p], false, g);
+    expect(v).to.eql([{ kind: 'parameter', name: 'a', type: 'tt', flags: 0, _description: 'desc' }]);
+  });
 });
