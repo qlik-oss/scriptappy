@@ -1,5 +1,5 @@
 const { sortObject } = require('./sort');
-const { getParamFromComment } = require('./type-parser');
+const { getParamFromComment, getPropertyFromComment } = require('./type-parser');
 const collectAndNest = require('./collect-nest');
 
 /* eslint no-param-reassign: 0 */
@@ -15,6 +15,9 @@ function collect({ entity }) {
 
   // collect nested properties
   function collectPropsFromDoc(doc, cfg, opts) {
+    (doc.properties || []).forEach(prop => {
+      prop.exp = getPropertyFromComment(prop.name, doc.comment);
+    });
     const o = { entries: collectAndNest({ doc, list: doc.properties }, cfg, opts, entity) };
     sortObject(o, cfg);
     return o.entries;

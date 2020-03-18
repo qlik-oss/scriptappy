@@ -4,15 +4,17 @@ describe('collector', () => {
   let sort;
   let nest;
   let getParamFromComment;
+  let getPropertyFromComment;
   before(() => {
     sandbox = sinon.createSandbox();
     sort = sandbox.stub();
     nest = sandbox.stub();
     getParamFromComment = sandbox.stub();
+    getPropertyFromComment = sandbox.stub();
     [collect] = aw.mock(
       [
         ['**/sort.js', () => ({ sortObject: sort })],
-        ['**/type-parser.js', () => ({ getParamFromComment })],
+        ['**/type-parser.js', () => ({ getParamFromComment, getPropertyFromComment })],
         ['**/collect-nest.js', () => nest],
       ],
       ['../lib/collector']
@@ -42,11 +44,20 @@ describe('collector', () => {
   });
 
   it('props', () => {
-    const doc = { properties: 'p' };
-    nest.withArgs({ doc, list: 'p' }, 'cfg', 'opts', 'entity').returns({ a: 'x' });
+    const doc = { properties: ['p'] };
+    nest.withArgs({ doc, list: ['p'] }, 'cfg', 'opts', 'entity').returns({ a: 'x' });
     const c = collect({ entity: 'entity' });
     const props = c.collectPropsFromDoc(doc, 'cfg', 'opts');
     expect(props).to.eql({ a: 'x' });
     expect(sort).to.have.been.calledWithExactly({ entries: { a: 'x' } }, 'cfg');
+  });
+
+  it('should attach exp to props', () => {
+    const doc = { properties: [{ name: 'p' }], comment: 'com' };
+    getPropertyFromComment.withArgs('p', 'com').returns('expression');
+    nest.returns({});
+    const c = collect({ entity: 'entity' });
+    c.collectPropsFromDoc(doc, 'cfg', 'opts');
+    expect(nest.args[0][0].list).to.eql([{ name: 'p', exp: 'expression' }]);
   });
 });

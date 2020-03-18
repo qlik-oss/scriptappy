@@ -105,9 +105,8 @@ const getTypeExpression = text => {
   return '';
 };
 
-const getParamFromComment = (name, c) => {
-  const rx = new RegExp(`^\\s*\\*\\s*@param\\s+(.*)\\s*${name}`);
-  const rows = c.split('\n');
+const extractTypeFromRx = (rx, comment) => {
+  const rows = comment.split('\n');
   for (let i = 0; i < rows.length; i++) {
     const m = rx.exec(rows[i]);
     if (m) {
@@ -117,16 +116,19 @@ const getParamFromComment = (name, c) => {
   return undefined;
 };
 
+const getParamFromComment = (name, c) => {
+  const rx = new RegExp(`^\\s*\\*\\s*@param\\s+(.*)\\s*${name}`);
+  return extractTypeFromRx(rx, c);
+};
+
+const getPropertyFromComment = (name, c) => {
+  const rx = new RegExp(`^\\s*\\*\\s*@property\\s+(.*)\\s*${name}`);
+  return extractTypeFromRx(rx, c);
+};
+
 const getTypedefFromComment = c => {
   const rx = new RegExp(`^\\s*\\*\\s*@typedef\\s+(.*)\\s*`);
-  const rows = c.split('\n');
-  for (let i = 0; i < rows.length; i++) {
-    const m = rx.exec(rows[i]);
-    if (m) {
-      return getTypeExpression(m[1]);
-    }
-  }
-  return undefined;
+  return extractTypeFromRx(rx, c);
 };
 
 function getTypeFromCodeMeta(doc /* opts */) {
@@ -164,5 +166,6 @@ module.exports = {
   getTypeExpression,
   getParamFromComment,
   getTypedefFromComment,
+  getPropertyFromComment,
   parse,
 };
