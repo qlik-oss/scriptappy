@@ -11,6 +11,7 @@ const BASIC_TYPES = [
   'null',
   'symbol',
   'undefined',
+  'void',
 ].concat(types);
 
 const GLOB = global;

@@ -104,6 +104,7 @@ describe('check-types', () => {
       'null',
       'symbol',
       'undefined',
+      'void',
       // custom types
       'mine',
       // template
