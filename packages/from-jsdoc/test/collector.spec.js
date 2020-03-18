@@ -29,7 +29,7 @@ describe('collector', () => {
     const c = collect({ entity: 'entity' });
     const params = c.collectParamsFromDoc(doc, 'cfg', 'opts');
     expect(params).to.eql(['a']);
-    expect(sort).to.have.been.calledWithExactly('a');
+    expect(sort).to.have.been.calledWithExactly('a', 'cfg');
   });
 
   it('should attach exp to params', () => {
@@ -47,6 +47,6 @@ describe('collector', () => {
     const c = collect({ entity: 'entity' });
     const props = c.collectPropsFromDoc(doc, 'cfg', 'opts');
     expect(props).to.eql({ a: 'x' });
-    expect(sort).to.have.been.calledWithExactly({ entries: { a: 'x' } });
+    expect(sort).to.have.been.calledWithExactly({ entries: { a: 'x' } }, 'cfg');
   });
 });

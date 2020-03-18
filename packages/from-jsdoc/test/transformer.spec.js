@@ -40,6 +40,7 @@ describe('transformer', () => {
       },
       rules: {},
     },
+    output: { sort: {} },
     logger,
     logRule: () => {},
   };

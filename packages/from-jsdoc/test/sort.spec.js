@@ -6,7 +6,7 @@ describe('sort', () => {
       const t = {
         [subentry]: { b: {}, d: {}, a: {} },
       };
-      sortObject(t);
+      sortObject(t, { output: { sort: { alpha: true } } });
       expect(Object.keys(t[subentry])).to.eql(['a', 'b', 'd']);
     });
   });
@@ -15,7 +15,7 @@ describe('sort', () => {
     const t = {
       entries: { c: {}, d: { optional: true }, a: { optional: true }, b: {} },
     };
-    sortObject(t);
+    sortObject(t, { output: { sort: { alpha: true } } });
     expect(Object.keys(t.entries)).to.eql(['b', 'c', 'a', 'd']);
   });
 });

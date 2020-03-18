@@ -169,76 +169,78 @@ function collect(doclets, cfg, entity = entities.doclet) {
 function transform({ ids, priv }, cfg) {
   const entries = {};
   const definitions = {};
-  Object.keys(ids)
-    .sort(sortAlphabetically)
-    .forEach(longname => {
-      ids[longname].forEach((d, idx) => {
-        // const d = ids[longname];
-        const pr = priv[longname][idx];
-        const memberOf = pr.__memberOf;
-        const memberDefault = `${memberOf}@default`;
-        const memberScope = pr.__memberScope;
-        const scopeName = pr.__scopeName;
-        let parent = ids[memberOf] && ids[memberOf][0];
-        const access = pr.__access;
-        // const isDefinition = pr.__isDefinition;
-        const isEntry = pr.__isEntry;
+  const longnames = Object.keys(ids);
+  if (cfg && cfg.output.sort.alpha) {
+    longnames.sort(sortAlphabetically);
+  }
+  longnames.forEach(longname => {
+    ids[longname].forEach((d, idx) => {
+      // const d = ids[longname];
+      const pr = priv[longname][idx];
+      const memberOf = pr.__memberOf;
+      const memberDefault = `${memberOf}@default`;
+      const memberScope = pr.__memberScope;
+      const scopeName = pr.__scopeName;
+      let parent = ids[memberOf] && ids[memberOf][0];
+      const access = pr.__access;
+      // const isDefinition = pr.__isDefinition;
+      const isEntry = pr.__isEntry;
 
-        const parentMaybeDefault = ids[memberDefault] && ids[memberDefault][0];
-        if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
-          if (!/^exports/.test(pr.__meta.code.name)) {
-            [parent] = ids[memberDefault];
-            pr.__id = pr.__id.replace(memberOf, memberDefault);
-          }
+      const parentMaybeDefault = ids[memberDefault] && ids[memberDefault][0];
+      if (/^module:/.test(memberOf) && parentMaybeDefault && parentMaybeDefault !== d) {
+        if (!/^exports/.test(pr.__meta.code.name)) {
+          [parent] = ids[memberDefault];
+          pr.__id = pr.__id.replace(memberOf, memberDefault);
         }
+      }
 
-        let memberProperty;
+      let memberProperty;
 
-        if (access === 'private') {
-          return;
-        }
+      if (access === 'private') {
+        return;
+      }
 
-        if (parent) {
-          if (d.kind === 'event') {
-            memberProperty = 'events';
-          } else if (memberScope === 'static' && parent && parent.kind === 'class') {
-            memberProperty = 'staticEntries';
-          } else if (memberScope === 'inner') {
-            memberProperty = 'definitions';
-          } else {
-            memberProperty = 'entries';
-          }
-
-          parent[memberProperty] = parent[memberProperty] || {};
-          const ref = `${priv[memberOf][0].__ref}/${memberProperty}/${scopeName}`;
-          if (parent[memberProperty][scopeName]) {
-            // TODO - add multiple signatures if kind === 'function' ?
-            parent[memberProperty][scopeName] = parent[memberProperty][scopeName] || {};
-            extend(true, parent[memberProperty][scopeName], d);
-            ids[longname][idx] = parent[memberProperty][scopeName]; // eslint-disable-line no-param-reassign
-            pr.__ref = ref;
-          } else {
-            parent[memberProperty][scopeName] = d;
-            pr.__ref = ref;
-          }
-        } else if (d.kind !== 'module' && (memberScope === 'inner' || !isEntry)) {
-          if (definitions[pr.__id]) {
-            extend(true, definitions[pr.__id], d);
-          } else {
-            definitions[pr.__id] = d;
-          }
-          pr.__ref = `#/definitions/${pr.__id}`;
+      if (parent) {
+        if (d.kind === 'event') {
+          memberProperty = 'events';
+        } else if (memberScope === 'static' && parent && parent.kind === 'class') {
+          memberProperty = 'staticEntries';
+        } else if (memberScope === 'inner') {
+          memberProperty = 'definitions';
         } else {
-          const id = d.kind === 'module' ? pr.__scopeName : pr.__id;
-          if (entries[id]) {
-            extend(true, entries[id], d);
-          } else {
-            entries[id] = d;
-          }
-          pr.__ref = `#/entries/${id}`;
+          memberProperty = 'entries';
         }
-      });
+
+        parent[memberProperty] = parent[memberProperty] || {};
+        const ref = `${priv[memberOf][0].__ref}/${memberProperty}/${scopeName}`;
+        if (parent[memberProperty][scopeName]) {
+          // TODO - add multiple signatures if kind === 'function' ?
+          parent[memberProperty][scopeName] = parent[memberProperty][scopeName] || {};
+          extend(true, parent[memberProperty][scopeName], d);
+          ids[longname][idx] = parent[memberProperty][scopeName]; // eslint-disable-line no-param-reassign
+          pr.__ref = ref;
+        } else {
+          parent[memberProperty][scopeName] = d;
+          pr.__ref = ref;
+        }
+      } else if (d.kind !== 'module' && (memberScope === 'inner' || !isEntry)) {
+        if (definitions[pr.__id]) {
+          extend(true, definitions[pr.__id], d);
+        } else {
+          definitions[pr.__id] = d;
+        }
+        pr.__ref = `#/definitions/${pr.__id}`;
+      } else {
+        const id = d.kind === 'module' ? pr.__scopeName : pr.__id;
+        if (entries[id]) {
+          extend(true, entries[id], d);
+        } else {
+          entries[id] = d;
+        }
+        pr.__ref = `#/entries/${id}`;
+      }
     });
+  });
 
   // console.log(priv);
   checkTypes(entries, priv, cfg);
@@ -312,7 +314,7 @@ function generate({ data, config, version }) {
   );
 
   let oldSpec = {};
-  if (!config.x && config.output && fs.existsSync(config.output.file)) {
+  if (!config.x && config.output && config.output.file && fs.existsSync(config.output.file)) {
     oldSpec = JSON.parse(fs.readFileSync(config.output.file));
   }
   const unversionedOld = JSON.stringify(
@@ -343,7 +345,11 @@ function generate({ data, config, version }) {
   const specStr = JSON.stringify(spec, null, 2);
   if (config.x) {
     console.log(specStr); // stream to stdout
-  } else if (config.output && (config.output.diffOnly !== true || (config.output.diffOnly === true && isDifferent))) {
+  } else if (
+    config.output &&
+    config.output.file &&
+    (config.output.diffOnly !== true || (config.output.diffOnly === true && isDifferent))
+  ) {
     write(specStr, config.output.file);
   } else {
     console.log('No API changes - skipping output');

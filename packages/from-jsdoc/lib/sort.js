@@ -4,7 +4,10 @@ function sortAlphabetically(a, b) {
   return aa > bb ? 1 : bb > aa ? -1 : 0; // eslint-disable-line
 }
 
-const sortObject = entry => {
+const sortObject = (entry, cfg) => {
+  if (!cfg.output.sort.alpha) {
+    return;
+  }
   ['entries', 'staticEntries', 'definitions', 'events'].forEach(subentry => {
     if (!entry[subentry]) {
       return;

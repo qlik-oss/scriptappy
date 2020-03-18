@@ -9,6 +9,9 @@ module.exports = {
     stability: undefined,
   },
   output: {
+    sort: {
+      alpha: false,
+    },
     diffOnly: false,
     file: 'scriptappy.json',
   },

@@ -9,14 +9,14 @@ function collect({ entity }) {
       param.exp = getParamFromComment(param.name, doc.comment);
     });
     const par = collectAndNest({ doc, list: doc.params || [], asArray: true }, cfg, opts, entity);
-    par.forEach(p => sortObject(p));
+    par.forEach(p => sortObject(p, cfg));
     return par;
   }
 
   // collect nested properties
   function collectPropsFromDoc(doc, cfg, opts) {
     const o = { entries: collectAndNest({ doc, list: doc.properties }, cfg, opts, entity) };
-    sortObject(o);
+    sortObject(o, cfg);
     return o.entries;
   }
 
