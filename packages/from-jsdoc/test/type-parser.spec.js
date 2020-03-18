@@ -1,4 +1,4 @@
-const { getParamFromComment, getPropertyFromComment, parse } = require('../lib/type-parser');
+const { getParamFromComment, getPropertyFromComment, getReturnFromComment, parse } = require('../lib/type-parser');
 
 describe('type-parser', () => {
   describe('comment', () => {
@@ -7,10 +7,19 @@ describe('type-parser', () => {
 
       expect(getParamFromComment('par.oo', c)).to.equal('{blapar.foopar.o}');
     });
+
     it('property', () => {
       const c = '/**\n * @property {function():T} pro.foo descr\n * @property {{blapar.foopar.o}} pro.oo\n */';
 
       expect(getPropertyFromComment('pro.oo', c)).to.equal('{blapar.foopar.o}');
+    });
+
+    it('return', () => {
+      const c = '/**\n * @return {{blapar.foopar.o}} bla */';
+      expect(getReturnFromComment(c)).to.equal('{blapar.foopar.o}');
+
+      const c2 = '/**\n * @returns {{blapar.foopar.o}} bla */';
+      expect(getReturnFromComment(c2)).to.equal('{blapar.foopar.o}');
     });
   });
 

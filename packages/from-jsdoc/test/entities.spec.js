@@ -16,6 +16,7 @@ describe('entities', () => {
   let parse;
   let getTypeFromCodeMeta;
   let getTypedefFromComment;
+  let getReturnFromComment;
   let collectPropsFromDoc;
   let collectParamsFromDoc;
   before(() => {
@@ -25,9 +26,10 @@ describe('entities', () => {
     parse = sandbox.stub();
     getTypeFromCodeMeta = sandbox.stub();
     getTypedefFromComment = sandbox.stub();
+    getReturnFromComment = sandbox.stub();
     [types] = aw.mock(
       [
-        ['**/type-parser.js', () => ({ parse, getTypeFromCodeMeta, getTypedefFromComment })],
+        ['**/type-parser.js', () => ({ parse, getTypeFromCodeMeta, getTypedefFromComment, getReturnFromComment })],
         ['**/collector.js', () => () => ({ collectParamsFromDoc, collectPropsFromDoc })],
       ],
       ['../lib/entities']
@@ -632,7 +634,8 @@ describe('entities', () => {
 
     it('function', () => {
       collectParamsFromDoc.returns([]);
-      parse.withArgs('Promise.<string>').returns({ ret: 'magic' });
+      getReturnFromComment.returns('ret-expr');
+      parse.withArgs('ret-expr').returns({ ret: 'magic' });
       parse.withArgs('NullPointerException').returns({ exc: 'nil' });
       const o = types.typedef({
         name: 'generate',
@@ -650,9 +653,6 @@ describe('entities', () => {
         ],
         returns: [
           {
-            type: {
-              names: ['Promise.<string>'],
-            },
             description: 'a promise',
           },
         ],

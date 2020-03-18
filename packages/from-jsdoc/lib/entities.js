@@ -13,7 +13,7 @@ const STABILITY = 'stability';
 
 let currentMetaDoc;
 
-const { parse, getTypeFromCodeMeta, getTypedefFromComment } = require('./type-parser');
+const { parse, getTypeFromCodeMeta, getTypedefFromComment, getReturnFromComment } = require('./type-parser');
 const collector = require('./collector');
 
 const { collectPropsFromDoc, collectParamsFromDoc } = collector({ entity });
@@ -223,6 +223,7 @@ function kindFunction(doc, cfg, opts) {
     if (doc.returns.length > 1) {
       cfg.logRule(doc, 'no-multi-return', 'Multiple returns from function');
     }
+    doc.returns[0].exp = getReturnFromComment(doc.comment);
     f.returns = entity(doc.returns[0], cfg, opts);
   }
 

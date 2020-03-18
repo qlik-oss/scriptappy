@@ -126,6 +126,11 @@ const getPropertyFromComment = (name, c) => {
   return extractTypeFromRx(rx, c);
 };
 
+const getReturnFromComment = c => {
+  const rx = new RegExp(`^\\s*\\*\\s*@returns?\\s+(.*)\\s*`);
+  return extractTypeFromRx(rx, c);
+};
+
 const getTypedefFromComment = c => {
   const rx = new RegExp(`^\\s*\\*\\s*@typedef\\s+(.*)\\s*`);
   return extractTypeFromRx(rx, c);
@@ -167,5 +172,6 @@ module.exports = {
   getParamFromComment,
   getTypedefFromComment,
   getPropertyFromComment,
+  getReturnFromComment,
   parse,
 };
