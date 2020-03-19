@@ -20,13 +20,15 @@ describe('params', () => {
 
   it('should write definition', () => {
     const p = { name: 'a', variable: true, optional: true };
+    const p2 = { name: 'b', variable: true };
     getType.withArgs(p).returns(dom.type.any);
+    getType.withArgs(p2).returns(dom.type.number);
     getType.withArgs('ctx').returns(dom.type.string);
 
-    const v = params([p], 'ctx', g);
+    const v = params([p, p2], 'ctx', g);
     const fn = dom.create.function('foo', v, dom.type.void);
     const s = dom.emit(fn);
-    expect(s.trimRight()).to.equal('declare function foo(this: string, ...a?: any): void;');
+    expect(s.trimRight()).to.equal('declare function foo(this: string, a?: any, ...b: number): void;');
   });
 
   it('should return simple parameter', () => {

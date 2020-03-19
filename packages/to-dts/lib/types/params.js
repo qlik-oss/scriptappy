@@ -5,8 +5,9 @@ function params(pars = [], thisContext, g) {
     let flags = dom.ParameterFlags.None;
     if (p.optional) {
       flags |= dom.ParameterFlags.Optional;
-    }
-    if (p.variable) {
+    } else if (p.variable) {
+      // note that typescript does not allow a rest param to also
+      // be optional, hence the else if here
       flags |= dom.ParameterFlags.Rest;
     }
     const t = g.getType(p, { kind: 'parameter' });

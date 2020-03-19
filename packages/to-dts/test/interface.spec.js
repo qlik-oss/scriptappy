@@ -68,7 +68,10 @@ describe('class', () => {
       getType: sandbox.stub(),
     };
     g.getType.withArgs('ret').returns('num');
-    params.withArgs('par', 'self', g).returns(['parm']);
+    params.withArgs('par', 'self', g).returns([
+      { name: 'first', flags: 1 },
+      { name: 'second', flags: 2 },
+    ]);
     const v = iface(def, {}, g);
     expect(v).to.eql({
       baseTypes: [],
@@ -78,7 +81,10 @@ describe('class', () => {
       members: [
         {
           kind: 'call-signature',
-          parameters: ['parm'],
+          parameters: [
+            { name: 'first?', flags: 0 },
+            { name: '...second', flags: 0 },
+          ],
           returnType: 'num',
           typeParameters: [],
         },
