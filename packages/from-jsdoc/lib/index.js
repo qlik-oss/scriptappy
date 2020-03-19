@@ -73,6 +73,7 @@ const withJSDoc = async config => {
       config,
     });
   } catch (e) {
+    console.error(e);
     if (!config.w) {
       process.exitCode = 1;
     }
@@ -86,7 +87,7 @@ const withJSDoc = async config => {
           config,
         });
       } catch (e) {
-        // noop
+        console.error(e);
       }
     });
     console.log('\nWatching changes...');
