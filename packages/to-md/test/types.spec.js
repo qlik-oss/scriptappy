@@ -145,4 +145,18 @@ describe('types', () => {
       },
     ]);
   });
+
+  it('should return custom references', () => {
+    t = types(spec, tt => {
+      if (tt === 'Animal') {
+        return { url: 'the farm' };
+      }
+      return undefined;
+    });
+    t.getType({
+      type: 'Animal',
+    });
+
+    expect(t.getReferences()).to.eql([{ key: 'Animal', link: 'the farm' }]);
+  });
 });

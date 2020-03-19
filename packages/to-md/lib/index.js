@@ -12,9 +12,9 @@ const log = require('./log');
  * @param {templates} [config.templates]
  * @returns {module:to-md~md}
  */
-module.exports = function toMarkdown(spec, { templates } = {}) {
+module.exports = function toMarkdown(spec, { templates, type } = {}) {
   const toc = [];
-  const types = typesFn(spec);
+  const types = typesFn(spec, type);
 
   const addToToc = s => {
     toc.push(s);

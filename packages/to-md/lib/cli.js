@@ -1,14 +1,21 @@
 #!/usr/bin/env node
-const fs = require('fs');
+/* eslint import/no-dynamic-require: 0, global-require: 0 */
+const fs = require('fs-extra');
 const path = require('path');
 const chokidar = require('chokidar');
+const extend = require('extend');
 
 const toMd = require('./index');
 
-function doIt(specFile, destination) {
+const defaultConfig = {
+  output: 'api.md',
+};
+
+function doIt(specFile, config) {
   const spec = require(specFile); // eslint-disable-line
-  const md = toMd(spec);
-  const output = `
+  const md = toMd(spec, config);
+
+  const generated = `
 
 # ${spec.info.name}
 
@@ -24,22 +31,28 @@ ${md.content()}
 
 ${md.references()}
 `;
-  fs.writeFileSync(destination, output);
+
+  fs.ensureFileSync(config.output);
+  fs.writeFileSync(config.output, generated);
 }
 
 const toMdCommand = {
   command: 'to-md',
   desc: 'Generate API reference in markdown',
   builder(y) {
+    y.option('config', {
+      alias: 'c',
+      describe: 'Path to config file',
+      type: 'string',
+      default: null,
+    });
     y.option('spec', {
       type: 'string',
       alias: 's',
-      required: true,
     });
     y.option('output', {
       type: 'string',
       alias: 'o',
-      default: 'api.md',
     });
     y.option('watch', {
       type: 'boolean',
@@ -48,13 +61,29 @@ const toMdCommand = {
     });
   },
   handler(argv) {
-    const specFile = path.resolve(process.cwd(), argv.spec);
-    doIt(specFile, argv.output);
+    const configs = [defaultConfig];
+    let specPath = 'scriptappy.json';
+
+    if (typeof argv.c === 'string') {
+      const p = path.resolve(process.cwd(), argv.c);
+      if (!fs.existsSync(p)) {
+        throw new Error(`Config ${p} not found`);
+      }
+      const c = require(p);
+      if (c.fromJsdoc.output.file) {
+        specPath = c.fromJsdoc.output.file;
+      }
+      configs.push(c.toMd);
+    }
+    const config = extend(true, {}, ...configs, argv);
+
+    const specFile = path.resolve(process.cwd(), config.spec || specPath);
+    doIt(specFile, config);
     if (argv.w) {
       console.log('\n\nWatching changes...');
       chokidar.watch([specFile]).on('change', () => {
         delete require.cache[specFile];
-        doIt(specFile, argv.output);
+        doIt(specFile, config);
 
         console.log('  ...updated');
       });

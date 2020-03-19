@@ -2,13 +2,14 @@ const knownReferences = {
   boolean: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type',
   number: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type',
   string: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type',
+  undefined: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined',
   class: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes',
 };
 
 // TODO - separate nodejs builtins vs web builtins
 const builtInType = t => `https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/${t}`;
 
-function types(spec) {
+function types(spec, customType) {
   const internal = {
     paths: {},
     names: {},
@@ -53,9 +54,13 @@ function types(spec) {
 
     const t = entry.kind || entry.type;
     const upperT = t[0].toUpperCase() + t.slice(1);
-    const text = knownRefs[t] ? t : (global[upperT] ? upperT : t); // eslint-disable-line
+    const text = knownRefs[t] ? t : global[upperT] ? upperT : t; // eslint-disable-line
     if (!typeMap[text]) {
+      const custom = customType ? customType(text) : undefined;
       typeMap[text] = text;
+      if (custom && custom.url) {
+        knownRefs[text] = custom.url;
+      }
     }
     if (knownRefs[text]) {
       return `${prefix}[${text}]`;
@@ -71,7 +76,7 @@ function types(spec) {
     if (entry.kind) {
       let { name } = entry;
       if (internal.names[name]) {
-        name += ++internal.names[name] // eslint-disable-line
+        name += ++internal.names[name]; // eslint-disable-line
       } else {
         internal.names[name] = 1;
       }

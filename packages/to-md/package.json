@@ -27,7 +27,8 @@
     "lint": "eslint lib test"
   },
   "dependencies": {
+    "chokidar": "3.3.1",
     "extend": "3.0.2",
-    "chokidar": "3.3.1"
+    "fs-extra": "^8.1.0"
   }
 }

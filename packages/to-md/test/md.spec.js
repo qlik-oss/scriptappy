@@ -134,6 +134,21 @@ describe('to markdown', () => {
     });
   });
 
+  describe('with custom type', () => {
+    const m = toMarkdown(spec, {
+      type(t) {
+        if (t === 'Vehicle') {
+          return { url: 'garage' };
+        }
+        return undefined;
+      },
+    });
+
+    it('references', () => {
+      expect(m.references().split('\n')[1]).to.equal('[Vehicle]: garage');
+    });
+  });
+
   describe('with custom templates', () => {
     const m = toMarkdown(
       {
