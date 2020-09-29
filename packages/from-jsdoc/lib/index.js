@@ -8,6 +8,8 @@ const cp = require('child_process');
 
 const { generate } = require('./transformer.js');
 
+const SPAWN_PROCESS_BUFFER_SIZE = 10240 * 1024; // 10MiB
+
 const getJsDocConfig = (files, config) => {
   const cfg = {
     source: {
@@ -31,7 +33,10 @@ const generateJSDoc = jsDocConfig => {
   const temp = path.join(__dirname, `${jsdocConfigFilename}.json`);
   fs.writeFileSync(temp, JSON.stringify(jsDocConfig, null, 2));
   try {
-    s = cp.execSync(`npx jsdoc -c ./${jsdocConfigFilename}.json -p -X`, { cwd: __dirname });
+    s = cp.execSync(`npx jsdoc -c ./${jsdocConfigFilename}.json -p -X`, {
+      cwd: __dirname,
+      maxBuffer: SPAWN_PROCESS_BUFFER_SIZE,
+    });
   } catch (e) {
     throw new Error(e.stderr.toString());
   } finally {
