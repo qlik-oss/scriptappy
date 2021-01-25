@@ -31,7 +31,10 @@ const generateJSDoc = jsDocConfig => {
   const temp = path.join(__dirname, `${jsdocConfigFilename}.json`);
   fs.writeFileSync(temp, JSON.stringify(jsDocConfig, null, 2));
   try {
-    s = cp.execSync(`npx jsdoc -c ./${jsdocConfigFilename}.json -p -X`, { cwd: __dirname });
+    s = cp.execSync(`npx jsdoc -c ./${jsdocConfigFilename}.json -p -X`, {
+      cwd: __dirname,
+      maxBuffer: 1024 * 1024 * 10,
+    });
   } catch (e) {
     throw new Error(e.stderr.toString());
   } finally {
