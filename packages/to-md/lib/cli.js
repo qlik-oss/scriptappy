@@ -62,7 +62,7 @@ const toMdCommand = {
   },
   handler(argv) {
     const configs = [defaultConfig];
-    let specPath = 'scriptappy.json';
+    let specPath;
 
     if (typeof argv.c === 'string') {
       const p = path.resolve(process.cwd(), argv.c);
@@ -70,8 +70,10 @@ const toMdCommand = {
         throw new Error(`Config ${p} not found`);
       }
       const c = require(p);
-      if (c.fromJsdoc.output.file) {
+      try {
         specPath = c.fromJsdoc.output.file;
+      } catch (e) {
+        specPath = 'scriptappy.json';
       }
       configs.push(c.toMd);
     }

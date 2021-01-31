@@ -55,7 +55,13 @@ const fromJsdoc = {
       if (!fs.existsSync(p)) {
         throw new Error(`Config ${p} not found`);
       }
-      configs.push(require(p));
+      const c = require(p);
+      if (c.fromJsdoc) {
+        configs.push(c.fromJsdoc);
+      } else {
+        console.warn('You are using an old config file format, considering updating to the new one.');
+        configs.push(c);
+      }
     }
     configs.push(conf);
     const config = extend(true, {}, ...configs);
