@@ -51,6 +51,36 @@ describe('collect params', () => {
     ]);
   });
 
+  it('nested in bad order', () => {
+    const doc = {
+      params: [
+        {
+          name: 'options.model',
+        },
+        {
+          name: 'options',
+        },
+      ],
+    };
+    const entity = sinon.stub();
+    entity.withArgs(doc.params[1], 'cfg', 'opts').returns({ first: 'one' });
+    entity.withArgs(doc.params[0], 'cfg', 'opts').returns({ second: 'one' });
+    const params = collect({ doc, list: doc.params, asArray: true }, 'cfg', 'opts', entity);
+
+    expect(params).to.eql([
+      {
+        name: 'options',
+        kind: 'object',
+        first: 'one',
+        entries: {
+          model: {
+            second: 'one',
+          },
+        },
+      },
+    ]);
+  });
+
   it('nested array', () => {
     const doc = {
       params: [
