@@ -56,3 +56,4 @@ Current version of the Scriptappy specification is [1.0.0](./packages/scriptappy
 - Visualize API (coming soon)
     ![Visual API](./assets/visual.png)
     > A visual representation of [nodejs/scriptappy.json](./packages/scriptappy-from-jsdoc/examples/nodejs/scriptappy.json)
+
