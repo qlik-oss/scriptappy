@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/miralemd/scriptappy#readme",
   "dependencies": {
-    "chokidar": "3.3.1",
+    "chokidar": "3.5.2",
     "extend": "3.0.2",
     "globby": "11.0.0",
     "jsdoc": "3.6.3",
