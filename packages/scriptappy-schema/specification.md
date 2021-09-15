@@ -2,7 +2,7 @@
 
 > A specification for Javascript APIs
 
-**Version 1.0.0**
+**Version 1.1.0**
 
 > The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
@@ -55,7 +55,7 @@ The different entities are separated into _tiers_ to make referencing easier. Wh
 
 Field|Type|Description
 ---|---|---
-spec | `const` `1.0.0` | **REQUIRED.** The specification version the document uses.
+spec | `const` `1.1.0` | **REQUIRED.** The specification version the document uses.
 info | [Info object](#infoObject) | **REQUIRED.** Metadata about the API.
 examples | Array&lt;`string`&gt; | Examples showing how to use this API.
 entries | Map&lt;`string`, [Entity Object](#entityObject)&gt; | **REQUIRED.** An object holding the entry points available for the API.
@@ -65,7 +65,7 @@ definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional e
 
 ```js
 {
-  spec: '1.0.0',
+  spec: '1.1.0',
   info: { /* info object */ },
   entries: {
     getName: { /* entity object */ }

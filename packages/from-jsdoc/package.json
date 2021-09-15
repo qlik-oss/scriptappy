@@ -40,7 +40,7 @@
     "extend": "3.0.2",
     "globby": "11.0.0",
     "jsdoc": "3.6.7",
-    "scriptappy-schema": "1.0.0",
+    "@scriptappy/schema": "1.1.0",
     "scriptappy-tools": "0.5.0",
     "yargs": "15.1.0"
   }

@@ -3,7 +3,7 @@
 const fs = require('fs');
 const extend = require('extend');
 const tools = require('scriptappy-tools');
-const schema = require('scriptappy-schema');
+const schema = require('@scriptappy/schema');
 const entities = require('./entities');
 const checkTypes = require('./check-types');
 const { sortAlphabetically } = require('./sort');
