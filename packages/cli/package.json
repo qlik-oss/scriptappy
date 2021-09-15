@@ -7,7 +7,10 @@
     "generator",
     "documentation"
   ],
-  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
   "license": "MIT",
   "bin": {
     "sy": "index.js"

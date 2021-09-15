@@ -1,17 +1,20 @@
 {
   "private": true,
   "description": "",
-  "author": "miralemd",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
   "license": "MIT",
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miralemd/scriptappy.git"
+    "url": "git+https://github.com/qlik-oss/scriptappy"
   },
   "bugs": {
-    "url": "https://github.com/miralemd/scriptappy/issues"
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
-  "homepage": "https://github.com/miralemd/scriptappy#readme",
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "devDependencies": {
     "@after-work.js/aw": "6.0.11",
     "@babel/core": "7.15.5",

@@ -1,16 +1,19 @@
 {
-  "name": "scriptappy-schema",
-  "version": "1.0.0",
+  "name": "@scriptappy/schema",
+  "version": "1.1.0",
   "description": "A specification for Javascript APIs",
   "license": "MIT",
-  "author": "Miralem Drek <mm85dk+github@gmail.com>",
-  "homepage": "https://github.com/miralemd/scriptappy#readme",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "bugs": {
-    "url": "https://github.com/miralemd/scriptappy/issues"
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miralemd/scriptappy.git"
+    "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
   "keywords": [
     "schema",

@@ -19,6 +19,10 @@
           "optional": true,
           "kind": "object",
           "entries": {
+            "umd": {
+              "optional": true,
+              "type": "string"
+            },
             "export": {
               "optional": true,
               "kind": "union",
@@ -36,10 +40,6 @@
                   "value": "'default'"
                 }
               ]
-            },
-            "umd": {
-              "optional": true,
-              "type": "string"
             }
           }
         }

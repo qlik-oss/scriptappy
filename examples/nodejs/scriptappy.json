@@ -9,40 +9,6 @@
       "stability": "stable",
       "kind": "module",
       "entries": {
-        "createServer": {
-          "description": "Creates a new TCP or ICP server.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "options",
-              "optional": true,
-              "kind": "object",
-              "entries": {
-                "allowHalfOpen": {
-                  "description": "Indicates whether half-opened TCP connections are allowed.",
-                  "optional": true,
-                  "defaultValue": false,
-                  "type": "boolean"
-                },
-                "pauseOnConnect": {
-                  "description": "Indicates whether the socket should be paused on incoming connections.",
-                  "optional": true,
-                  "defaultValue": false,
-                  "type": "boolean"
-                }
-              }
-            },
-            {
-              "name": "connectionsListener",
-              "description": "Automatically sets a listener for the `connection` event.",
-              "optional": true,
-              "type": "function"
-            }
-          ],
-          "returns": {
-            "type": "#/entries/net/entries/Server"
-          }
-        },
         "Server": {
           "description": "This class is used to create a TCP or ICP server",
           "kind": "class",
@@ -91,6 +57,22 @@
               }
             }
           },
+          "definitions": {
+            "address": {
+              "kind": "object",
+              "entries": {
+                "port": {
+                  "type": "number"
+                },
+                "family": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "events": {
             "close": {
               "description": "Emitted when the server closes",
@@ -108,22 +90,40 @@
                 }
               ]
             }
-          },
-          "definitions": {
-            "address": {
+          }
+        },
+        "createServer": {
+          "description": "Creates a new TCP or ICP server.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "options",
+              "optional": true,
               "kind": "object",
               "entries": {
-                "address": {
-                  "type": "string"
+                "allowHalfOpen": {
+                  "description": "Indicates whether half-opened TCP connections are allowed.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
                 },
-                "family": {
-                  "type": "string"
-                },
-                "port": {
-                  "type": "number"
+                "pauseOnConnect": {
+                  "description": "Indicates whether the socket should be paused on incoming connections.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
                 }
               }
+            },
+            {
+              "name": "connectionsListener",
+              "description": "Automatically sets a listener for the `connection` event.",
+              "optional": true,
+              "type": "function"
             }
+          ],
+          "returns": {
+            "type": "#/entries/net/entries/Server"
           }
         }
       }

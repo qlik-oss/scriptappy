@@ -1,6 +1,6 @@
 # scriptappy-from-jsdoc
 
-Generate a [Scriptappy](https://github.com/miralemd/scriptappy) definition from your JSDoc.
+Generate a [Scriptappy](https://github.com/qlik-oss/scriptappy) definition from your JSDoc.
 
 > Instructions on how to use `jsdoc` can be found on the [project's homepage](http://usejsdoc.org/).
 

@@ -34,25 +34,23 @@ Current version of the Scriptappy specification is [1.0.0](./packages/scriptappy
 
 ## Packages
 
-| name | status | description |
-|---|---|---|
-| [scriptappy-schema]       | [![scriptappy-schema-status]][scriptappy-schema-npm]  | JSON Schema of the scriptappy specification |
-| [scriptappy-tools]        | [![scriptappy-tools-status]][scriptappy-tools-npm]  | Tools for schema validation |
-| [scriptappy-from-jsdoc]   | [![scriptappy-from-jsdoc-status]][scriptappy-from-jsdoc-npm]  | Generate a scriptappy definition from JSDoc |
+| name                    | status                                                       | description                                 |
+| ----------------------- | ------------------------------------------------------------ | ------------------------------------------- |
+| [scriptappy-schema]     | [![scriptappy-schema-status]][scriptappy-schema-npm]         | JSON Schema of the scriptappy specification |
+| [scriptappy-tools]      | [![scriptappy-tools-status]][scriptappy-tools-npm]           | Tools for schema validation                 |
+| [scriptappy-from-jsdoc] | [![scriptappy-from-jsdoc-status]][scriptappy-from-jsdoc-npm] | Generate a scriptappy definition from JSDoc |
 
-[scriptappy-schema]: https://github.com/miralemd/scriptappy/tree/master/packages/scriptappy-schema
-[scriptappy-tools]: https://github.com/miralemd/scriptappy/tree/master/packages/scriptappy-tools
-[scriptappy-from-jsdoc]: https://github.com/miralemd/scriptappy/tree/master/packages/scriptappy-from-jsdoc
-
+[scriptappy-schema]: https://github.com/qlik-oss/scriptappy/tree/master/packages/scriptappy-schema
+[scriptappy-tools]: https://github.com/qlik-oss/scriptappy/tree/master/packages/scriptappy-tools
+[scriptappy-from-jsdoc]: https://github.com/qlik-oss/scriptappy/tree/master/packages/scriptappy-from-jsdoc
 [scriptappy-schema-status]: https://img.shields.io/npm/v/scriptappy-schema.svg
 [scriptappy-tools-status]: https://img.shields.io/npm/v/scriptappy-tools.svg
 [scriptappy-from-jsdoc-status]: https://img.shields.io/npm/v/scriptappy-from-jsdoc.svg
-
 [scriptappy-schema-npm]: https://npmjs.com/package/scriptappy-schema
 [scriptappy-tools-npm]: https://npmjs.com/package/scriptappy-tools
 [scriptappy-from-jsdoc-npm]: https://npmjs.com/package/scriptappy-from-jsdoc
 
 - Markdown API reference documentation (coming soon)
 - Visualize API (coming soon)
-    ![Visual API](./assets/visual.png)
-    > A visual representation of [nodejs/scriptappy.json](./packages/scriptappy-from-jsdoc/examples/nodejs/scriptappy.json)
+  ![Visual API](./assets/visual.png)
+  > A visual representation of [nodejs/scriptappy.json](./packages/scriptappy-from-jsdoc/examples/nodejs/scriptappy.json)

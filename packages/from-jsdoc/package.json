@@ -19,19 +19,22 @@
     "spec",
     "specification"
   ],
-  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miralemd/scriptappy.git"
+    "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
   "engines": {
     "node": ">=7.6.0"
   },
   "bugs": {
-    "url": "https://github.com/miralemd/scriptappy/issues"
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
-  "homepage": "https://github.com/miralemd/scriptappy#readme",
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "dependencies": {
     "chokidar": "3.5.2",
     "extend": "3.0.2",

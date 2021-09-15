@@ -8,7 +8,10 @@
     "generator",
     "definitions"
   ],
-  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
   "license": "MIT",
   "main": "lib/index.js",
   "files": [

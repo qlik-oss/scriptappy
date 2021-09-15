@@ -4,18 +4,21 @@
   "description": "Scriptappy tools",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miralemd/scriptappy.git"
+    "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
   "keywords": [
     "jsdoc",
     "schema"
   ],
-  "author": "Miralem Drek <mm85dk+github@gmail.com>",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/miralemd/scriptappy/issues"
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
-  "homepage": "https://github.com/miralemd/scriptappy#readme",
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "main": "lib/index.js",
   "files": [
     "/lib",
