@@ -32,6 +32,6 @@
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "fast-json-patch": "3.1.0",
-    "yargs": "15.1.0"
+    "yargs": "17.3.0"
   }
 }
