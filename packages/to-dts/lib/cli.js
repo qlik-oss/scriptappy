@@ -23,6 +23,11 @@ const toDts = {
         describe: 'Type of export',
         type: 'string',
       },
+      output: {
+        alias: 'o',
+        describe: 'File to write to',
+        type: 'string',
+      },
     });
   },
   handler(argv) {
@@ -33,7 +38,8 @@ const toDts = {
       }
       const spec = fs.readFileSync(p, 'utf-8');
       const typed = parse(JSON.parse(spec), argv);
-      fs.writeFileSync(path.resolve(process.cwd(), 'index.d.ts'), typed, 'utf-8');
+      const output = argv.output || path.resolve(process.cwd(), 'index.d.ts');
+      fs.writeFileSync(output, typed, 'utf-8');
     } else {
       throw new Error('Please provide a spec file');
     }
