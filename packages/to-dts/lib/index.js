@@ -11,6 +11,7 @@ const top = require('./top');
  * @param {object=} config
  * @param {string=} config.umd
  * @param {('named'|'exports'|'default')=} config.export
+ * @param {string=} config.output
  * @returns {string}
  */
 function toDts(specification, config = {}) {
