@@ -28,7 +28,7 @@ describe('to-dts', () => {
     typeFn.withArgs({ specification: 'spec' }).returns('getT');
     traverseFn.withArgs({ specification: 'spec', getType: 'getT' }).returns(trav);
 
-    top.withArgs('spec', { umd: undefined, export: undefined }).returns({
+    top.withArgs('spec', { umd: undefined, export: undefined, exportConst: undefined }).returns({
       types: [],
     });
 
@@ -46,7 +46,7 @@ describe('to-dts', () => {
   it('should return entries', () => {
     const spec = { entries: 'entr' };
 
-    top.withArgs(spec, { umd: undefined, export: undefined }).returns({
+    top.withArgs(spec, { umd: undefined, export: undefined, exportConst: undefined }).returns({
       types: [],
       entriesRoot: 'p',
       entriesFlags: 16,
@@ -65,7 +65,7 @@ describe('to-dts', () => {
   it('should return definitions', () => {
     const spec = { definitions: 'defs' };
 
-    top.withArgs(spec, { umd: undefined, export: undefined }).returns({
+    top.withArgs(spec, { umd: undefined, export: undefined, exportConst: undefined }).returns({
       types: [],
       definitionsRoot: 'defP',
       flags: 0,
