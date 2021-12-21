@@ -52,6 +52,11 @@ function traverseFn(g) {
             tsType.flags = (tsType.flags || 0) | dom.DeclarationFlags.Optional;
           }
           tsParent.members.push(tsType);
+        } else if (tsType.kind === 'object' && def.extends) {
+          const extendsType = g.getType(def.extends[0]);
+          const intersection = dom.create.intersection([extendsType, tsType]);
+          const propType = dom.create.alias(key, intersection, def.optional ? dom.DeclarationFlags.Optional : 0);
+          tsParent.members.push(propType);
         } else if (VALID_MEMBERS[tsParent.kind] && VALID_MEMBERS[tsParent.kind].includes('property')) {
           const propType = dom.create.property(key, tsType, def.optional ? dom.DeclarationFlags.Optional : 0);
           tsParent.members.push(propType);
