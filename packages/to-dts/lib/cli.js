@@ -23,6 +23,10 @@ const toDts = {
         describe: 'Type of export',
         type: 'string',
       },
+      exportConst: {
+        description: 'Create const of generated type to export',
+        type: 'string',
+      },
       output: {
         alias: 'o',
         describe: 'File to write to',
