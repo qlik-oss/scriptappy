@@ -237,5 +237,28 @@ describe('traverse', () => {
         ]);
       });
     });
+
+    it('should use type insection for type inheritance', () => {
+      const tsParent = { kind: 'namespace', members: [] };
+      const def = { kind: 'object', extends: [{ type: '/animal' }] };
+      g.getType.withArgs({ name: 'mammoth', path: '/mammoth', ...def }).returns({ kind: 'object', name: 'mammoth' });
+      g.getType.withArgs({ type: '/animal' }).returns({ kind: 'object', name: 'animal' });
+      traverse({ mammoth: def }, { parent: tsParent, path: '' });
+      expect(tsParent.members).to.eql([
+        {
+          kind: 'alias',
+          name: 'mammoth',
+          type: {
+            kind: 'intersection',
+            members: [
+              { kind: 'object', name: 'animal' },
+              { kind: 'object', name: 'mammoth' },
+            ],
+          },
+          typeParameters: [],
+          flags: 0,
+        },
+      ]);
+    });
   });
 });
