@@ -153,6 +153,11 @@ describe('type', () => {
     });
   });
 
+  it("should strip single quotes (') from literals", () => {
+    const def = { kind: 'literal', value: "'v'" };
+    expect(getType(def, 'p')).to.eql({ kind: 'string-literal', value: 'v' });
+  });
+
   it('should create function type', () => {
     const def = { type: 'function' };
     g.getType.withArgs('ret').returns('r');

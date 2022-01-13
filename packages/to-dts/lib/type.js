@@ -74,7 +74,7 @@ function typeFn(g) {
 
     if (def.kind === 'literal') {
       let { value } = def;
-      if (typeof def.value === 'string') {
+      if (typeof value === 'string') {
         value = value.replace(/'/g, '');
       }
       return dom.type.stringLiteral(value);
