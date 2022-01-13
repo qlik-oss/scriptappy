@@ -73,7 +73,11 @@ function typeFn(g) {
     }
 
     if (def.kind === 'literal') {
-      return dom.type.stringLiteral(def.value);
+      let { value } = def;
+      if (typeof value === 'string') {
+        value = value.replace(/'/g, '');
+      }
+      return dom.type.stringLiteral(value);
     }
 
     // ====== types ===========
