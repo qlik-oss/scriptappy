@@ -19,11 +19,15 @@ describe('function', () => {
     params.returns([]);
     const v = fn(def);
     expect(v).to.eql({
-      kind: 'function',
+      kind: 'alias',
       name: 'foo',
       flags: 0,
-      parameters: [],
-      returnType: 'void',
+      type: {
+        kind: 'function-type',
+        parameters: [],
+        returnType: 'void',
+        typeParameters: [],
+      },
       typeParameters: [],
     });
   });
@@ -54,7 +58,7 @@ describe('function', () => {
     params.returns(['p']);
     const v = fn(def, {}, 'g');
     expect(params).to.have.been.calledWithExactly('par', 'self', 'g');
-    expect(v.parameters).to.eql(['p']);
+    expect(v.type.parameters).to.eql(['p']);
   });
 
   it('should have a return type', () => {
@@ -65,7 +69,7 @@ describe('function', () => {
       getType: sandbox.stub(),
     };
     g.getType.withArgs('ret').returns('animal');
-    expect(fn(def, {}, g).returnType).to.eql('animal');
+    expect(fn(def, {}, g).type.returnType).to.eql('animal');
   });
 
   it('should write definition', () => {
@@ -77,6 +81,6 @@ describe('function', () => {
     params.withArgs('par').returns([dom.create.parameter('first', dom.type.boolean)]);
     const v = fn(def, {}, g);
     const s = dom.emit(v, { rootFlags: 1 });
-    expect(s.trimRight()).to.equal('function meh(first: boolean): string;');
+    expect(s.trimRight()).to.equal('type meh = (first: boolean)=>string;');
   });
 });
