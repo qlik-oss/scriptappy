@@ -1,9 +1,9 @@
 {
-  "scriptappy": "1.0.0",
+  "scriptappy": "1.1.0",
   "info": {
     "name": "@scriptappy/to-dts",
     "description": "Generate TypeScript definitions from a scriptappy specification",
-    "version": "0.0.1",
+    "version": "1.0.0-beta.1",
     "license": "MIT"
   },
   "entries": {
@@ -40,6 +40,14 @@
                   "value": "'default'"
                 }
               ]
+            },
+            "exportConst": {
+              "optional": true,
+              "type": "string"
+            },
+            "output": {
+              "optional": true,
+              "type": "string"
             }
           }
         }
