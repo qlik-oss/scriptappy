@@ -30,7 +30,7 @@ The purpose of this project is to define and provide a standard for describing J
 
 ## Current Version
 
-Current version of the Scriptappy specification is [1.0.0](./packages/scriptappy-schema/specification.md)
+Current version of the Scriptappy specification is [1.1.0](./packages/scriptappy-schema/specification.md)
 
 ## Packages
 
