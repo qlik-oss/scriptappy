@@ -13,6 +13,10 @@
     "miralemd"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qlik-oss/scriptappy.git"
+  },
   "main": "lib/index.js",
   "files": [
     "lib/",
