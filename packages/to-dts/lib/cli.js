@@ -32,6 +32,11 @@ const toDts = {
         describe: 'File to write to',
         type: 'string',
       },
+      showGeneratedComment: {
+        describe: "Show comment in output file that it's automatically generated",
+        type: 'boolean',
+        default: true,
+      },
     });
   },
   handler(argv) {
