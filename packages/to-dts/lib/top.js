@@ -1,6 +1,6 @@
 const dom = require('dts-dom');
 
-module.exports = function top(spec, { umd = '', export: exp, exportConst } = {}) {
+module.exports = function top(spec, { umd = '', export: exp, exportConst, includeDisclaimer } = {}) {
   // dom.create.namespace('supernova');
   const types = [];
   let entriesFlags = 0;
@@ -8,6 +8,10 @@ module.exports = function top(spec, { umd = '', export: exp, exportConst } = {})
   let entriesRoot;
   let libraryName;
   let ex = exp || 'named';
+
+  if (includeDisclaimer) {
+    types.push('// File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.');
+  }
 
   const entries = Object.keys(spec.entries || {});
   const definitions = Object.keys(spec.definitions || {});

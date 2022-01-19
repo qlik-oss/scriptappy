@@ -13,9 +13,10 @@ const top = require('./top');
  * @param {('named'|'exports'|'default')=} config.export
  * @param {string=} config.exportConst
  * @param {string=} config.output
+ * @param {boolean=} config.includeDisclaimer
  * @returns {string}
  */
-function toDts(specification, config = {}) {
+function toDts(specification, config) {
   let dts = '';
 
   const g = {
@@ -24,11 +25,7 @@ function toDts(specification, config = {}) {
   g.getType = typeFn(g);
   g.traverse = traverseFn(g);
 
-  const { types, entriesRoot, entriesFlags, definitionsRoot } = top(specification, {
-    umd: config.umd,
-    export: config.export,
-    exportConst: config.exportConst,
-  });
+  const { types, entriesRoot, entriesFlags, definitionsRoot } = top(specification, config);
 
   if (definitionsRoot && definitionsRoot !== entriesRoot) {
     g.namespace = definitionsRoot.name;
