@@ -63,7 +63,7 @@ describe('top', () => {
   });
 
   it('should include comment that output is generated', () => {
-    expect(top({}, { showGeneratedComment: true })).to.eql({
+    expect(top({}, { includeDisclaimer: true })).to.eql({
       types: ['// File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.'],
       entriesRoot: undefined,
       entriesFlags: 16,

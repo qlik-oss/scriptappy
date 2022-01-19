@@ -13,7 +13,7 @@ const top = require('./top');
  * @param {('named'|'exports'|'default')=} config.export
  * @param {string=} config.exportConst
  * @param {string=} config.output
- * @param {boolean=} config.showGeneratedComment
+ * @param {boolean=} config.includeDisclaimer
  * @returns {string}
  */
 function toDts(specification, config) {
@@ -55,7 +55,7 @@ function toDts(specification, config) {
   }
   toEmit.push(...definitions);
 
-  dts += toEmit.map(t => dom.emit(t)).join('');
+  dts += toEmit.map((t) => dom.emit(t)).join('');
 
   return dts;
 }

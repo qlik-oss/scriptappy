@@ -1,6 +1,6 @@
 const dom = require('dts-dom');
 
-module.exports = function top(spec, { umd = '', export: exp, exportConst, showGeneratedComment } = {}) {
+module.exports = function top(spec, { umd = '', export: exp, exportConst, includeDisclaimer } = {}) {
   // dom.create.namespace('supernova');
   const types = [];
   let entriesFlags = 0;
@@ -9,7 +9,7 @@ module.exports = function top(spec, { umd = '', export: exp, exportConst, showGe
   let libraryName;
   let ex = exp || 'named';
 
-  if (showGeneratedComment) {
+  if (includeDisclaimer) {
     types.push('// File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.');
   }
 
@@ -32,7 +32,7 @@ module.exports = function top(spec, { umd = '', export: exp, exportConst, showGe
       .split('/')
       .reverse()[0]
       .split('.')[0]
-      .replace(/-([A-z0-9])/g, v => `${v[1].toUpperCase()}`);
+      .replace(/-([A-z0-9])/g, (v) => `${v[1].toUpperCase()}`);
     libraryName = n;
   }
 
