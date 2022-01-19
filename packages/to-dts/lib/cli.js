@@ -3,7 +3,7 @@
 
 const path = require('path');
 const fs = require('fs');
-const parse = require('./index.js');
+const parse = require('./index');
 
 const toDts = {
   command: 'to-dts',

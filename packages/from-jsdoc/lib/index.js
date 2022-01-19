@@ -6,7 +6,7 @@ const globby = require('globby');
 const chokidar = require('chokidar');
 const cp = require('child_process');
 
-const { generate } = require('./transformer.js');
+const { generate } = require('./transformer');
 
 const getJsDocConfig = (files, config) => {
   const cfg = {
