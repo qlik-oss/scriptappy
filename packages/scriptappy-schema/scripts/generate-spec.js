@@ -45,7 +45,7 @@ function type(obj) {
   if (obj.$ref) {
     const def = schema.definitions[obj.$ref.replace('#/definitions/', '')];
     if (def && def.type === 'string') {
-      const enu = def.enum ? def.enum.map(_ => `\`'${_}'\``).join(' \\| ') : '';
+      const enu = def.enum ? def.enum.map((_) => `\`'${_}'\``).join(' \\| ') : '';
       t = enu || '`string`';
     } else {
       t = reference(obj.$ref);
@@ -56,7 +56,7 @@ function type(obj) {
     t = 'Object';
     let refs = [obj.additionalProperties.$ref];
     if (obj.additionalProperties.oneOf) {
-      refs = obj.additionalProperties.oneOf.map(r => r.$ref);
+      refs = obj.additionalProperties.oneOf.map((r) => r.$ref);
     }
     const ref = refs.map(reference).join(' \\| ');
     t = `Object&lt;\`string\`, ${ref}&gt;`;
@@ -96,12 +96,12 @@ function entityTier(entity, k) {
 }
 
 function table(props, required = []) {
-  const fields = Object.keys(props).filter(key => props[key] !== true);
+  const fields = Object.keys(props).filter((key) => props[key] !== true);
   let ss = '';
   if (fields.length) {
     ss += '\nField|Type|Description\n';
     ss += '---|---|---\n';
-    fields.forEach(f => {
+    fields.forEach((f) => {
       const t = type(props[f]);
       ss += `${f}|${t}|${required.indexOf(f) !== -1 ? '**REQUIRED.** ' : ''}${props[f].description || ''}\n`;
     });
@@ -113,7 +113,7 @@ function examples(ent) {
   let ss = '';
   if (ent.examples) {
     ss += '\n##### Example\n\n';
-    ss += ent.examples.map(x => `\`\`\`js\n{${x}}\n\`\`\`\n`).join('\n');
+    ss += ent.examples.map((x) => `\`\`\`js\n{${x}}\n\`\`\`\n`).join('\n');
   }
 
   return ss;
@@ -152,18 +152,18 @@ definition(schema.definitions.availability, 'availability');
 definition(schema.definitions.deprecated, 'deprecated');
 
 Object.keys(schema.definitions)
-  .filter(key => /^entity-tier/.test(key))
-  .forEach(key => {
+  .filter((key) => /^entity-tier/.test(key))
+  .forEach((key) => {
     entityTier(schema.definitions[key], key);
   });
 
 Object.keys(schema.definitions)
-  .filter(key => /^kind\./.test(key) || key === 'constructor')
-  .forEach(key => {
+  .filter((key) => /^kind\./.test(key) || key === 'constructor')
+  .forEach((key) => {
     kind(schema.definitions[key], key);
   });
 
-const TOC = references.map(r => `    - ${r}`).join('\n');
+const TOC = references.map((r) => `    - ${r}`).join('\n');
 
 let generated = partial.replace('{{SCHEMA_TOC}}', TOC);
 generated = generated.replace('{{GENERATED}}', s);

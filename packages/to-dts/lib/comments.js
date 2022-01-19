@@ -11,8 +11,8 @@ module.exports = function c(def, t) {
   if (t.parameters && t.parameters.length) {
     comments.push(
       ...t.parameters
-        .filter(p => p.name !== 'this')
-        .map(p => `@param ${p.name}${p._description ? ` ${p._description}` : ''}`)
+        .filter((p) => p.name !== 'this')
+        .map((p) => `@param ${p.name}${p._description ? ` ${p._description}` : ''}`)
     );
   }
 

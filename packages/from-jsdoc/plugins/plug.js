@@ -1,4 +1,4 @@
-exports.defineTags = dictionary => {
+exports.defineTags = (dictionary) => {
   dictionary.defineTag('template', {
     canHaveType: true,
     canHaveName: true,

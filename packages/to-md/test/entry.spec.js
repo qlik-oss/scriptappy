@@ -57,7 +57,7 @@ describe('entry', () => {
     const n = { params: [] };
     const cfg = {};
     entry(n, cfg, helpers);
-    ['label', 'description', 'paramSignature', 'paramDetails'].forEach(fn => {
+    ['label', 'description', 'paramSignature', 'paramDetails'].forEach((fn) => {
       expect(templates.default[fn].getCall(0)).to.have.been.calledWithExactly(n, cfg, helpers);
     });
   });

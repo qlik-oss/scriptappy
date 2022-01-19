@@ -55,7 +55,7 @@ function toDts(specification, config = {}) {
   }
   toEmit.push(...definitions);
 
-  dts += toEmit.map(t => dom.emit(t)).join('');
+  dts += toEmit.map((t) => dom.emit(t)).join('');
 
   return dts;
 }

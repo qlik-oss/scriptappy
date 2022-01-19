@@ -6,7 +6,7 @@ describe('reference', () => {
     sandbox = sinon.createSandbox();
     dom = {
       create: {
-        namedTypeReference: v => v,
+        namedTypeReference: (v) => v,
       },
     };
 

@@ -1,7 +1,7 @@
 const dom = require('dts-dom');
 
 function params(pars = [], thisContext, g) {
-  const ret = pars.map(p => {
+  const ret = pars.map((p) => {
     let flags = dom.ParameterFlags.None;
     if (p.optional) {
       flags |= dom.ParameterFlags.Optional;

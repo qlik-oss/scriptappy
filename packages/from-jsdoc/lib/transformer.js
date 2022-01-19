@@ -13,14 +13,14 @@ function printViolations(violations, logger = console) {
   // formatting kinda ripped from https://github.com/eslint/eslint/blob/master/lib/formatters/stylish.js
   let warnings = 0;
   let errs = 0;
-  Object.keys(violations).forEach(file => {
+  Object.keys(violations).forEach((file) => {
     const vs = violations[file];
     if (file) {
       logger.log(`\n\x1b[4m${file}\x1b[0m`);
     } else {
       logger.log('\nType check\x1b[0m');
     }
-    vs.forEach(violation => {
+    vs.forEach((violation) => {
       const position =
         violation.doc && violation.doc.meta
           ? `\x1b[2m${violation.doc.meta.lineno}:${violation.doc.meta.columnno}\x1b[0m`
@@ -37,7 +37,7 @@ function printViolations(violations, logger = console) {
     });
   });
 
-  const plural = n => (n === 1 ? '' : 's');
+  const plural = (n) => (n === 1 ? '' : 's');
   const str = `(${errs} error${plural(errs)}, ${warnings} warning${plural(warnings)})`;
   console.log('\n');
 
@@ -71,7 +71,7 @@ function logRule(cfg, doc, rule, message, violations) {
 }
 
 function filterDoclets(data) {
-  return data.filter(doc => !doc.undocumented && !doc.ignore);
+  return data.filter((doc) => !doc.undocumented && !doc.ignore);
 }
 
 function collect(doclets, cfg, entity = entities.doclet) {
@@ -79,7 +79,7 @@ function collect(doclets, cfg, entity = entities.doclet) {
   const priv = {};
   let pack;
 
-  doclets.forEach(doc => {
+  doclets.forEach((doc) => {
     let d;
     if (doc.meta && doc.meta.code.name === 'module.exports') {
       if (doc.longname.indexOf('module.exports') === 0 && doc.access !== 'private') {
@@ -130,7 +130,7 @@ function collect(doclets, cfg, entity = entities.doclet) {
           d.__access = 'private'; // leverage the use of 'private' access to filter out the doclet
         }
       }
-      d.__isEntry = (doc.tags || []).filter(tag => tag.originalTitle === 'entry').length > 0;
+      d.__isEntry = (doc.tags || []).filter((tag) => tag.originalTitle === 'entry').length > 0;
 
       if (ids[d.__id] && ids[d.__id][0] && ids[d.__id][0].kind === 'module') {
         // 'd' is a default export from a module
@@ -149,7 +149,7 @@ function collect(doclets, cfg, entity = entities.doclet) {
       priv[d.__id] = priv[d.__id] || [];
       ids[d.__id].push(idObj);
       priv[d.__id].push(privObj);
-      Object.keys(d).forEach(key => {
+      Object.keys(d).forEach((key) => {
         if (/^__/.test(key)) {
           privObj[key] = d[key];
         } else {
@@ -173,7 +173,7 @@ function transform({ ids, priv }, cfg) {
   if (cfg && cfg.output.sort.alpha) {
     longnames.sort(sortAlphabetically);
   }
-  longnames.forEach(longname => {
+  longnames.forEach((longname) => {
     ids[longname].forEach((d, idx) => {
       // const d = ids[longname];
       const pr = priv[longname][idx];

@@ -1,7 +1,7 @@
 const { sortObject } = require('../lib/sort');
 
 describe('sort', () => {
-  ['entries', 'staticEntries', 'definitions', 'events'].forEach(subentry => {
+  ['entries', 'staticEntries', 'definitions', 'events'].forEach((subentry) => {
     it(`of ${subentry} should be alphabetical`, () => {
       const t = {
         [subentry]: { b: {}, d: {}, a: {} },

@@ -15,7 +15,7 @@ function toJSONPointer(path) {
   let s = '';
   let inside = false;
 
-  path.split('').forEach(char => {
+  path.split('').forEach((char) => {
     if (char === '.' && !inside) {
       s += '/';
       return;
@@ -60,7 +60,7 @@ function subValidateKind(spec, schema, jsonPointer) {
   const subvalidate = subajv.validate(subschema, value);
   if (!subvalidate) {
     console.log('  ', jsonPointer, chalk.dim('as'), kind);
-    subajv.errors.slice(0, 10).forEach(err => console.log(message(err, { path: '' })));
+    subajv.errors.slice(0, 10).forEach((err) => console.log(message(err, { path: '' })));
     return false;
   }
 
@@ -70,8 +70,8 @@ function subValidateKind(spec, schema, jsonPointer) {
 const obj = {};
 
 function traverse(spec) {
-  ['entries', 'definitions'].forEach(sub =>
-    Object.keys(spec[sub] || {}).forEach(key => {
+  ['entries', 'definitions'].forEach((sub) =>
+    Object.keys(spec[sub] || {}).forEach((key) => {
       const d = spec[sub][key];
       if (d.kind === 'class' && !obj.hasOwnProperty.call(d, 'constructor')) {
         d.constructor = { kind: 'function', params: [] };
@@ -95,7 +95,7 @@ function validateSpec(ss, schema) {
   console.log('\n');
   if (!valid) {
     const sorted = validate.errors
-      .map(err => ({ depth: err.dataPath.split('.').length, e: err }))
+      .map((err) => ({ depth: err.dataPath.split('.').length, e: err }))
       .sort((a, b) => b.depth - a.depth);
 
     // subschema validation
@@ -113,7 +113,7 @@ function validateSpec(ss, schema) {
     }
 
     if (isSubValid) {
-      sorted.slice(0, 1).forEach(err => console.log(message(err.e)));
+      sorted.slice(0, 1).forEach((err) => console.log(message(err.e)));
       console.log(chalk.red(`\n  ${sorted.length} violation${sorted.length > 1 ? 's' : ''} found`));
     }
     return 1;

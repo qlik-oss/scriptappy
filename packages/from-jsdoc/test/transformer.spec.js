@@ -60,7 +60,7 @@ describe('transformer', () => {
         { kind: 'foo', longname: 'j' },
       ];
 
-      const d = doclet => doclet;
+      const d = (doclet) => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(Object.keys(ids)).to.eql(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']);
@@ -72,7 +72,7 @@ describe('transformer', () => {
         { kind: 'function', longname: 'd', descr: 'second' },
       ];
 
-      const d = doclet => doclet;
+      const d = (doclet) => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(ids.d).to.eql([
@@ -96,7 +96,7 @@ describe('transformer', () => {
         },
       ];
 
-      const d = doclet => doclet;
+      const d = (doclet) => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(Object.keys(ids).length).to.equal(0);
@@ -108,7 +108,7 @@ describe('transformer', () => {
         { kind: 'function', longname: 'module:mod' },
       ];
 
-      const d = doclet => doclet;
+      const d = (doclet) => doclet;
 
       const { ids } = t.collect(doclets, cfg, d);
       expect(ids['module:mod@default'][0]).to.eql({
@@ -120,13 +120,13 @@ describe('transformer', () => {
     it('should mark filtered doclets as private', () => {
       const doclets = [{ longname: 'f', kind: 'member' }];
 
-      const d = doclet => doclet;
+      const d = (doclet) => doclet;
 
       const c = {
         ...cfg,
         parse: {
           ...cfg.parse,
-          filter: doc => doc.longname !== 'f',
+          filter: (doc) => doc.longname !== 'f',
         },
       };
 

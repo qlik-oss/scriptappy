@@ -31,7 +31,7 @@ describe('function', () => {
   it('should create as method when parent is class, interface or object', () => {
     const def = {};
     params.returns([]);
-    ['class', 'interface', 'object'].forEach(p => {
+    ['class', 'interface', 'object'].forEach((p) => {
       const v = fn(def, { kind: p });
       expect(v.kind).to.eql('method');
     });
@@ -40,7 +40,7 @@ describe('function', () => {
   it('should create as function-type when parent is union, array, parameter or alias', () => {
     const def = {};
     params.returns([]);
-    ['union', 'array', 'parameter', 'alias'].forEach(p => {
+    ['union', 'array', 'parameter', 'alias'].forEach((p) => {
       const v = fn(def, { kind: p });
       expect(v.kind).to.eql('function-type');
     });

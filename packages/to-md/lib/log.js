@@ -1,4 +1,4 @@
-const slugify = s =>
+const slugify = (s) =>
   `#${s
     .replace(/[^A-Z0-9\s-]/gi, '')
     .replace(/\s+/g, '-')
@@ -9,7 +9,7 @@ const type = (entry, cfg, helpers) => {
 
   // TODO - nest even more
   if (entry.kind === 'union' && entry.items) {
-    subType = entry.items.map(u => `${helpers.getType(u)}`).join('|');
+    subType = entry.items.map((u) => `${helpers.getType(u)}`).join('|');
     return `<${subType}>`;
   }
 
@@ -18,7 +18,7 @@ const type = (entry, cfg, helpers) => {
   }
 
   if (entry.generics) {
-    subType = `<${entry.generics.map(u => `${helpers.getType(u)}`).join(',')}>`;
+    subType = `<${entry.generics.map((u) => `${helpers.getType(u)}`).join(',')}>`;
   }
 
   // if (entry.kind === 'array' && Array.isArray(entry.items)) { // tuple
@@ -97,8 +97,9 @@ const templates = {
           s.push('> Deprecated');
         } else if (entry.availability.deprecated) {
           s.push(
-            `> Deprecated: ${entry.availability.deprecated.description ||
-              `since ${entry.availability.deprecated.since}`}`
+            `> Deprecated: ${
+              entry.availability.deprecated.description || `since ${entry.availability.deprecated.since}`
+            }`
           );
         }
       }
@@ -109,13 +110,13 @@ const templates = {
     description(entry, cfg, helpers) {
       let s = '';
       if (entry.extends) {
-        const types = entry.extends.map(t => this.type(t, cfg, helpers)).join(', ');
+        const types = entry.extends.map((t) => this.type(t, cfg, helpers)).join(', ');
         s += `${this.indent.repeat(cfg.indent + 1)}- extends: ${types}\n\n`;
       }
       return `${s}${entry.description || ''}`;
     },
     /** */
-    paramSignature: entry => {
+    paramSignature: (entry) => {
       let s = '';
       let optional = '';
       (entry.params || []).forEach((p, i, arr) => {
@@ -145,7 +146,7 @@ const templates = {
     /** */
     paramDetails(entry, cfg, helpers) {
       const sig = [];
-      entry.params.forEach(p => {
+      entry.params.forEach((p) => {
         sig.push(helpers.entry(p, { ...cfg, mode: 'list' }, helpers));
         sig.push(helpers.traverse(p, { ...cfg, mode: 'list', indent: cfg.indent + 1 }, helpers));
       });
@@ -165,14 +166,14 @@ const templates = {
       }
       if (entry.emits) {
         sig.push(`${this.indent.repeat(cfg.indent)}- \`emits:\`\n`);
-        entry.emits.forEach(t => {
+        entry.emits.forEach((t) => {
           sig.push(this.listItem({ name: '', ...t }, { ...cfg, indent: cfg.indent + 1 }, helpers));
           sig.push('\n');
         });
       }
       if (entry.throws) {
         sig.push(`${this.indent.repeat(cfg.indent)}- \`throws:\`\n`);
-        entry.throws.forEach(t => {
+        entry.throws.forEach((t) => {
           sig.push(this.listItem({ name: '', ...t }, { ...cfg, indent: cfg.indent + 1 }, helpers));
           sig.push('\n');
         });
@@ -197,13 +198,13 @@ const templates = {
       }
 
       return entry.examples
-        .map(x => this.example(x))
+        .map((x) => this.example(x))
         .filter(Boolean)
         .join('\n\n');
     },
   },
   constructor: {
-    label: entry => `new ${entry.name}`,
+    label: (entry) => `new ${entry.name}`,
   },
   /** */
   event: {

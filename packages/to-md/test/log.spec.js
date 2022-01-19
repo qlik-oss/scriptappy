@@ -251,7 +251,7 @@ describe('log', () => {
       const helpers = {
         entry: sinon.stub().returns('p'),
         traverse: sinon.stub().returns('t'),
-        getType: entry => `$${entry.type}`,
+        getType: (entry) => `$${entry.type}`,
       };
       const entry = {
         params: [],
@@ -267,7 +267,7 @@ describe('log', () => {
       const helpers = {
         entry: sinon.stub().returns('p'),
         traverse: sinon.stub().returns('t'),
-        getType: entry => `$${entry.type}`,
+        getType: (entry) => `$${entry.type}`,
       };
       const entry = {
         params: [],

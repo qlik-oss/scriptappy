@@ -16,7 +16,7 @@ const getJsDocConfig = (files, config) => {
     plugins: [path.resolve(__dirname, '../plugins/plug.js')],
   };
   if (typeof config.jsdoc === 'object') {
-    const plugins = (config.jsdoc.plugins || []).map(f => path.resolve(process.cwd(), f));
+    const plugins = (config.jsdoc.plugins || []).map((f) => path.resolve(process.cwd(), f));
     extend(true, cfg, {
       plugins,
     });
@@ -25,7 +25,7 @@ const getJsDocConfig = (files, config) => {
   return cfg;
 };
 
-const generateJSDoc = jsDocConfig => {
+const generateJSDoc = (jsDocConfig) => {
   let s = '';
   const jsdocConfigFilename = crypto.randomBytes(6).toString('hex');
   const temp = path.join(__dirname, `${jsdocConfigFilename}.json`);
@@ -56,7 +56,7 @@ const generateJSDoc = jsDocConfig => {
   return parsed;
 };
 
-const withJSDoc = async config => {
+const withJSDoc = async (config) => {
   const cwd = process.cwd();
   const pkg = config.package ? path.resolve(cwd, config.package) : [];
   const files = (
@@ -65,7 +65,7 @@ const withJSDoc = async config => {
     })
   )
     .concat(pkg)
-    .map(f => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
+    .map((f) => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
 
   const jsDocConfig = getJsDocConfig(files, config);
   let jsdoc;

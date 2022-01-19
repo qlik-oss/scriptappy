@@ -187,9 +187,9 @@ describe('traverse', () => {
   });
 
   describe('with parent', () => {
-    Object.keys(VALID_MEMBERS).forEach(key => {
+    Object.keys(VALID_MEMBERS).forEach((key) => {
       describe(`of type ${key} should add valid member`, () => {
-        VALID_MEMBERS[key].forEach(mt => {
+        VALID_MEMBERS[key].forEach((mt) => {
           it(`${mt}`, () => {
             const tsParent = { kind: key, members: [] };
             const def = { type: `$${key}:${mt}`, optional: true };
@@ -206,7 +206,7 @@ describe('traverse', () => {
       });
     });
 
-    ['class', 'interface', 'object'].forEach(key => {
+    ['class', 'interface', 'object'].forEach((key) => {
       it(`of type ${key} should add property member when member type is invalid`, () => {
         const tsParent = { kind: key, members: [] };
         const def = { type: `$${key}:foo`, optional: true };
@@ -221,7 +221,7 @@ describe('traverse', () => {
       });
     });
 
-    ['module', 'namespace'].forEach(key => {
+    ['module', 'namespace'].forEach((key) => {
       it(`of type ${key} should add aliased member when other types are invalid`, () => {
         const tsParent = { kind: key, members: [] };
         const def = { type: `$${key}:foo`, optional: true };

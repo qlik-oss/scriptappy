@@ -41,9 +41,9 @@ function traverse(
     };
     ss += trav(n, entry, cfg, helpers);
   }
-  ['staticEntries', 'entries', 'events', 'definitions'].forEach(prop => {
+  ['staticEntries', 'entries', 'events', 'definitions'].forEach((prop) => {
     if (entry[prop]) {
-      Object.keys(entry[prop]).forEach(key => {
+      Object.keys(entry[prop]).forEach((key) => {
         const n = {
           ...entry[prop][key],
           name: key,
