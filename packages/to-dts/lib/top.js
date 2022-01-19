@@ -32,7 +32,7 @@ module.exports = function top(spec, { umd = '', export: exp, exportConst, includ
       .split('/')
       .reverse()[0]
       .split('.')[0]
-      .replace(/-([A-z0-9])/g, (v) => `${v[1].toUpperCase()}`);
+      .replace(/-([A-z0-9])/g, v => `${v[1].toUpperCase()}`);
     libraryName = n;
   }
 
