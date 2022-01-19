@@ -3,7 +3,7 @@
   "info": {
     "name": "@scriptappy/to-dts",
     "description": "Generate TypeScript definitions from a scriptappy specification",
-    "version": "1.0.0-beta.1",
+    "version": "1.0.0-beta.3",
     "license": "MIT"
   },
   "entries": {
@@ -48,6 +48,10 @@
             "output": {
               "optional": true,
               "type": "string"
+            },
+            "includeDisclaimer": {
+              "optional": true,
+              "type": "boolean"
             }
           }
         }
