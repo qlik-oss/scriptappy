@@ -5,5 +5,5 @@ A specification for Javascript APIs
 ## Install
 
 ```sh
-npm install scriptappy-schema
+npm install @scriptappy/schema
 ```
