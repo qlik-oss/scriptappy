@@ -50,6 +50,13 @@ describe('function', () => {
     });
   });
 
+  it('should create as function for api entry', () => {
+    const def = {};
+    params.returns([]);
+    const type = fn(def, { kind: 'namespace' }, {}, true);
+    expect(type.kind).to.eql('function');
+  });
+
   it('should have params', () => {
     const def = {
       params: 'par',
