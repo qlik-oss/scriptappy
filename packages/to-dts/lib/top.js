@@ -36,7 +36,7 @@ module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer }
     libraryName = n;
   }
 
-  const nsName = libraryName.charAt(0).toUpperCase() + libraryName.slice(1);
+  const nsName = libraryName && libraryName.charAt(0).toUpperCase() + libraryName.slice(1);
   const definitionsRoot = definitions.length ? dom.create.namespace(nsName) : undefined;
 
   // "export = x" is used for commonjs modules of type "module.exports = x"
