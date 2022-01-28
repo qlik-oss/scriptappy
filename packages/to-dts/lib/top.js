@@ -1,6 +1,6 @@
 const dom = require('dts-dom');
 
-module.exports = function top(spec, { umd = '', export: exp, exportConst, includeDisclaimer } = {}) {
+module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer } = {}) {
   // dom.create.namespace('supernova');
   const types = [];
   let entriesFlags = 0;
@@ -43,12 +43,7 @@ module.exports = function top(spec, { umd = '', export: exp, exportConst, includ
   // "export default x" is used for es6 modules of type "export default x"
   // "export x" is for named exports
   if (ex === 'default') {
-    if (exportConst) {
-      types.push(dom.create.const(exportConst, libraryName));
-      types.push(dom.create.exportDefault(exportConst));
-    } else {
-      types.push(dom.create.exportDefault(libraryName));
-    }
+    types.push(dom.create.exportDefault(libraryName));
   } else if (ex === 'exports') {
     types.push(dom.create.exportEquals(libraryName));
   } else {
