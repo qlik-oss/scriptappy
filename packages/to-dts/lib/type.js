@@ -27,16 +27,14 @@ const primitives = [
   'this',
 ];
 
-function typeFn(g) {
-  const refs = {};
+const ENTRY_RX = /^#\/entries\//;
 
+function typeFn(g) {
   const getBase = (def, tsParent) => {
+    const isEntry = def.path && ENTRY_RX.test(def.path);
+
     if (!def.kind && /^#\//.test(def.type)) {
-      const uid = `${def.type}${def.generics ? JSON.stringify(def.generics) : ''}`;
-      if (!refs[uid]) {
-        refs[uid] = reference(def.type, tsParent, g);
-      }
-      return refs[uid];
+      return reference(def.type, def.name, g, isEntry);
     }
 
     let t;
@@ -56,7 +54,7 @@ function typeFn(g) {
       case 'enum':
         return enm(def, tsParent, g);
       case 'function':
-        return fn(def, tsParent, g);
+        return fn(def, tsParent, g, isEntry);
       case 'interface':
         return iface(def, tsParent, g);
       case 'array':
@@ -93,7 +91,8 @@ function typeFn(g) {
     }
 
     if (primitives.includes(def.type) && dom.type[def.type]) {
-      return dom.type[def.type];
+      const primitiveType = dom.type[def.type];
+      return isEntry ? dom.create.const(def.name, primitiveType) : primitiveType;
     }
 
     if (def.type) {
