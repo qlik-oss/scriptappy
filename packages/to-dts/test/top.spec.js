@@ -57,7 +57,7 @@ describe('top', () => {
       definitionsRoot: {
         kind: 'namespace',
         members: [],
-        name: 'MyLib',
+        name: 'myLib',
       },
     });
   });

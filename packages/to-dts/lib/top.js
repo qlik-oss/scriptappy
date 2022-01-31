@@ -36,8 +36,7 @@ module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer }
     libraryName = n;
   }
 
-  const nsName = libraryName && libraryName.charAt(0).toUpperCase() + libraryName.slice(1);
-  const definitionsRoot = definitions.length ? dom.create.namespace(nsName) : undefined;
+  const definitionsRoot = definitions.length ? dom.create.namespace(libraryName) : undefined;
 
   // "export = x" is used for commonjs modules of type "module.exports = x"
   // "export default x" is used for es6 modules of type "export default x"
