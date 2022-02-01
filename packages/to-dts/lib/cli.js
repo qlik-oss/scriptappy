@@ -31,6 +31,7 @@ const toDts = {
       includeDisclaimer: {
         describe: "Include disclaimer in output file that it's automatically generated",
         type: 'boolean',
+        default: undefined,
       },
       config: {
         alias: 'c',
