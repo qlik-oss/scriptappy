@@ -7,7 +7,7 @@ const schema = require('@scriptappy/schema');
 const entities = require('./entities');
 const checkTypes = require('./check-types');
 const { sortAlphabetically } = require('./sort');
-const defaultConfig = require('../spec.config.js');
+const defaultConfig = require('../spec.config');
 
 function printViolations(violations, logger = console) {
   // formatting kinda ripped from https://github.com/eslint/eslint/blob/master/lib/formatters/stylish.js
