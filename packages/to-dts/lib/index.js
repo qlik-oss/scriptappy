@@ -11,7 +11,6 @@ const top = require('./top');
  * @param {object=} config
  * @param {string=} config.umd
  * @param {('named'|'exports'|'default')=} config.export
- * @param {string=} config.exportConst
  * @param {string=} config.output
  * @param {boolean=} config.includeDisclaimer
  * @returns {string}
