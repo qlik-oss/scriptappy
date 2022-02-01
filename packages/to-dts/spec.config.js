@@ -3,7 +3,7 @@ module.exports = {
   umd: undefined,
   export: undefined,
   output: {
-    file: 'types.d.ts',
+    file: 'index.d.ts',
   },
   includeDisclaimer: true,
   dependencies: {
