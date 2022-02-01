@@ -74,7 +74,15 @@ function traverseFn(g) {
       }
 
       if (def.entries) {
-        arr.push(...g.traverse(def.entries, { parent: tsType, path: `${p}/entries`, flags: 0 }));
+        if (def.kind === 'function') {
+          const ns = dom.create.namespace(key);
+          if (flags) {
+            ns.flags = flags | (tsType.flags || 0);
+          }
+          arr.push(ns, ...g.traverse(def.entries, { parent: ns, path: `${p}/entries`, flags: 0 }));
+        } else {
+          arr.push(...g.traverse(def.entries, { parent: tsType, path: `${p}/entries`, flags: 0 }));
+        }
       }
       if (def.staticEntries) {
         arr.push(

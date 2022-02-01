@@ -5,6 +5,7 @@
   "main": "publish.js",
   "files": [
     "/lib",
+    "/plugins",
     "spec.config.js"
   ],
   "scripts": {

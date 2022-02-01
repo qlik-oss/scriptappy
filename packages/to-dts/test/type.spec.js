@@ -55,8 +55,8 @@ describe('type', () => {
 
   it('should create reference', () => {
     const def = { type: '#/' };
-    reference.withArgs(def.type, 'p').returns('ref');
-    expect(getType(def, 'p')).to.eql('ref');
+    reference.withArgs(def.type).returns('ref');
+    expect(getType(def)).to.eql('ref');
   });
 
   it('should create module', () => {
@@ -202,6 +202,20 @@ describe('type', () => {
       prim => {
         const def = { type: prim };
         expect(getType(def, 'p')).to.eql(prim);
+      }
+    );
+  });
+
+  it('should create value (`const name: type`) for known ts type in api entries', () => {
+    ['string', 'number', 'boolean', 'any', 'void', 'object', 'null', 'undefined', 'true', 'false', 'this'].forEach(
+      prim => {
+        const def = { type: prim, name: 'version', path: '#/entries/embed' };
+        expect(getType(def)).to.eql({
+          kind: 'const',
+          name: 'version',
+          type: prim,
+          flags: 0,
+        });
       }
     );
   });

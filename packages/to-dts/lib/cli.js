@@ -23,14 +23,15 @@ const toDts = {
         describe: 'Type of export',
         type: 'string',
       },
-      exportConst: {
-        description: 'Create const of generated type to export',
-        type: 'string',
-      },
       output: {
         alias: 'o',
         describe: 'File to write to',
         type: 'string',
+      },
+      includeDisclaimer: {
+        describe: "Include disclaimer in output file that it's automatically generated",
+        type: 'boolean',
+        default: true,
       },
     });
   },

@@ -1,6 +1,6 @@
 {
   "name": "@scriptappy/to-dts",
-  "version": "0.0.1",
+  "version": "1.0.0-beta.3",
   "description": "Generate TypeScript definitions from a scriptappy specification",
   "keywords": [
     "jsdoc",
@@ -13,6 +13,17 @@
     "miralemd"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
+  "bugs": {
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qlik-oss/scriptappy.git"
+  },
   "main": "lib/index.js",
   "files": [
     "lib/",
