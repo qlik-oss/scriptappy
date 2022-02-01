@@ -4,6 +4,7 @@
 const path = require('path');
 const fs = require('fs');
 const parse = require('./index.js');
+const { getConfig } = require('./config');
 
 const toDts = {
   command: 'to-dts',
@@ -13,7 +14,6 @@ const toDts = {
       spec: {
         describe: 'Path to spec file',
         type: 'string',
-        default: 'scriptappy.json',
       },
       umd: {
         describe: 'Name of UMD variable',
@@ -23,7 +23,7 @@ const toDts = {
         describe: 'Type of export',
         type: 'string',
       },
-      output: {
+      'output.file': {
         alias: 'o',
         describe: 'File to write to',
         type: 'string',
@@ -31,19 +31,25 @@ const toDts = {
       includeDisclaimer: {
         describe: "Include disclaimer in output file that it's automatically generated",
         type: 'boolean',
-        default: true,
+      },
+      config: {
+        alias: 'c',
+        describe: 'Path to config file',
+        type: 'string',
+        default: null,
       },
     });
   },
   handler(argv) {
-    if (typeof argv.spec === 'string') {
-      const p = path.resolve(process.cwd(), argv.spec);
+    const config = getConfig(argv);
+    if (typeof config.spec === 'string') {
+      const p = path.resolve(process.cwd(), config.spec);
       if (!fs.existsSync(p)) {
         throw new Error(`Spec ${p} not found`);
       }
       const spec = fs.readFileSync(p, 'utf-8');
-      const typed = parse(JSON.parse(spec), argv);
-      const output = argv.output || path.resolve(process.cwd(), 'index.d.ts');
+      const typed = parse(JSON.parse(spec), config);
+      const output = config.output.file || path.resolve(process.cwd(), 'index.d.ts');
       fs.writeFileSync(output, typed, 'utf-8');
     } else {
       throw new Error('Please provide a spec file');
