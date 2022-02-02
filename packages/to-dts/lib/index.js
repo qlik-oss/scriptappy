@@ -6,13 +6,21 @@ const traverseFn = require('./traverse');
 const top = require('./top');
 
 /**
+ *
+ * @typedef {object} Config
+ * @property {string=} umd
+ * @property {('named'|'exports'|'default')=} export
+ * @property {object=} output
+ * @property {string=} output.file
+ * @property {boolean=} includeDisclaimer
+ * @property {object=} dependencies
+ * @property {string[]=} references
+ */
+
+/**
  * @entry
  * @param {object} specification
- * @param {object=} config
- * @param {string=} config.umd
- * @param {('named'|'exports'|'default')=} config.export
- * @param {string=} config.output
- * @param {boolean=} config.includeDisclaimer
+ * @param {Config} config
  * @returns {string}
  */
 function toDts(specification, config) {

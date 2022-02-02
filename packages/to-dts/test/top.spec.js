@@ -70,4 +70,13 @@ describe('top', () => {
       definitionsRoot: undefined,
     });
   });
+
+  it('should return triple slash reference when dependency ref exists', () => {
+    expect(top({}, { dependencies: { references: ['qlik-engineapi'] } })).to.eql({
+      types: ['/// <reference types="qlik-engineapi" />'],
+      entriesRoot: undefined,
+      entriesFlags: 16,
+      definitionsRoot: undefined,
+    });
+  });
 });

@@ -1,6 +1,6 @@
 const dom = require('dts-dom');
 
-module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer } = {}) {
+module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer, dependencies = {} } = {}) {
   // dom.create.namespace('supernova');
   const types = [];
   let entriesFlags = 0;
@@ -11,6 +11,12 @@ module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer }
 
   if (includeDisclaimer) {
     types.push('// File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.');
+  }
+
+  if (Array.isArray(dependencies.references)) {
+    dependencies.references.forEach(reference => {
+      types.push(`/// <reference types="${reference}" />`);
+    });
   }
 
   const entries = Object.keys(spec.entries || {});
