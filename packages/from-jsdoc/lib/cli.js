@@ -7,7 +7,7 @@ const extend = require('extend');
 
 const withJSDoc = require('./index');
 
-const defaultConfig = require('../spec.config.js');
+const defaultConfig = require('../spec.config');
 
 const fromJsdoc = {
   command: 'from-jsdoc',
