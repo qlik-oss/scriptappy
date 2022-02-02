@@ -1,10 +1,14 @@
 #!/usr/bin/env node
-/* eslint no-unused-expressions: 0 */
+/* eslint no-unused-expressions: 0, import/no-dynamic-require: 0, global-require: 0 */
 
 const path = require('path');
 const fs = require('fs');
+const extend = require('extend');
 const parse = require('./index.js');
-const { getConfig } = require('./config');
+const defaultConfig = require('../spec.config');
+
+const defaultFilename = 'spec.config.js';
+const RX = new RegExp(`${defaultFilename.replace(/\./g, '\\.')}$`);
 
 const toDts = {
   command: 'to-dts',
@@ -37,12 +41,24 @@ const toDts = {
         alias: 'c',
         describe: 'Path to config file',
         type: 'string',
-        default: null,
+        default: defaultFilename,
       },
+    }).config('config', configPath => {
+      if (configPath === null) {
+        return {};
+      }
+      if (!fs.existsSync(configPath)) {
+        // do nothing if default filename doesn't exist
+        if (RX.test(configPath)) {
+          return {};
+        }
+        throw new Error(`Config ${configPath} not found`);
+      }
+      return require(configPath).toDts || {};
     });
   },
   handler(argv) {
-    const config = getConfig(argv);
+    const config = extend(true, {}, defaultConfig, argv);
     if (typeof config.spec === 'string') {
       const p = path.resolve(process.cwd(), config.spec);
       if (!fs.existsSync(p)) {
@@ -50,8 +66,7 @@ const toDts = {
       }
       const spec = fs.readFileSync(p, 'utf-8');
       const typed = parse(JSON.parse(spec), config);
-      const output = config.output.file || path.resolve(process.cwd(), 'index.d.ts');
-      fs.writeFileSync(output, typed, 'utf-8');
+      fs.writeFileSync(config.output.file, typed, 'utf-8');
     } else {
       throw new Error('Please provide a spec file');
     }
