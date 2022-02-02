@@ -4,7 +4,7 @@
 const path = require('path');
 const fs = require('fs');
 const extend = require('extend');
-const parse = require('./index.js');
+const parse = require('./index');
 const defaultConfig = require('../spec.config');
 
 const defaultFilename = 'spec.config.js';
