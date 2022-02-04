@@ -1,6 +1,6 @@
 {
   "name": "@scriptappy/to-dts",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Generate TypeScript definitions from a scriptappy specification",
   "keywords": [
     "jsdoc",

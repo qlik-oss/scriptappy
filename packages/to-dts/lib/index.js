@@ -14,7 +14,7 @@ const top = require('./top');
  * @property {string=} output.file
  * @property {boolean=} includeDisclaimer
  * @property {object=} dependencies
- * @property {string[]=} references
+ * @property {string[]} [references]
  */
 
 /**

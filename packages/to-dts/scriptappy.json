@@ -3,7 +3,7 @@
   "info": {
     "name": "@scriptappy/to-dts",
     "description": "Generate TypeScript definitions from a scriptappy specification",
-    "version": "1.0.0-beta.3",
+    "version": "1.0.0-beta.4",
     "license": "MIT"
   },
   "entries": {
@@ -16,40 +16,7 @@
         },
         {
           "name": "config",
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "umd": {
-              "optional": true,
-              "type": "string"
-            },
-            "export": {
-              "optional": true,
-              "kind": "union",
-              "items": [
-                {
-                  "kind": "literal",
-                  "value": "'named'"
-                },
-                {
-                  "kind": "literal",
-                  "value": "'exports'"
-                },
-                {
-                  "kind": "literal",
-                  "value": "'default'"
-                }
-              ]
-            },
-            "output": {
-              "optional": true,
-              "type": "string"
-            },
-            "includeDisclaimer": {
-              "optional": true,
-              "type": "boolean"
-            }
-          }
+          "type": "#/definitions/Config"
         }
       ],
       "returns": {
@@ -57,5 +24,61 @@
       }
     }
   },
-  "definitions": {}
+  "definitions": {
+    "Config": {
+      "kind": "alias",
+      "items": {
+        "kind": "object",
+        "entries": {
+          "umd": {
+            "optional": true,
+            "type": "string"
+          },
+          "export": {
+            "optional": true,
+            "kind": "union",
+            "items": [
+              {
+                "kind": "literal",
+                "value": "'named'"
+              },
+              {
+                "kind": "literal",
+                "value": "'exports'"
+              },
+              {
+                "kind": "literal",
+                "value": "'default'"
+              }
+            ]
+          },
+          "output": {
+            "optional": true,
+            "kind": "object",
+            "entries": {
+              "file": {
+                "optional": true,
+                "type": "string"
+              }
+            }
+          },
+          "includeDisclaimer": {
+            "optional": true,
+            "type": "boolean"
+          },
+          "dependencies": {
+            "optional": true,
+            "type": "object"
+          },
+          "references": {
+            "optional": true,
+            "kind": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
 }
