@@ -6,6 +6,7 @@ const web = [
   'HTMLElement',
   'Element',
   'Event',
+  'NamedNodeMap',
 ];
 
 // TODO - expand the list
