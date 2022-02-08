@@ -41,10 +41,10 @@ Current version of the Scriptappy specification is [1.1.0](./packages/scriptappy
 
 [scriptappy-schema]: https://github.com/qlik-oss/scriptappy/tree/master/packages/scriptappy-schema
 [scriptappy-from-jsdoc]: https://github.com/qlik-oss/scriptappy/tree/master/packages/from-jsdoc
-[scriptappy-schema-status]: https://img.shields.io/npm/v/scriptappy-schema.svg
-[scriptappy-from-jsdoc-status]: https://img.shields.io/npm/v/scriptappy-from-jsdoc.svg
+[scriptappy-schema-status]: https://img.shields.io/npm/v/@scriptappy/schema.svg
+[scriptappy-from-jsdoc-status]: https://img.shields.io/npm/v/@scriptappy/from-jsdoc.svg
 [scriptappy-schema-npm]: https://npmjs.com/package/@scriptappy/schema
-[scriptappy-from-jsdoc-npm]: https://npmjs.com/package/scriptappy-from-jsdoc
+[scriptappy-from-jsdoc-npm]: https://npmjs.com/package/@scriptappy/from-jsdoc
 
 - Markdown API reference documentation (coming soon)
 - Visualize API (coming soon)
