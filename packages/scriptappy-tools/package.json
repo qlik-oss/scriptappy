@@ -28,7 +28,7 @@
     "lint": "eslint lib tools"
   },
   "dependencies": {
-    "ajv": "6.11.0",
+    "ajv": "6.12.3",
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "fast-json-patch": "3.1.0",
