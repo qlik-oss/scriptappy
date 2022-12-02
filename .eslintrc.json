@@ -21,19 +21,14 @@
     },
     {
       "files": ["**/*.spec.js"],
-      "plugins": ["mocha"],
-      "rules": {
-        "mocha/no-exclusive-tests": 2
-      },
       "env": {
         "node": true,
-        "mocha": true
+        "jest": true
       },
       "globals": {
         "chai": false,
         "expect": false,
-        "sinon": false,
-        "aw": false
+        "sinon": false
       }
     }
   ]

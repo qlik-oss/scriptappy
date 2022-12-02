@@ -1,9 +1,14 @@
+const t = require('../lib/check-types');
+
+jest.mock('../lib/types', () => {
+  return ['mine'];
+});
+
 describe('check-types', () => {
-  let t;
   let sandbox;
-  before(() => {
+
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
-    [t] = aw.mock([['**/types.js', () => ['mine']]], ['../lib/check-types']);
   });
 
   afterEach(() => {

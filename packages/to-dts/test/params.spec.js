@@ -6,7 +6,7 @@ describe('params', () => {
   let sandbox;
   let getType;
   let g;
-  before(() => {
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
     getType = sandbox.stub();
     g = {

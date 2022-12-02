@@ -2,7 +2,7 @@ const typeParams = require('../lib/types/type-params');
 
 describe('type params', () => {
   let sandbox;
-  before(() => {
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
   });
   afterEach(() => {

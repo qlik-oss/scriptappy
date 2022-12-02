@@ -1,22 +1,26 @@
 const dom = require('dts-dom');
+const fn = require('../lib/types/function');
+const params = require('../lib/types/params');
+
+jest.mock('../lib/types/params');
 
 describe('function', () => {
   let sandbox;
-  let fn;
-  let params;
-  before(() => {
-    sandbox = sinon.createSandbox();
-    params = sandbox.stub();
+  let paramsMock;
 
-    [fn] = aw.mock([['**/*/params.js', () => params]], ['../lib/types/function']);
+  beforeAll(() => {
+    sandbox = sinon.createSandbox();
+    paramsMock = sandbox.stub();
+    params.mockImplementation(paramsMock);
   });
+
   afterEach(() => {
     sandbox.reset();
   });
 
   it('should create empty', () => {
     const def = { name: 'foo' };
-    params.returns([]);
+    paramsMock.returns([]);
     const v = fn(def);
     expect(v).to.eql({
       kind: 'alias',
@@ -34,7 +38,7 @@ describe('function', () => {
 
   it('should create as method when parent is class, interface or object', () => {
     const def = {};
-    params.returns([]);
+    paramsMock.returns([]);
     ['class', 'interface', 'object'].forEach(p => {
       const v = fn(def, { kind: p });
       expect(v.kind).to.eql('method');
@@ -43,7 +47,7 @@ describe('function', () => {
 
   it('should create as function-type when parent is union, array, parameter or alias', () => {
     const def = {};
-    params.returns([]);
+    paramsMock.returns([]);
     ['union', 'array', 'parameter', 'alias'].forEach(p => {
       const v = fn(def, { kind: p });
       expect(v.kind).to.eql('function-type');
@@ -52,7 +56,7 @@ describe('function', () => {
 
   it('should create as function for api entry', () => {
     const def = {};
-    params.returns([]);
+    paramsMock.returns([]);
     const type = fn(def, { kind: 'namespace' }, {}, true);
     expect(type.kind).to.eql('function');
   });
@@ -62,9 +66,9 @@ describe('function', () => {
       params: 'par',
       this: 'self',
     };
-    params.returns(['p']);
+    paramsMock.returns(['p']);
     const v = fn(def, {}, 'g');
-    expect(params).to.have.been.calledWithExactly('par', 'self', 'g');
+    expect(paramsMock).to.have.been.calledWithExactly('par', 'self', 'g');
     expect(v.type.parameters).to.eql(['p']);
   });
 
@@ -85,7 +89,7 @@ describe('function', () => {
       getType: sandbox.stub(),
     };
     g.getType.withArgs('ret').returns(dom.type.string);
-    params.withArgs('par').returns([dom.create.parameter('first', dom.type.boolean)]);
+    paramsMock.withArgs('par').returns([dom.create.parameter('first', dom.type.boolean)]);
     const v = fn(def, {}, g);
     const s = dom.emit(v, { rootFlags: 1 });
     expect(s.trimRight()).to.equal('type meh = (first: boolean)=>string;');

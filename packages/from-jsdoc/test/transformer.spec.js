@@ -1,19 +1,17 @@
+const t = require('../lib/transformer');
+const entities = require('../lib/entities');
+
+jest.mock('../lib/check-types', () => () => ({}));
+jest.mock('../lib/entities');
+
 describe('transformer', () => {
-  let t;
   let sandbox;
-  let entities;
-  before(() => {
+  let docletMock;
+
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
-    entities = {
-      doclet: sandbox.stub(),
-    };
-    [t] = aw.mock(
-      [
-        ['**/check-types.js', () => () => {}],
-        ['**/entities.js', () => entities],
-      ],
-      ['../lib/transformer']
-    );
+    docletMock = sandbox.stub();
+    entities.doclet.mockImplementation(docletMock);
   });
 
   afterEach(() => {
@@ -478,13 +476,16 @@ describe('transformer', () => {
           licenses: [{ type: 'yes' }],
         },
       ];
-      entities.doclet.withArgs(doclets[0]).returns({
+
+      docletMock.withArgs(doclets[0]).returns({
         kind: 'module',
         entries: {},
       });
-      entities.doclet.withArgs(doclets[1]).returns({
+
+      docletMock.withArgs(doclets[1]).returns({
         type: 'string',
       });
+
       const spec = JSON.parse(
         JSON.stringify(
           t.generate({
@@ -529,18 +530,22 @@ describe('transformer', () => {
           longname: 'chart-definition.data',
         },
       ];
-      entities.doclet.withArgs(doclets[0]).returns({
+
+      docletMock.withArgs(doclets[0]).returns({
         kind: 'object',
         entries: {},
       });
-      entities.doclet.withArgs(doclets[1]).returns({
+
+      docletMock.withArgs(doclets[1]).returns({
         kind: 'object',
         entries: {},
       });
-      entities.doclet.withArgs(doclets[2]).returns({
+
+      docletMock.withArgs(doclets[2]).returns({
         kind: 'array',
         items: { type: 'data-source' },
       });
+
       const spec = t.generate({
         data: doclets,
         config: cfg,

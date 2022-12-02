@@ -1,28 +1,30 @@
+const iface = require('../lib/types/interface');
+const params = require('../lib/types/params');
+const typeParams = require('../lib/types/type-params');
+
+jest.mock('../lib/types/params');
+jest.mock('../lib/types/type-params');
+
 describe('class', () => {
   let sandbox;
-  let iface;
-  let params;
-  let typeParams;
-  before(() => {
-    sandbox = sinon.createSandbox();
-    params = sandbox.stub();
-    typeParams = sandbox.stub();
+  let paramsMock;
+  let typeParamsMock;
 
-    [iface] = aw.mock(
-      [
-        ['**/*/params.js', () => params],
-        ['**/*/type-params.js', () => typeParams],
-      ],
-      ['../lib/types/interface']
-    );
+  beforeAll(() => {
+    sandbox = sinon.createSandbox();
+    paramsMock = sandbox.stub();
+    typeParamsMock = sandbox.stub();
+    params.mockImplementation(paramsMock);
+    typeParams.mockImplementation(typeParamsMock);
   });
+
   afterEach(() => {
     sandbox.reset();
   });
 
   it('should create empty', () => {
     const def = { name: 'foo' };
-    params.returns([]);
+    paramsMock.returns([]);
     const v = iface(def);
     expect(v).to.eql({
       baseTypes: [],
@@ -39,7 +41,7 @@ describe('class', () => {
       params: 'par',
       this: 'self',
     };
-    params.withArgs('par', 'self', 'g').returns([]);
+    paramsMock.withArgs('par', 'self', 'g').returns([]);
     const v = iface(def, {}, 'g');
     expect(v).to.eql({
       baseTypes: [],
@@ -68,7 +70,7 @@ describe('class', () => {
       getType: sandbox.stub(),
     };
     g.getType.withArgs('ret').returns('num');
-    params.withArgs('par', 'self', g).returns([
+    paramsMock.withArgs('par', 'self', g).returns([
       { name: 'first', flags: 1 },
       { name: 'second', flags: 2 },
     ]);
@@ -114,7 +116,7 @@ describe('class', () => {
       name: 'foo',
       templates: 'te',
     };
-    typeParams.withArgs('te', false, 'g').returns([
+    typeParamsMock.withArgs('te', false, 'g').returns([
       {
         kind: 'type-parameter',
         name: 'T',

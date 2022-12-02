@@ -1,24 +1,30 @@
+const sort = require('../lib/sort');
+const typeParser = require('../lib/type-parser');
+const collectNest = require('../lib/collect-nest');
+const collect = require('../lib/collector');
+
+jest.mock('../lib/sort');
+jest.mock('../lib/type-parser');
+jest.mock('../lib/collect-nest');
+
 describe('collector', () => {
   let sandbox;
-  let collect;
-  let sort;
   let nest;
+  let sortObject;
   let getParamFromComment;
   let getPropertyFromComment;
-  before(() => {
+
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
-    sort = sandbox.stub();
+    sortObject = sandbox.stub();
     nest = sandbox.stub();
     getParamFromComment = sandbox.stub();
     getPropertyFromComment = sandbox.stub();
-    [collect] = aw.mock(
-      [
-        ['**/sort.js', () => ({ sortObject: sort })],
-        ['**/type-parser.js', () => ({ getParamFromComment, getPropertyFromComment })],
-        ['**/collect-nest.js', () => nest],
-      ],
-      ['../lib/collector']
-    );
+
+    sort.sortObject.mockImplementation(sortObject);
+    typeParser.getParamFromComment.mockImplementation(getParamFromComment);
+    typeParser.getPropertyFromComment.mockImplementation(getPropertyFromComment);
+    collectNest.mockImplementation(nest);
   });
 
   afterEach(() => {
@@ -31,7 +37,7 @@ describe('collector', () => {
     const c = collect({ entity: 'entity' });
     const params = c.collectParamsFromDoc(doc, 'cfg', 'opts');
     expect(params).to.eql(['a']);
-    expect(sort).to.have.been.calledWithExactly('a', 'cfg');
+    expect(sortObject).to.have.been.calledWithExactly('a', 'cfg');
   });
 
   it('should attach exp to params', () => {
@@ -49,7 +55,7 @@ describe('collector', () => {
     const c = collect({ entity: 'entity' });
     const props = c.collectPropsFromDoc(doc, 'cfg', 'opts');
     expect(props).to.eql({ a: 'x' });
-    expect(sort).to.have.been.calledWithExactly({ entries: { a: 'x' } }, 'cfg');
+    expect(sortObject).to.have.been.calledWithExactly({ entries: { a: 'x' } }, 'cfg');
   });
 
   it('should attach exp to props', () => {
