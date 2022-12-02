@@ -1,3 +1,13 @@
+/* eslint-disable global-require */
+const typeParser = require('../lib/type-parser');
+const types = require('../lib/entities');
+
+jest.mock('../lib/type-parser');
+jest.mock('../lib/collector', () => () => ({
+  collectParamsFromDoc: jest.fn(() => ['params']),
+  collectPropsFromDoc: jest.fn(() => ({ props: true })),
+}));
+
 describe('entities', () => {
   const logger = {
     error: () => {},
@@ -12,28 +22,22 @@ describe('entities', () => {
   };
 
   let sandbox;
-  let types;
   let parse;
   let getTypeFromCodeMeta;
   let getTypedefFromComment;
   let getReturnFromComment;
-  let collectPropsFromDoc;
-  let collectParamsFromDoc;
-  before(() => {
+
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
-    collectPropsFromDoc = sandbox.stub();
-    collectParamsFromDoc = sandbox.stub();
     parse = sandbox.stub();
     getTypeFromCodeMeta = sandbox.stub();
     getTypedefFromComment = sandbox.stub();
     getReturnFromComment = sandbox.stub();
-    [types] = aw.mock(
-      [
-        ['**/type-parser.js', () => ({ parse, getTypeFromCodeMeta, getTypedefFromComment, getReturnFromComment })],
-        ['**/collector.js', () => () => ({ collectParamsFromDoc, collectPropsFromDoc })],
-      ],
-      ['../lib/entities']
-    );
+
+    typeParser.parse.mockImplementation(parse);
+    typeParser.getTypeFromCodeMeta.mockImplementation(getTypeFromCodeMeta);
+    typeParser.getTypedefFromComment.mockImplementation(getTypedefFromComment);
+    typeParser.getReturnFromComment.mockImplementation(getReturnFromComment);
   });
 
   afterEach(() => {
@@ -319,7 +323,6 @@ describe('entities', () => {
   describe('type', () => {
     it('any', () => {
       const o = types.typedef({}, cfg);
-
       expect(o).to.eql({
         type: 'any',
       });
@@ -335,37 +338,8 @@ describe('entities', () => {
         },
         cfg
       );
-
       expect(o).to.eql({
         type: 'expression',
-      });
-    });
-
-    it.skip('literal', () => {
-      parse.withArgs("'foo'").returns({ kind: 'literal', value: 'foo' });
-      const o = types.typedef({
-        type: { names: ["'foo'"] },
-      });
-
-      expect(o).to.eql({
-        kind: 'literal',
-        value: 'foo',
-      });
-    });
-
-    it.skip('literal - from meta', () => {
-      const o = types.typedef({
-        meta: {
-          code: {
-            type: 'Literal',
-            value: 'foo',
-          },
-        },
-      });
-
-      expect(o).to.eql({
-        kind: 'literal',
-        value: 'foo',
       });
     });
 
@@ -373,7 +347,6 @@ describe('entities', () => {
       getTypeFromCodeMeta.returns({
         kind: 'object',
       });
-      collectPropsFromDoc.returns({});
       const o = types.typedef({
         meta: {
           code: {
@@ -381,7 +354,6 @@ describe('entities', () => {
           },
         },
       });
-
       expect(o).to.eql({
         kind: 'object',
       });
@@ -394,188 +366,14 @@ describe('entities', () => {
         type: { names: ['object'] },
         properties: 'meh',
       };
-      collectPropsFromDoc.withArgs(doc).returns({ a: 'x' });
       const o = types.typedef(doc);
-
       expect(o).to.eql({
         kind: 'object',
-        entries: { a: 'x' },
+        entries: { props: true },
       });
     });
-
-    // it('array', () => {
-    //   parse.returns();
-    //   const o = types.typedef({
-    //     type: { names: ['Array.<object>'] },
-    //   });
-
-    //   expect(o).to.eql({
-    //     kind: 'array',
-    //     items: {
-    //       type: 'object',
-    //     },
-    //   });
-    // });
-
-    it.skip('array', () => {
-      const o = types.typedef({
-        type: { names: ['array'] },
-      });
-
-      expect(o).to.eql({
-        kind: 'array',
-        items: {
-          type: 'any',
-        },
-      });
-    });
-
-    // it('array generics', () => {
-    //   const o = types.typedef({
-    //     type: { names: ['Array.< (  number | boolean )>'] },
-    //   });
-
-    //   expect(o).to.eql({
-    //     kind: 'array',
-    //     items: {
-    //       kind: 'union',
-    //       // type: 'any',
-    //       items: [{ type: 'number' }, { type: 'boolean' }],
-    //     },
-    //   });
-    // });
-
-    // it('array - tuple', () => {
-    //   const o = types.typedef({
-    //     type: { names: ['Array.<(string | number ), Promise.<string>>'] },
-    //   });
-
-    //   expect(o).to.eql({
-    //     kind: 'array',
-    //     items: [
-    //       { kind: 'union', items: [{ type: 'string' }, { type: 'number' }] },
-    //       { type: 'Promise', generics: [{ type: 'string' }] },
-    //     ],
-    //   });
-    // });
-
-    // it('generics', () => {
-    //   const o = types.typedef(
-    //     {
-    //       type: { names: ['Promise.<object.<boolean>, Array.<(string|number)>>'] },
-    //     },
-    //     { logRule: () => {} }
-    //   );
-
-    //   expect(o).to.eql({
-    //     type: 'Promise',
-    //     generics: [
-    //       {
-    //         type: 'object',
-    //         generics: [{ type: 'boolean' }],
-    //       },
-    //       {
-    //         kind: 'array',
-    //         items: {
-    //           kind: 'union',
-    //           // type: 'any',
-    //           items: [{ type: 'string' }, { type: 'number' }],
-    //         },
-    //       },
-    //     ],
-    //   });
-    // });
-
-    // it('generics - properties', () => {
-    //   const o = types.typedef(
-    //     {
-    //       type: { names: ['Object.<string, number>'] },
-    //       properties: [
-    //         {
-    //           type: { names: ['string'] },
-    //           name: 'first',
-    //         },
-    //       ],
-    //     },
-    //     { logRule: () => {} }
-    //   );
-
-    //   expect(o).to.eql({
-    //     kind: 'object',
-    //     generics: [
-    //       {
-    //         type: 'string',
-    //       },
-    //       {
-    //         type: 'number',
-    //       },
-    //     ],
-    //     entries: {
-    //       first: {
-    //         type: 'string',
-    //       },
-    //     },
-    //   });
-    // });
-
-    // it('generics - union', () => {
-    //   const o = types.typedef(
-    //     {
-    //       type: { names: ['Promise.<  ( string|  number | boolean), number  >'] },
-    //     },
-    //     { logRule: () => {} }
-    //   );
-
-    //   expect(o).to.eql({
-    //     type: 'Promise',
-    //     generics: [
-    //       {
-    //         kind: 'union',
-    //         items: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
-    //       },
-    //       { type: 'number' },
-    //     ],
-    //   });
-    // });
-
-    // it('object - key value', () => {
-    //   const o = types.typedef({
-    //     type: { names: ['object.<string, number>'] },
-    //   });
-
-    //   expect(o).to.eql({
-    //     type: 'object',
-    //     generics: [{ type: 'string' }, { type: 'number' }],
-    //   });
-    // });
-
-    // it('object - setter', () => {
-    //   const o = types.typedef(
-    //     {
-    //       meta: {
-    //         code: { paramnames: ['v'] },
-    //       },
-    //       kind: 'member',
-    //       params: [
-    //         {
-    //           type: {
-    //             names: ['string'],
-    //           },
-    //           description: 'the nam',
-    //           name: 'v',
-    //         },
-    //       ],
-    //     },
-    //     { logger }
-    //   );
-
-    //   expect(o).to.eql({
-    //     type: 'string',
-    //   });
-    // });
 
     it('typedef with params should be a function kind', () => {
-      collectParamsFromDoc.returns(['par']);
       const o = types.typedef({
         kind: 'typedef',
         type: { names: ['function'] },
@@ -583,19 +381,19 @@ describe('entities', () => {
       });
       expect(o).to.eql({
         kind: 'function',
-        params: ['par'],
+        params: ['params'],
       });
     });
 
     it('typedef as callback should be a function kind', () => {
-      collectParamsFromDoc.returns(['par']);
       const o = types.typedef({
         comment: 'bla @callback',
         kind: 'typedef',
       });
+
       expect(o).to.eql({
         kind: 'function',
-        params: ['par'],
+        params: ['params'],
       });
     });
 
@@ -623,17 +421,15 @@ describe('entities', () => {
         properties: 'props',
       };
       getTypedefFromComment.withArgs(doc.comment).returns('object');
-      collectPropsFromDoc.returns('entr');
       parse.withArgs('object').returns({ type: 'object' });
       const o = types.typedef(doc);
       expect(o).to.eql({
         kind: 'object',
-        entries: 'entr',
+        entries: { props: true },
       });
     });
 
     it('function', () => {
-      collectParamsFromDoc.returns([]);
       getReturnFromComment.returns('ret-expr');
       parse.withArgs('ret-expr').returns({ ret: 'magic' });
       parse.withArgs('NullPointerException').returns({ exc: 'nil' });
@@ -671,7 +467,7 @@ describe('entities', () => {
             exc: 'nil',
           },
         ],
-        params: [],
+        params: ['params'],
         returns: {
           description: 'a promise',
           ret: 'magic',
@@ -684,7 +480,6 @@ describe('entities', () => {
     });
 
     it('generator function', () => {
-      collectParamsFromDoc.returns([]);
       parse.withArgs('number').returns({ type: 'num' });
       parse.withArgs('string').returns({ type: 'str' });
       const o = types.typedef({
@@ -695,7 +490,7 @@ describe('entities', () => {
 
       expect(o).to.eql({
         kind: 'function',
-        params: [],
+        params: ['params'],
         generator: true,
       });
 
@@ -707,7 +502,7 @@ describe('entities', () => {
 
       expect(o2).to.eql({
         kind: 'function',
-        params: [],
+        params: ['params'],
         generator: true,
         yields: {
           type: 'num',
@@ -723,7 +518,7 @@ describe('entities', () => {
 
       expect(o3).to.eql({
         kind: 'function',
-        params: [],
+        params: ['params'],
         generator: true,
         yields: {
           kind: 'union',
@@ -733,7 +528,6 @@ describe('entities', () => {
     });
 
     it('event', () => {
-      collectParamsFromDoc.returns(['par']);
       const o = types.typedef({
         kind: 'event',
         name: 'start',
@@ -743,7 +537,7 @@ describe('entities', () => {
 
       expect(o).to.eql({
         kind: 'event',
-        params: ['par'],
+        params: ['params'],
       });
     });
 
@@ -790,7 +584,6 @@ describe('entities', () => {
     });
 
     it('interface comment with params', () => {
-      collectParamsFromDoc.returns(['par']);
       const o = types.typedef({
         name: 'Person',
         kind: 'interface',
@@ -801,7 +594,7 @@ describe('entities', () => {
 
       expect(o).to.eql({
         kind: 'interface',
-        params: ['par'],
+        params: ['params'],
         entries: {},
       });
     });
@@ -814,20 +607,18 @@ describe('entities', () => {
         properties: 'props',
         meta: { code: {} },
       };
-      collectParamsFromDoc.withArgs(doc).returns([]);
-      collectPropsFromDoc.withArgs(doc).returns({ prop: 'a' });
       const o = types.typedef(doc);
 
       expect(o).to.eql({
         kind: 'interface',
+        params: ['params'],
         entries: {
-          prop: 'a',
+          props: true,
         },
       });
     });
 
     it('interface from ObjectExpression should be treated as an object', () => {
-      collectParamsFromDoc.returns([]);
       const o = types.typedef({
         name: 'Person',
         kind: 'interface',
@@ -842,7 +633,6 @@ describe('entities', () => {
     });
 
     it('interface with an AST node should be treated as a function', () => {
-      collectParamsFromDoc.returns([]);
       const o = types.typedef({
         name: 'Person',
         kind: 'interface',
@@ -854,20 +644,18 @@ describe('entities', () => {
       expect(o).to.eql({
         kind: 'interface',
         entries: {},
-        params: [],
+        params: ['params'],
       });
     });
 
     it('class', () => {
-      collectParamsFromDoc.returns(['par']);
-      collectPropsFromDoc.returns('props');
       const o = types.typedef({
         name: 'Person',
         kind: 'class',
         classdesc: 'Class descr',
         description: 'Constructor descr',
         properties: 'props',
-        params: ['a'],
+        params: ['params'],
       });
 
       expect(o).to.eql({
@@ -875,14 +663,13 @@ describe('entities', () => {
         constructor: {
           kind: 'function',
           description: 'Constructor descr',
-          params: ['par'],
+          params: ['params'],
         },
-        entries: 'props',
+        entries: { props: true },
       });
     });
 
     it('class with hideconstructor', () => {
-      collectParamsFromDoc.returns([]);
       const o = types.typedef({
         name: 'Person',
         kind: 'class',
@@ -904,7 +691,6 @@ describe('entities', () => {
 
       expect(o).to.eql({
         kind: 'union',
-        // type: 'any',
         items: [{ type: 'str' }, { type: 'bool' }],
       });
     });
@@ -955,7 +741,6 @@ describe('entities', () => {
         cfg,
         { includeName: true }
       );
-
       expect(o).to.eql({
         name: 'Person',
         type: 'any',
@@ -970,12 +755,10 @@ describe('entities', () => {
     });
 
     it('class', () => {
-      collectParamsFromDoc.returns([]);
       const o = types.entity({
         kind: 'class',
         classdesc: 'class descr',
       });
-
       expect(o.description).to.equal('class descr');
     });
 
@@ -986,7 +769,6 @@ describe('entities', () => {
         },
         cfg
       );
-
       expect(o.defaultValue).to.equal('def');
     });
 
@@ -1001,7 +783,6 @@ describe('entities', () => {
         },
         type: { names: ['string'] },
       });
-
       expect(o).to.eql({
         kind: 'literal',
         value: 'foo',
@@ -1019,7 +800,6 @@ describe('entities', () => {
         },
         type: { names: ['numb'] },
       });
-
       expect(o).to.eql({
         type: 'number',
         defaultValue: -1,
@@ -1032,7 +812,6 @@ describe('entities', () => {
         type: { names: ['bool'] },
         defaultvalue: 'true',
       });
-
       expect(o).to.eql({
         type: 'boolean',
         defaultValue: true,
@@ -1045,7 +824,6 @@ describe('entities', () => {
         type: { names: ['bool'] },
         defaultvalue: true,
       });
-
       expect(o).to.eql({
         type: 'boolean',
         defaultValue: true,

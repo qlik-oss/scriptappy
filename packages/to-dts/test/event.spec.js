@@ -1,24 +1,29 @@
+const event = require('../lib/types/event');
+const params = require('../lib/types/params');
+
+jest.mock('../lib/types/params');
+
 describe('event', () => {
   let sandbox;
-  let event;
-  let params;
+  let paramsMock;
   let g;
-  before(() => {
+
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
-    params = sandbox.stub();
+    paramsMock = sandbox.stub();
+    params.mockImplementation(paramsMock);
     g = {
       getType: sandbox.stub(),
     };
-
-    [event] = aw.mock([['**/*/params.js', () => params]], ['../lib/types/event']);
   });
+
   afterEach(() => {
     sandbox.reset();
   });
 
   it('should call getType with event definition', () => {
     const def = { params: 'p', desc: 'd', name: 'closed' };
-    params.returns([]);
+    paramsMock.returns([]);
     g.getType.returns({ parameters: [] });
     event(def, 'parent', g);
     expect(g.getType).to.have.been.calledWithExactly(
@@ -34,7 +39,7 @@ describe('event', () => {
 
   it('should create with listener', () => {
     const def = { params: 'p' };
-    params.withArgs('p', false, g).returns([{ name: 'callbackparam' }]);
+    paramsMock.withArgs('p', false, g).returns([{ name: 'callbackparam' }]);
     g.getType = d => ({ parameters: [{ type: `"${d.name}"` }] });
 
     expect(event(def, 'parent', g)).to.eql({

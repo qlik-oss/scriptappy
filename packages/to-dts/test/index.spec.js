@@ -1,23 +1,27 @@
+const toDts = require('../lib');
+const type = require('../lib/type');
+const traverse = require('../lib/traverse');
+const top = require('../lib/top');
+
+jest.mock('../lib/type');
+jest.mock('../lib/traverse');
+jest.mock('../lib/top');
+
 describe('to-dts', () => {
   let sandbox;
-  let traverseFn;
-  let typeFn;
-  let top;
-  let toDts;
-  before(() => {
-    sandbox = sinon.createSandbox();
-    typeFn = sandbox.stub();
-    traverseFn = sandbox.stub();
-    top = sandbox.stub();
+  let typeMock;
+  let traverseMock;
+  let topMock;
 
-    [toDts] = aw.mock(
-      [
-        ['**/*/type.js', () => typeFn],
-        ['**/*/traverse.js', () => traverseFn],
-        ['**/*/top.js', () => top],
-      ],
-      ['../lib/']
-    );
+  beforeAll(() => {
+    sandbox = sinon.createSandbox();
+    typeMock = sandbox.stub();
+    traverseMock = sandbox.stub();
+    topMock = sandbox.stub();
+
+    type.mockImplementation(typeMock);
+    traverse.mockImplementation(traverseMock);
+    top.mockImplementation(topMock);
   });
   afterEach(() => {
     sandbox.reset();
@@ -25,14 +29,14 @@ describe('to-dts', () => {
 
   it('should initiate g', () => {
     const trav = () => [];
-    typeFn.withArgs({ specification: 'spec' }).returns('getT');
-    traverseFn.withArgs({ specification: 'spec', getType: 'getT' }).returns(trav);
+    typeMock.withArgs({ specification: 'spec' }).returns('getT');
+    traverseMock.withArgs({ specification: 'spec', getType: 'getT' }).returns(trav);
 
-    top.withArgs('spec').returns({ types: [] });
+    topMock.withArgs('spec').returns({ types: [] });
 
     toDts('spec');
 
-    expect(traverseFn.args[0]).to.eql([
+    expect(traverseMock.args[0]).to.eql([
       {
         getType: 'getT',
         specification: 'spec',
@@ -44,7 +48,7 @@ describe('to-dts', () => {
   it('should return entries', () => {
     const spec = { entries: 'entr' };
 
-    top.withArgs(spec).returns({
+    topMock.withArgs(spec).returns({
       types: [],
       entriesRoot: 'p',
       entriesFlags: 16,
@@ -53,7 +57,7 @@ describe('to-dts', () => {
     const trav = sandbox.stub();
     trav.withArgs('entr', { parent: 'p', path: '#/entries', flags: 16 }).returns(['iface']);
     trav.onCall(1).returns([]);
-    traverseFn.returns(trav);
+    traverseMock.returns(trav);
 
     const v = toDts(spec);
 
@@ -63,7 +67,7 @@ describe('to-dts', () => {
   it('should return definitions', () => {
     const spec = { definitions: 'defs' };
 
-    top.withArgs(spec).returns({
+    topMock.withArgs(spec).returns({
       types: [],
       definitionsRoot: 'defP',
       flags: 0,
@@ -72,7 +76,7 @@ describe('to-dts', () => {
     const trav = sandbox.stub();
     trav.onCall(0).returns([]);
     trav.withArgs('defs', { parent: 'defP', path: '#/definitions', flags: 0 }).returns(['idef']);
-    traverseFn.returns(trav);
+    traverseMock.returns(trav);
 
     const v = toDts(spec);
 
@@ -82,7 +86,7 @@ describe('to-dts', () => {
   it('should set namespace on g when definitions root != entriesRoot', () => {
     const spec = { definitions: 'defs' };
 
-    top.returns({
+    topMock.returns({
       types: [],
       definitionsRoot: { kind: 'namespace', name: 'dns', members: [] },
       flags: 0,
@@ -90,10 +94,10 @@ describe('to-dts', () => {
 
     const trav = sandbox.stub();
     trav.returns([]);
-    traverseFn.returns(trav);
+    traverseMock.returns(trav);
 
     toDts(spec);
 
-    expect(traverseFn.args[0][0].namespace).to.eql('dns');
+    expect(traverseMock.args[0][0].namespace).to.eql('dns');
   });
 });

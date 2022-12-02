@@ -2,7 +2,7 @@ const arr = require('../lib/types/array');
 
 describe('array', () => {
   let sandbox;
-  before(() => {
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
   });
   afterEach(() => {

@@ -1,18 +1,16 @@
+const dom = require('dts-dom');
+const ref = require('../lib/types/reference');
+
+jest.mock('dts-dom');
+
 describe('reference', () => {
   let sandbox;
-  let ref;
-  let dom;
-  before(() => {
-    sandbox = sinon.createSandbox();
-    dom = {
-      create: {
-        namedTypeReference: v => v,
-        const: (name, type) => `const ${name}: ${type}`,
-        typeof: v => `typeof ${v}`,
-      },
-    };
 
-    [ref] = aw.mock([[require.resolve('dts-dom'), () => dom]], ['../lib/types/reference']);
+  beforeAll(() => {
+    sandbox = sinon.createSandbox();
+    dom.create.namedTypeReference.mockImplementation(v => v);
+    dom.create.const.mockImplementation((name, type) => `const ${name}: ${type}`);
+    dom.create.typeof.mockImplementation(v => `typeof ${v}`);
   });
 
   afterEach(() => {

@@ -16,7 +16,7 @@ let currentMetaDoc;
 const { parse, getTypeFromCodeMeta, getTypedefFromComment, getReturnFromComment } = require('./type-parser');
 const collector = require('./collector');
 
-const { collectPropsFromDoc, collectParamsFromDoc } = collector({ entity });
+const collected = collector({ entity });
 
 function tags(doc, cfg) {
   const o = {};
@@ -132,7 +132,7 @@ function augmentObject(typedef, doc, cfg, opts) {
   if ((typedef.kind === 'object' || typedef.type === 'object') && doc.properties) {
     delete typedef.type;
     typedef.kind = 'object';
-    typedef.entries = collectPropsFromDoc(doc, cfg, opts);
+    typedef.entries = collected.collectPropsFromDoc(doc, cfg, opts);
   }
 }
 
@@ -217,7 +217,7 @@ function kindFunction(doc, cfg, opts) {
     params: [],
   };
 
-  f.params.push(...collectParamsFromDoc(doc, cfg, opts));
+  f.params.push(...collected.collectParamsFromDoc(doc, cfg, opts));
 
   if (doc.returns) {
     if (doc.returns.length > 1) {
@@ -288,7 +288,7 @@ function kindEnum() {
 
 function kindClass(doc, cfg, opts) {
   const constr = kindFunction(doc, cfg, opts);
-  const entries = doc.properties ? collectPropsFromDoc(doc, cfg, opts) : {};
+  const entries = doc.properties ? collected.collectPropsFromDoc(doc, cfg, opts) : {};
   return {
     kind: 'class',
     ...(doc.hideconstructor
@@ -328,7 +328,7 @@ function kindInterface(doc, cfg, opts) {
     delete obj.params;
   }
 
-  obj.entries = doc.properties ? collectPropsFromDoc(doc, cfg, opts) : {};
+  obj.entries = doc.properties ? collected.collectPropsFromDoc(doc, cfg, opts) : {};
   return obj;
 }
 

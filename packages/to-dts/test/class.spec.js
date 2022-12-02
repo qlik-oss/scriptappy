@@ -1,20 +1,25 @@
+const klass = require('../lib/types/class');
+const params = require('../lib/types/params');
+
+jest.mock('../lib/types/params');
+
 describe('class', () => {
   let sandbox;
-  let klass;
-  let params;
-  before(() => {
-    sandbox = sinon.createSandbox();
-    params = sandbox.stub();
+  let paramsMock;
 
-    [klass] = aw.mock([['**/*/params.js', () => params]], ['../lib/types/class']);
+  beforeAll(() => {
+    sandbox = sinon.createSandbox();
+    paramsMock = sandbox.stub();
+    params.mockImplementation(paramsMock);
   });
+
   afterEach(() => {
     sandbox.reset();
   });
 
   it('should create empty', () => {
     const def = { name: 'foo' };
-    params.returns([]);
+    paramsMock.returns([]);
     const v = klass(def);
     expect(v).to.eql({
       kind: 'class',
@@ -33,7 +38,7 @@ describe('class', () => {
         params: 'par',
       },
     };
-    params.withArgs('par', false, 'g').returns(['para']);
+    paramsMock.withArgs('par', false, 'g').returns(['para']);
     const v = klass(def, {}, 'g');
     expect(v).to.eql({
       kind: 'class',

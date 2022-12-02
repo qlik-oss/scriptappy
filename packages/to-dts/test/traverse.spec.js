@@ -13,7 +13,7 @@ describe('traverse', () => {
   let sandbox;
   let g;
   let traverse;
-  before(() => {
+  beforeAll(() => {
     sandbox = sinon.createSandbox();
     g = {
       getType: sandbox.stub(),

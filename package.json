@@ -16,22 +16,24 @@
   },
   "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "devDependencies": {
-    "@after-work.js/aw": "6.0.11",
     "@babel/core": "7.17.0",
     "babel-plugin-istanbul": "6.1.1",
+    "chai": "4.3.6",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.1.0",
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-mocha": "6.3.0",
     "eslint-plugin-prettier": "3.4.1",
+    "jest": "29.1.2",
     "lerna": "3.20.2",
-    "prettier": "1.19.1"
+    "prettier": "1.19.1",
+    "sinon": "14.0.1",
+    "sinon-chai": "3.7.0"
   },
   "scripts": {
     "clean": "lerna clean",
     "lint": "eslint packages",
-    "test": "aw --glob 'packages/*/test/**/*.spec.js' --src 'packages/*/lib/**/*.js'",
+    "test": "jest",
     "spec": "lerna run spec",
     "dts": "lerna run dts"
   },
