@@ -1,6 +1,6 @@
 {
   "name": "@scriptappy/from-jsdoc",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "",
   "main": "publish.js",
   "files": [
@@ -37,11 +37,11 @@
   },
   "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "dependencies": {
+    "@scriptappy/schema": "1.1.0",
     "chokidar": "3.5.2",
     "extend": "3.0.2",
     "globby": "11.0.0",
     "jsdoc": "3.6.7",
-    "@scriptappy/schema": "1.1.0",
     "scriptappy-tools": "0.5.0",
     "yargs": "15.1.0"
   }
