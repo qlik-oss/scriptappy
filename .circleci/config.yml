@@ -13,7 +13,7 @@ aliases:
 setup: &setup
   working_directory: ~/scriptappy
   docker:
-    - image: circleci/node:14.14.0
+    - image: circleci/node:16.10.0
 
 jobs:
   build:
