@@ -129,10 +129,12 @@ function simpleType(type, cfg) {
 }
 
 function augmentObject(typedef, doc, cfg, opts) {
-  if ((typedef.kind === 'object' || typedef.type === 'object') && doc.properties) {
+  if (typedef.kind === 'object' || typedef.type === 'object') {
     delete typedef.type;
     typedef.kind = 'object';
-    typedef.entries = collected.collectPropsFromDoc(doc, cfg, opts);
+    if (doc.properties) {
+      typedef.entries = collected.collectPropsFromDoc(doc, cfg, opts);
+    }
   }
 }
 
