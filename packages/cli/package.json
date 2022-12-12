@@ -22,6 +22,6 @@
   "dependencies": {
     "import-cwd": "3.0.0",
     "yargs": "11.0.0",
-    "@scriptappy/from-jsdoc": "0.8.0"
+    "@scriptappy/from-jsdoc": "0.10.0"
   }
 }
