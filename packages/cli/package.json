@@ -1,6 +1,6 @@
 {
   "name": "@scriptappy/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Scriptappy CLI",
   "keywords": [
     "jsdoc",
@@ -20,8 +20,8 @@
   ],
   "scripts": {},
   "dependencies": {
+    "@scriptappy/from-jsdoc": "0.10.0",
     "import-cwd": "3.0.0",
-    "yargs": "11.0.0",
-    "@scriptappy/from-jsdoc": "0.10.0"
+    "yargs": "11.0.0"
   }
 }
