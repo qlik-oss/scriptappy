@@ -42,6 +42,10 @@ function checkTypes(obj, priv, cfg, scopeTypes = []) {
         cfg.logRule(null, 'no-unknown-types', `Type unknown: '${prop.type}'`);
       }
     }
+    if (prop.type === 'object' && prop.entries) {
+      delete prop.type;
+      prop.kind = 'object';
+    }
 
     checkTypes(prop, priv, cfg, st);
   });
