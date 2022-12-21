@@ -2,9 +2,9 @@
 
 Generate a [Scriptappy](https://github.com/qlik-oss/scriptappy) definition from your JSDoc.
 
-> Instructions on how to use `jsdoc` can be found on the [project's homepage](http://usejsdoc.org/).
+> Instructions on how to use `jsdoc` can be found on the [project's homepage](https://jsdoc.app/).
 
-See [nodejs example](./examples/nodejs)
+See [nodejs example](../../examples/nodejs)
 
 ## Install
 
