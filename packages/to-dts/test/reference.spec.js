@@ -8,9 +8,9 @@ describe('reference', () => {
 
   beforeAll(() => {
     sandbox = sinon.createSandbox();
-    dom.create.namedTypeReference.mockImplementation(v => v);
+    dom.create.namedTypeReference.mockImplementation((v) => v);
     dom.create.const.mockImplementation((name, type) => `const ${name}: ${type}`);
-    dom.create.typeof.mockImplementation(v => `typeof ${v}`);
+    dom.create.typeof.mockImplementation((v) => `typeof ${v}`);
   });
 
   afterEach(() => {

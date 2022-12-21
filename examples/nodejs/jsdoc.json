@@ -1,649 +1,557 @@
 [
-    {
-        "comment": "/**\n * @module net\n * @stability stable\n */",
-        "meta": {
-            "filename": "net.js",
-            "lineno": 1,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {}
-        },
-        "kind": "module",
-        "name": "net",
-        "tags": [
-            {
-                "originalTitle": "stability",
-                "title": "stability",
-                "text": "stable",
-                "value": "stable"
-            }
-        ],
-        "longname": "module:net"
+  {
+    "comment": "/**\n * @module net\n * @stability stable\n */",
+    "meta": {
+      "filename": "net.js",
+      "lineno": 1,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {}
     },
-    {
-        "comment": "/**\n * This class is used to create a TCP or ICP server\n */",
-        "meta": {
-            "range": [
-                105,
-                653
-            ],
-            "filename": "net.js",
-            "lineno": 9,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000002",
-                "name": "exports.Server",
-                "type": "ClassDeclaration"
-            }
-        },
-        "classdesc": "This class is used to create a TCP or ICP server",
+    "kind": "module",
+    "name": "net",
+    "tags": [
+      {
+        "originalTitle": "stability",
+        "title": "stability",
+        "text": "stable",
+        "value": "stable"
+      }
+    ],
+    "longname": "module:net"
+  },
+  {
+    "comment": "/**\n * This class is used to create a TCP or ICP server\n */",
+    "meta": {
+      "range": [105, 653],
+      "filename": "net.js",
+      "lineno": 9,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000002",
+        "name": "exports.Server",
+        "type": "ClassDeclaration"
+      }
+    },
+    "classdesc": "This class is used to create a TCP or ICP server",
+    "name": "Server",
+    "longname": "module:net.Server",
+    "kind": "class",
+    "memberof": "module:net",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [112, 653],
+      "filename": "net.js",
+      "lineno": 9,
+      "columnno": 7,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000003",
         "name": "Server",
-        "longname": "module:net.Server",
-        "kind": "class",
-        "memberof": "module:net",
-        "scope": "static"
+        "type": "ClassDeclaration",
+        "paramnames": []
+      }
     },
-    {
-        "comment": "",
-        "meta": {
-            "range": [
-                112,
-                653
-            ],
-            "filename": "net.js",
-            "lineno": 9,
-            "columnno": 7,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000003",
-                "name": "Server",
-                "type": "ClassDeclaration",
-                "paramnames": []
-            }
-        },
-        "undocumented": true,
-        "name": "Server",
-        "longname": "module:net.Server",
-        "kind": "class",
-        "scope": "static",
-        "memberof": "module:net"
+    "undocumented": true,
+    "name": "Server",
+    "longname": "module:net.Server",
+    "kind": "class",
+    "scope": "static",
+    "memberof": "module:net"
+  },
+  {
+    "comment": "/**\n   * Returns the bound address.\n   * @returns {module:net.Server~address}\n   */",
+    "meta": {
+      "range": [215, 227],
+      "filename": "net.js",
+      "lineno": 14,
+      "columnno": 2,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000006",
+        "name": "Server#address",
+        "type": "MethodDefinition",
+        "paramnames": []
+      },
+      "vars": {
+        "": null
+      }
     },
-    {
-        "comment": "/**\n   * Returns the bound address.\n   * @returns {module:net.Server~address}\n   */",
-        "meta": {
-            "range": [
-                215,
-                227
-            ],
-            "filename": "net.js",
-            "lineno": 14,
-            "columnno": 2,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000006",
-                "name": "Server#address",
-                "type": "MethodDefinition",
-                "paramnames": []
-            },
-            "vars": {
-                "": null
-            }
-        },
-        "description": "Returns the bound address.",
-        "returns": [
-            {
-                "type": {
-                    "names": [
-                        "module:net.Server~address"
-                    ]
-                }
-            }
-        ],
-        "name": "address",
-        "longname": "module:net.Server#address",
-        "kind": "function",
-        "memberof": "module:net.Server",
-        "scope": "instance",
-        "params": []
-    },
-    {
-        "comment": "/**\n   * Stops the server from accepting new connections and keeps existing connections\n   */",
-        "meta": {
-            "range": [
-                327,
-                337
-            ],
-            "filename": "net.js",
-            "lineno": 19,
-            "columnno": 2,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000010",
-                "name": "Server#close",
-                "type": "MethodDefinition",
-                "paramnames": []
-            },
-            "vars": {
-                "": null
-            }
-        },
-        "description": "Stops the server from accepting new connections and keeps existing connections",
-        "name": "close",
-        "longname": "module:net.Server#close",
-        "kind": "function",
-        "memberof": "module:net.Server",
-        "scope": "instance",
-        "params": []
-    },
-    {
-        "comment": "/**\n   * The number of concurrent connections on the server.\n   * @since 0.2.0\n   * @deprecated since 0.9.7. Use {@link module:net.Server#getConnection()} instead\n   */",
-        "meta": {
-            "range": [
-                512,
-                532
-            ],
-            "filename": "net.js",
-            "lineno": 26,
-            "columnno": 2,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000014",
-                "name": "Server#connections",
-                "type": "MethodDefinition",
-                "paramnames": []
-            },
-            "vars": {
-                "": null
-            }
-        },
-        "description": "The number of concurrent connections on the server.",
-        "since": "0.2.0",
-        "deprecated": "since 0.9.7. Use {@link module:net.Server#getConnection()} instead",
-        "name": "connections",
-        "longname": "module:net.Server#connections",
-        "kind": "member",
-        "memberof": "module:net.Server",
-        "scope": "instance",
-        "params": []
-    },
-    {
-        "comment": "/**\n   * @param {function} callback\n   * @returns {module:net.Server}\n   * @since 0.9.7\n   */",
-        "meta": {
-            "range": [
-                632,
-                651
-            ],
-            "filename": "net.js",
-            "lineno": 33,
-            "columnno": 2,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000018",
-                "name": "Server#getConnections",
-                "type": "MethodDefinition",
-                "paramnames": []
-            },
-            "vars": {
-                "": null
-            }
-        },
-        "params": [
-            {
-                "type": {
-                    "names": [
-                        "function"
-                    ]
-                },
-                "name": "callback"
-            }
-        ],
-        "returns": [
-            {
-                "type": {
-                    "names": [
-                        "module:net.Server"
-                    ]
-                }
-            }
-        ],
-        "since": "0.9.7",
-        "name": "getConnections",
-        "longname": "module:net.Server#getConnections",
-        "kind": "function",
-        "memberof": "module:net.Server",
-        "scope": "instance"
-    },
-    {
-        "comment": "/**\n * @typedef {object} module:net.Server~address\n * @property {number} port\n * @property {string} family\n * @property {string} address\n */",
-        "meta": {
-            "filename": "net.js",
-            "lineno": 36,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {}
-        },
-        "kind": "typedef",
-        "name": "address",
+    "description": "Returns the bound address.",
+    "returns": [
+      {
         "type": {
-            "names": [
-                "object"
-            ]
-        },
-        "properties": [
-            {
-                "type": {
-                    "names": [
-                        "number"
-                    ]
-                },
-                "name": "port"
-            },
-            {
-                "type": {
-                    "names": [
-                        "string"
-                    ]
-                },
-                "name": "family"
-            },
-            {
-                "type": {
-                    "names": [
-                        "string"
-                    ]
-                },
-                "name": "address"
-            }
-        ],
-        "memberof": "module:net.Server",
-        "longname": "module:net.Server~address",
-        "scope": "inner"
+          "names": ["module:net.Server~address"]
+        }
+      }
+    ],
+    "name": "address",
+    "longname": "module:net.Server#address",
+    "kind": "function",
+    "memberof": "module:net.Server",
+    "scope": "instance",
+    "params": []
+  },
+  {
+    "comment": "/**\n   * Stops the server from accepting new connections and keeps existing connections\n   */",
+    "meta": {
+      "range": [327, 337],
+      "filename": "net.js",
+      "lineno": 19,
+      "columnno": 2,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000010",
+        "name": "Server#close",
+        "type": "MethodDefinition",
+        "paramnames": []
+      },
+      "vars": {
+        "": null
+      }
     },
-    {
-        "comment": "/**\n * Emitted when the server closes\n * @event module:net.Server.close\n */",
-        "meta": {
-            "filename": "net.js",
-            "lineno": 43,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {}
-        },
-        "description": "Emitted when the server closes",
-        "kind": "event",
-        "name": "close",
-        "memberof": "module:net.Server",
-        "longname": "module:net.Server.event:close",
-        "scope": "static"
+    "description": "Stops the server from accepting new connections and keeps existing connections",
+    "name": "close",
+    "longname": "module:net.Server#close",
+    "kind": "function",
+    "memberof": "module:net.Server",
+    "scope": "instance",
+    "params": []
+  },
+  {
+    "comment": "/**\n   * The number of concurrent connections on the server.\n   * @since 0.2.0\n   * @deprecated since 0.9.7. Use {@link module:net.Server#getConnection()} instead\n   */",
+    "meta": {
+      "range": [512, 532],
+      "filename": "net.js",
+      "lineno": 26,
+      "columnno": 2,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000014",
+        "name": "Server#connections",
+        "type": "MethodDefinition",
+        "paramnames": []
+      },
+      "vars": {
+        "": null
+      }
     },
-    {
-        "comment": "/**\n * Emitted when a new connection is made.\n * @event module:net.Server.connect\n * @param {module:net.Socket} socket - The connection object\n */",
-        "meta": {
-            "filename": "net.js",
-            "lineno": 48,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {}
-        },
-        "description": "Emitted when a new connection is made.",
-        "kind": "event",
-        "name": "connect",
-        "params": [
-            {
-                "type": {
-                    "names": [
-                        "module:net.Socket"
-                    ]
-                },
-                "description": "The connection object",
-                "name": "socket"
-            }
-        ],
-        "memberof": "module:net.Server",
-        "longname": "module:net.Server.event:connect",
-        "scope": "static"
+    "description": "The number of concurrent connections on the server.",
+    "since": "0.2.0",
+    "deprecated": "since 0.9.7. Use {@link module:net.Server#getConnection()} instead",
+    "name": "connections",
+    "longname": "module:net.Server#connections",
+    "kind": "member",
+    "memberof": "module:net.Server",
+    "scope": "instance",
+    "params": []
+  },
+  {
+    "comment": "/**\n   * @param {function} callback\n   * @returns {module:net.Server}\n   * @since 0.9.7\n   */",
+    "meta": {
+      "range": [632, 651],
+      "filename": "net.js",
+      "lineno": 33,
+      "columnno": 2,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000018",
+        "name": "Server#getConnections",
+        "type": "MethodDefinition",
+        "paramnames": []
+      },
+      "vars": {
+        "": null
+      }
     },
-    {
-        "comment": "/**\n * Creates a new TCP or ICP server.\n * @param {object} [options]\n * @param {boolean} [options.allowHalfOpen=false] - Indicates whether half-opened TCP connections are allowed.\n * @param {boolean} [options.pauseOnConnect=false] - Indicates whether the socket should be paused on incoming connections.\n * @param {function} [connectionsListener] - Automatically sets a listener for the `connection` event.\n * @returns {module:net.Server}\n */",
-        "meta": {
-            "range": [
-                1465,
-                1525
-            ],
-            "filename": "net.js",
-            "lineno": 62,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000022",
-                "name": "exports.createServer",
-                "type": "FunctionDeclaration",
-                "paramnames": [
-                    "options",
-                    "connectionListener"
-                ]
-            }
-        },
-        "description": "Creates a new TCP or ICP server.",
-        "params": [
-            {
-                "type": {
-                    "names": [
-                        "object"
-                    ]
-                },
-                "optional": true,
-                "name": "options"
-            },
-            {
-                "type": {
-                    "names": [
-                        "boolean"
-                    ]
-                },
-                "optional": true,
-                "defaultvalue": false,
-                "description": "Indicates whether half-opened TCP connections are allowed.",
-                "name": "options.allowHalfOpen"
-            },
-            {
-                "type": {
-                    "names": [
-                        "boolean"
-                    ]
-                },
-                "optional": true,
-                "defaultvalue": false,
-                "description": "Indicates whether the socket should be paused on incoming connections.",
-                "name": "options.pauseOnConnect"
-            },
-            {
-                "type": {
-                    "names": [
-                        "function"
-                    ]
-                },
-                "optional": true,
-                "description": "Automatically sets a listener for the `connection` event.",
-                "name": "connectionsListener"
-            }
-        ],
-        "returns": [
-            {
-                "type": {
-                    "names": [
-                        "module:net.Server"
-                    ]
-                }
-            }
-        ],
-        "name": "createServer",
-        "longname": "module:net.createServer",
-        "kind": "function",
-        "memberof": "module:net",
-        "scope": "static"
-    },
-    {
-        "comment": "",
-        "meta": {
-            "range": [
-                1472,
-                1525
-            ],
-            "filename": "net.js",
-            "lineno": 62,
-            "columnno": 7,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000023",
-                "name": "createServer",
-                "type": "FunctionDeclaration",
-                "paramnames": [
-                    "options",
-                    "connectionListener"
-                ]
-            }
-        },
-        "undocumented": true,
-        "name": "createServer",
-        "longname": "module:net.createServer",
-        "kind": "function",
-        "scope": "static",
-        "memberof": "module:net",
-        "params": []
-    },
-    {
-        "comment": "/**\n * @module path\n * @stability stable\n */",
-        "meta": {
-            "filename": "path.js",
-            "lineno": 1,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {}
-        },
-        "kind": "module",
-        "name": "path",
-        "tags": [
-            {
-                "originalTitle": "stability",
-                "title": "stability",
-                "text": "stable",
-                "value": "stable"
-            }
-        ],
-        "longname": "module:path"
-    },
-    {
-        "comment": "/**\n * Returns the directory name of a `path`\n * @param {string} path\n * @returns {string}\n */",
-        "meta": {
-            "range": [
-                141,
-                173
-            ],
-            "filename": "path.js",
-            "lineno": 11,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000030",
-                "name": "exports.dirname",
-                "type": "FunctionDeclaration",
-                "paramnames": [
-                    "path"
-                ]
-            }
-        },
-        "description": "Returns the directory name of a `path`",
-        "params": [
-            {
-                "type": {
-                    "names": [
-                        "string"
-                    ]
-                },
-                "name": "path"
-            }
-        ],
-        "returns": [
-            {
-                "type": {
-                    "names": [
-                        "string"
-                    ]
-                }
-            }
-        ],
-        "name": "dirname",
-        "longname": "module:path.dirname",
-        "kind": "function",
-        "memberof": "module:path",
-        "scope": "static"
-    },
-    {
-        "comment": "",
-        "meta": {
-            "range": [
-                148,
-                173
-            ],
-            "filename": "path.js",
-            "lineno": 11,
-            "columnno": 7,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000031",
-                "name": "dirname",
-                "type": "FunctionDeclaration",
-                "paramnames": [
-                    "path"
-                ]
-            }
-        },
-        "undocumented": true,
-        "name": "dirname",
-        "longname": "module:path.dirname",
-        "kind": "function",
-        "scope": "static",
-        "memberof": "module:path",
-        "params": []
-    },
-    {
-        "comment": "/**\n * Returns the extension of the `path`\n * @param {string} path\n * @returns {string}\n */",
-        "meta": {
-            "range": [
-                267,
-                299
-            ],
-            "filename": "path.js",
-            "lineno": 18,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000035",
-                "name": "exports.extname",
-                "type": "FunctionDeclaration",
-                "paramnames": [
-                    "path"
-                ]
-            }
-        },
-        "description": "Returns the extension of the `path`",
-        "params": [
-            {
-                "type": {
-                    "names": [
-                        "string"
-                    ]
-                },
-                "name": "path"
-            }
-        ],
-        "returns": [
-            {
-                "type": {
-                    "names": [
-                        "string"
-                    ]
-                }
-            }
-        ],
-        "name": "extname",
-        "longname": "module:path.extname",
-        "kind": "function",
-        "memberof": "module:path",
-        "scope": "static"
-    },
-    {
-        "comment": "",
-        "meta": {
-            "range": [
-                274,
-                299
-            ],
-            "filename": "path.js",
-            "lineno": 18,
-            "columnno": 7,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000036",
-                "name": "extname",
-                "type": "FunctionDeclaration",
-                "paramnames": [
-                    "path"
-                ]
-            }
-        },
-        "undocumented": true,
-        "name": "extname",
-        "longname": "module:path.extname",
-        "kind": "function",
-        "scope": "static",
-        "memberof": "module:path",
-        "params": []
-    },
-    {
-        "comment": "/**\n * Provides acces to Window-specific implementations of the `path` methods\n * @type {object}\n */",
-        "meta": {
-            "range": [
-                402,
-                426
-            ],
-            "filename": "path.js",
-            "lineno": 24,
-            "columnno": 0,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000040",
-                "name": "exports.win32",
-                "type": "VariableDeclaration"
-            }
-        },
-        "description": "Provides acces to Window-specific implementations of the `path` methods",
+    "params": [
+      {
         "type": {
-            "names": [
-                "object"
-            ]
+          "names": ["function"]
         },
-        "name": "win32",
-        "longname": "module:path.win32",
-        "kind": "constant",
-        "memberof": "module:path",
-        "scope": "static"
+        "name": "callback"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": ["module:net.Server"]
+        }
+      }
+    ],
+    "since": "0.9.7",
+    "name": "getConnections",
+    "longname": "module:net.Server#getConnections",
+    "kind": "function",
+    "memberof": "module:net.Server",
+    "scope": "instance"
+  },
+  {
+    "comment": "/**\n * @typedef {object} module:net.Server~address\n * @property {number} port\n * @property {string} family\n * @property {string} address\n */",
+    "meta": {
+      "filename": "net.js",
+      "lineno": 36,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {}
     },
-    {
-        "comment": "",
-        "meta": {
-            "range": [
-                415,
-                425
-            ],
-            "filename": "path.js",
-            "lineno": 24,
-            "columnno": 13,
-            "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
-            "code": {
-                "id": "astnode100000042",
-                "name": "win32",
-                "type": "ObjectExpression",
-                "value": "{}"
-            }
+    "kind": "typedef",
+    "name": "address",
+    "type": {
+      "names": ["object"]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": ["number"]
         },
-        "undocumented": true,
-        "name": "win32",
-        "longname": "module:path~win32",
-        "kind": "constant",
-        "scope": "inner",
-        "memberof": "module:path",
-        "params": []
+        "name": "port"
+      },
+      {
+        "type": {
+          "names": ["string"]
+        },
+        "name": "family"
+      },
+      {
+        "type": {
+          "names": ["string"]
+        },
+        "name": "address"
+      }
+    ],
+    "memberof": "module:net.Server",
+    "longname": "module:net.Server~address",
+    "scope": "inner"
+  },
+  {
+    "comment": "/**\n * Emitted when the server closes\n * @event module:net.Server.close\n */",
+    "meta": {
+      "filename": "net.js",
+      "lineno": 43,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {}
     },
-    {
-        "kind": "package",
-        "name": "sy-example-nodejs",
-        "longname": "package:sy-example-nodejs",
-        "files": [
-            "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src/net.js",
-            "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src/path.js"
-        ],
-        "version": "8.0.0"
-    }
+    "description": "Emitted when the server closes",
+    "kind": "event",
+    "name": "close",
+    "memberof": "module:net.Server",
+    "longname": "module:net.Server.event:close",
+    "scope": "static"
+  },
+  {
+    "comment": "/**\n * Emitted when a new connection is made.\n * @event module:net.Server.connect\n * @param {module:net.Socket} socket - The connection object\n */",
+    "meta": {
+      "filename": "net.js",
+      "lineno": 48,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {}
+    },
+    "description": "Emitted when a new connection is made.",
+    "kind": "event",
+    "name": "connect",
+    "params": [
+      {
+        "type": {
+          "names": ["module:net.Socket"]
+        },
+        "description": "The connection object",
+        "name": "socket"
+      }
+    ],
+    "memberof": "module:net.Server",
+    "longname": "module:net.Server.event:connect",
+    "scope": "static"
+  },
+  {
+    "comment": "/**\n * Creates a new TCP or ICP server.\n * @param {object} [options]\n * @param {boolean} [options.allowHalfOpen=false] - Indicates whether half-opened TCP connections are allowed.\n * @param {boolean} [options.pauseOnConnect=false] - Indicates whether the socket should be paused on incoming connections.\n * @param {function} [connectionsListener] - Automatically sets a listener for the `connection` event.\n * @returns {module:net.Server}\n */",
+    "meta": {
+      "range": [1465, 1525],
+      "filename": "net.js",
+      "lineno": 62,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000022",
+        "name": "exports.createServer",
+        "type": "FunctionDeclaration",
+        "paramnames": ["options", "connectionListener"]
+      }
+    },
+    "description": "Creates a new TCP or ICP server.",
+    "params": [
+      {
+        "type": {
+          "names": ["object"]
+        },
+        "optional": true,
+        "name": "options"
+      },
+      {
+        "type": {
+          "names": ["boolean"]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "Indicates whether half-opened TCP connections are allowed.",
+        "name": "options.allowHalfOpen"
+      },
+      {
+        "type": {
+          "names": ["boolean"]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "Indicates whether the socket should be paused on incoming connections.",
+        "name": "options.pauseOnConnect"
+      },
+      {
+        "type": {
+          "names": ["function"]
+        },
+        "optional": true,
+        "description": "Automatically sets a listener for the `connection` event.",
+        "name": "connectionsListener"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": ["module:net.Server"]
+        }
+      }
+    ],
+    "name": "createServer",
+    "longname": "module:net.createServer",
+    "kind": "function",
+    "memberof": "module:net",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [1472, 1525],
+      "filename": "net.js",
+      "lineno": 62,
+      "columnno": 7,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000023",
+        "name": "createServer",
+        "type": "FunctionDeclaration",
+        "paramnames": ["options", "connectionListener"]
+      }
+    },
+    "undocumented": true,
+    "name": "createServer",
+    "longname": "module:net.createServer",
+    "kind": "function",
+    "scope": "static",
+    "memberof": "module:net",
+    "params": []
+  },
+  {
+    "comment": "/**\n * @module path\n * @stability stable\n */",
+    "meta": {
+      "filename": "path.js",
+      "lineno": 1,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {}
+    },
+    "kind": "module",
+    "name": "path",
+    "tags": [
+      {
+        "originalTitle": "stability",
+        "title": "stability",
+        "text": "stable",
+        "value": "stable"
+      }
+    ],
+    "longname": "module:path"
+  },
+  {
+    "comment": "/**\n * Returns the directory name of a `path`\n * @param {string} path\n * @returns {string}\n */",
+    "meta": {
+      "range": [141, 173],
+      "filename": "path.js",
+      "lineno": 11,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000030",
+        "name": "exports.dirname",
+        "type": "FunctionDeclaration",
+        "paramnames": ["path"]
+      }
+    },
+    "description": "Returns the directory name of a `path`",
+    "params": [
+      {
+        "type": {
+          "names": ["string"]
+        },
+        "name": "path"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": ["string"]
+        }
+      }
+    ],
+    "name": "dirname",
+    "longname": "module:path.dirname",
+    "kind": "function",
+    "memberof": "module:path",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [148, 173],
+      "filename": "path.js",
+      "lineno": 11,
+      "columnno": 7,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000031",
+        "name": "dirname",
+        "type": "FunctionDeclaration",
+        "paramnames": ["path"]
+      }
+    },
+    "undocumented": true,
+    "name": "dirname",
+    "longname": "module:path.dirname",
+    "kind": "function",
+    "scope": "static",
+    "memberof": "module:path",
+    "params": []
+  },
+  {
+    "comment": "/**\n * Returns the extension of the `path`\n * @param {string} path\n * @returns {string}\n */",
+    "meta": {
+      "range": [267, 299],
+      "filename": "path.js",
+      "lineno": 18,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000035",
+        "name": "exports.extname",
+        "type": "FunctionDeclaration",
+        "paramnames": ["path"]
+      }
+    },
+    "description": "Returns the extension of the `path`",
+    "params": [
+      {
+        "type": {
+          "names": ["string"]
+        },
+        "name": "path"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": ["string"]
+        }
+      }
+    ],
+    "name": "extname",
+    "longname": "module:path.extname",
+    "kind": "function",
+    "memberof": "module:path",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [274, 299],
+      "filename": "path.js",
+      "lineno": 18,
+      "columnno": 7,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000036",
+        "name": "extname",
+        "type": "FunctionDeclaration",
+        "paramnames": ["path"]
+      }
+    },
+    "undocumented": true,
+    "name": "extname",
+    "longname": "module:path.extname",
+    "kind": "function",
+    "scope": "static",
+    "memberof": "module:path",
+    "params": []
+  },
+  {
+    "comment": "/**\n * Provides acces to Window-specific implementations of the `path` methods\n * @type {object}\n */",
+    "meta": {
+      "range": [402, 426],
+      "filename": "path.js",
+      "lineno": 24,
+      "columnno": 0,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000040",
+        "name": "exports.win32",
+        "type": "VariableDeclaration"
+      }
+    },
+    "description": "Provides acces to Window-specific implementations of the `path` methods",
+    "type": {
+      "names": ["object"]
+    },
+    "name": "win32",
+    "longname": "module:path.win32",
+    "kind": "constant",
+    "memberof": "module:path",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [415, 425],
+      "filename": "path.js",
+      "lineno": 24,
+      "columnno": 13,
+      "path": "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src",
+      "code": {
+        "id": "astnode100000042",
+        "name": "win32",
+        "type": "ObjectExpression",
+        "value": "{}"
+      }
+    },
+    "undocumented": true,
+    "name": "win32",
+    "longname": "module:path~win32",
+    "kind": "constant",
+    "scope": "inner",
+    "memberof": "module:path",
+    "params": []
+  },
+  {
+    "kind": "package",
+    "name": "sy-example-nodejs",
+    "longname": "package:sy-example-nodejs",
+    "files": [
+      "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src/net.js",
+      "/Users/mmdk/dev/oss/scriptappy/examples/nodejs/src/path.js"
+    ],
+    "version": "8.0.0"
+  }
 ]

@@ -40,7 +40,7 @@ describe('event', () => {
   it('should create with listener', () => {
     const def = { params: 'p' };
     paramsMock.withArgs('p', false, g).returns([{ name: 'callbackparam' }]);
-    g.getType = d => ({ parameters: [{ type: `"${d.name}"` }] });
+    g.getType = (d) => ({ parameters: [{ type: `"${d.name}"` }] });
 
     expect(event(def, 'parent', g)).to.eql({
       parameters: [

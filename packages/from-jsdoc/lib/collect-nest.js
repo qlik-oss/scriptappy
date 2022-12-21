@@ -6,7 +6,7 @@ function collectAndNest({ list, asArray }, cfg, opts, entity) {
       // sort the list by "parents" first
       return a && b ? a.name.split('.').length - b.name.split('.').length : 0;
     })
-    .forEach(par => {
+    .forEach((par) => {
       const s = par.name.split('.');
       let parent = paramMap;
       let i = 0;

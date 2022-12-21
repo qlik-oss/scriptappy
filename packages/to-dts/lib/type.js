@@ -107,7 +107,7 @@ function typeFn(g) {
     const t = getBase(def, tsParent);
 
     if (def.generics && t.typeArguments) {
-      def.generics.forEach(gen => {
+      def.generics.forEach((gen) => {
         t.typeArguments.push(g.getType(gen));
       });
     }

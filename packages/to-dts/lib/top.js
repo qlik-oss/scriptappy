@@ -14,7 +14,7 @@ module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer, 
   }
 
   if (Array.isArray(dependencies.references)) {
-    dependencies.references.forEach(reference => {
+    dependencies.references.forEach((reference) => {
       types.push(`/// <reference types="${reference}" />`);
     });
   }
@@ -38,7 +38,7 @@ module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer, 
       .split('/')
       .reverse()[0]
       .split('.')[0]
-      .replace(/-([A-z0-9])/g, v => `${v[1].toUpperCase()}`);
+      .replace(/-([A-z0-9])/g, (v) => `${v[1].toUpperCase()}`);
     libraryName = n;
   }
 

@@ -220,7 +220,7 @@ describe('type', () => {
 
   it('should create known ts type', () => {
     ['string', 'number', 'boolean', 'any', 'void', 'object', 'null', 'undefined', 'true', 'false', 'this'].forEach(
-      prim => {
+      (prim) => {
         const def = { type: prim };
         expect(getType(def, 'p')).to.eql(prim);
       }
@@ -229,7 +229,7 @@ describe('type', () => {
 
   it('should create value (`const name: type`) for known ts type in api entries', () => {
     ['string', 'number', 'boolean', 'any', 'void', 'object', 'null', 'undefined', 'true', 'false', 'this'].forEach(
-      prim => {
+      (prim) => {
         const def = { type: prim, name: 'version', path: '#/entries/embed' };
         expect(getType(def)).to.eql({
           kind: 'const',

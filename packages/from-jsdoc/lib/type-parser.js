@@ -17,7 +17,7 @@ function modifiers(cath) {
 
 function mapFields(arr) {
   const obj = {};
-  arr.forEach(t => {
+  arr.forEach((t) => {
     const mods = modifiers(t.key);
     obj[t.key.name] = t.value ? { ...mods, ...deconstruct(t.value) } : { ...mods, type: 'any' };
   });
@@ -44,23 +44,23 @@ function deconstruct(cath) {
     return { ...mods, ...fn(cath) };
   }
   if (cath.type === catharsis.Types.TypeUnion) {
-    return { ...mods, kind: 'union', items: cath.elements.map(t => deconstruct(t)) };
+    return { ...mods, kind: 'union', items: cath.elements.map((t) => deconstruct(t)) };
   }
   if (cath.type === catharsis.Types.RecordType) {
     return { ...mods, kind: 'object', entries: mapFields(cath.fields) };
   }
   if (cath.type === catharsis.Types.TypeApplication) {
     if (cath.expression.name === 'Array') {
-      const items = cath.applications.map(t => deconstruct(t));
+      const items = cath.applications.map((t) => deconstruct(t));
       // TODO - find a better way to differentiate between same item in array and tuples
       return { ...mods, kind: 'array', items: items.length === 1 ? { ...items[0] } : items };
     }
     if (cath.expression.name === 'Object') {
-      return { ...mods, kind: 'object', entries: {}, generics: cath.applications.map(t => deconstruct(t)) };
+      return { ...mods, kind: 'object', entries: {}, generics: cath.applications.map((t) => deconstruct(t)) };
     }
     return {
       type: cath.expression.name,
-      generics: cath.applications.map(t => deconstruct(t)),
+      generics: cath.applications.map((t) => deconstruct(t)),
     };
   }
   if (cath.type === catharsis.Types.NameExpression) {
@@ -79,7 +79,7 @@ function deconstruct(cath) {
 function fn(type) {
   const r = {
     kind: 'function',
-    params: type.params.map(p => deconstruct(p)),
+    params: type.params.map((p) => deconstruct(p)),
   };
   if (type.result) {
     r.returns = deconstruct(type.result);
@@ -88,7 +88,7 @@ function fn(type) {
   return r;
 }
 
-const getTypeExpression = text => {
+const getTypeExpression = (text) => {
   const start = text.indexOf('{');
   if (start < 0) {
     return '';
@@ -126,12 +126,12 @@ const getPropertyFromComment = (name, c) => {
   return extractTypeFromRx(rx, c);
 };
 
-const getReturnFromComment = c => {
+const getReturnFromComment = (c) => {
   const rx = new RegExp(`^\\s*\\*\\s*@returns?\\s+(.*)\\s*`);
   return extractTypeFromRx(rx, c);
 };
 
-const getTypedefFromComment = c => {
+const getTypedefFromComment = (c) => {
   const rx = new RegExp(`^\\s*\\*\\s*@typedef\\s+(.*)\\s*`);
   return extractTypeFromRx(rx, c);
 };
@@ -155,7 +155,7 @@ function getTypeFromCodeMeta(doc /* opts */) {
   return o;
 }
 
-const parse = exp => {
+const parse = (exp) => {
   if (exp === 'function') {
     return {
       type: 'function',

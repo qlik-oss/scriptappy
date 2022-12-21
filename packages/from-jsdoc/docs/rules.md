@@ -156,13 +156,11 @@ Disallow untreated kinds.
 Examples of **incorrect** jsdoc for this rule:
 
 ```js
-
 ```
 
 Examples of **correct** jsdoc for this rule:
 
 ```js
-
 ```
 
 ### `'no-default-exports-wo-name'`
@@ -175,7 +173,7 @@ Examples of **incorrect** jsdoc for this rule:
 /**
  * Fun
  */
-export default function(){}
+export default function () {}
 ```
 
 Examples of **correct** jsdoc for this rule:
@@ -184,11 +182,9 @@ Examples of **correct** jsdoc for this rule:
 /**
  * Fun
  */
-function fun(){}
+function fun() {}
 
-export {
-  fun as default
-}
+export { fun as default };
 ```
 
 ### `'no-unknown-promise'`

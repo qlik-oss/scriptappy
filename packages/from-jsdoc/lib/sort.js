@@ -8,16 +8,16 @@ const sortObject = (entry, cfg) => {
   if (!cfg.output.sort.alpha) {
     return;
   }
-  ['entries', 'staticEntries', 'definitions', 'events'].forEach(subentry => {
+  ['entries', 'staticEntries', 'definitions', 'events'].forEach((subentry) => {
     if (!entry[subentry]) {
       return;
     }
     const sorted = {};
     Object.keys(entry[subentry])
-      .map(k => `__${entry[subentry][k].optional ? 1 : 0}__${k}`)
+      .map((k) => `__${entry[subentry][k].optional ? 1 : 0}__${k}`)
       .sort(sortAlphabetically)
-      .map(k => k.replace(/^__[01]__/, ''))
-      .forEach(key => {
+      .map((k) => k.replace(/^__[01]__/, ''))
+      .forEach((key) => {
         sorted[key] = entry[subentry][key];
       });
 
