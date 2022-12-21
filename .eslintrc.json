@@ -15,7 +15,9 @@
     "no-plusplus": 0,
     "no-use-before-define": 0,
     "no-underscore-dangle": 0,
-    "prettier/prettier": 2
+    "prettier/prettier": 2,
+    "default-param-last": 0,
+    "prefer-regex-literals": 0
   },
   "overrides": [
     {
