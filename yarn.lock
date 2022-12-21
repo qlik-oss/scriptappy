@@ -1639,6 +1639,19 @@
   dependencies:
     "@types/node" ">= 8"
 
+"@scriptappy/from-jsdoc@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@scriptappy/from-jsdoc/-/from-jsdoc-0.8.0.tgz#4b2aab4ac510e2574767a9015b9f5b96d0db1352"
+  integrity sha512-C8tt0HLHumsXOXPlXdlTVUI4YIbS6Y7Ti1cy7LvYkxEl/CCcP67NWcIPHhW99VE6wxRfAvgwnYm8fxonPX95yg==
+  dependencies:
+    "@scriptappy/schema" "1.1.0"
+    chokidar "3.5.2"
+    extend "3.0.2"
+    globby "11.0.0"
+    jsdoc "3.6.7"
+    scriptappy-tools "0.5.0"
+    yargs "15.1.0"
+
 "@sinclair/typebox@^0.24.1":
   version "0.24.51"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.24.51.tgz#645f33fe4e02defe26f2f5c0410e1c094eac7f5f"
@@ -6716,9 +6729,9 @@ q@^1.5.1:
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
-  integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
+  integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
 
 quick-lru@^1.0.0:
   version "1.1.0"
