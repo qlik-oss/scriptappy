@@ -3,11 +3,7 @@
   "title": "A JSON Schema for JavaScript API specification",
   "description": "API specification",
   "type": "object",
-  "required": [
-    "scriptappy",
-    "info",
-    "entries"
-  ],
+  "required": ["scriptappy", "info", "entries"],
   "additionalProperties": false,
   "patternProperties": {
     "^x-": {
@@ -109,10 +105,7 @@
         },
         "deprecated": {
           "description": "Current deprecation status of owning entity.",
-          "oneOf": [
-            { "type": "boolean" },
-            { "$ref": "#/definitions/deprecated" }
-          ]
+          "oneOf": [{ "type": "boolean" }, { "$ref": "#/definitions/deprecated" }]
         }
       },
       "additionalProperties": false,
@@ -132,7 +125,9 @@
       },
       "required": ["since"],
       "additionalProperties": false,
-      "examples": ["\n  \"since\": \"1.4.5\",\n  \"description\": \"Deprecated since 1.4.5, use something else instead :P.\"\n"]
+      "examples": [
+        "\n  \"since\": \"1.4.5\",\n  \"description\": \"Deprecated since 1.4.5, use something else instead :P.\"\n"
+      ]
     },
     "stability": {
       "description": "Stability of the entity",

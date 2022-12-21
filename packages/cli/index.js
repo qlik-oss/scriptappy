@@ -6,7 +6,7 @@ const yargs = require('yargs');
 
 yargs.usage('sy <command> [options]');
 
-const tryAddCommand = m => {
+const tryAddCommand = (m) => {
   let c;
   try {
     c = require(`${m}/lib/cli`); // eslint-disable-line
@@ -31,7 +31,4 @@ const tryAddCommand = m => {
 
 ['@scriptappy/from-jsdoc', '@scriptappy/to-md', '@scriptappy/to-dts'].forEach(tryAddCommand);
 
-yargs
-  .demandCommand()
-  .alias('h', 'help')
-  .wrap(Math.min(80, yargs.terminalWidth())).argv;
+yargs.demandCommand().alias('h', 'help').wrap(Math.min(80, yargs.terminalWidth())).argv;

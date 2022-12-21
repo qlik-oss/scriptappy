@@ -165,7 +165,7 @@ describe('to markdown', () => {
           default: {
             pre: '#',
             indent: '>',
-            label: entry => entry.name,
+            label: (entry) => entry.name,
           },
         },
       }

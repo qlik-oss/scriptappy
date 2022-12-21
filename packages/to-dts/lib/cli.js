@@ -43,7 +43,7 @@ const toDts = {
         type: 'string',
         default: defaultFilename,
       },
-    }).config('config', configPath => {
+    }).config('config', (configPath) => {
       if (configPath === null) {
         return {};
       }

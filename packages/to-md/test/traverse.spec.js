@@ -10,7 +10,7 @@ describe('traverse', () => {
     };
   });
 
-  ['staticEntries', 'entries', 'events', 'definitions'].forEach(prop => {
+  ['staticEntries', 'entries', 'events', 'definitions'].forEach((prop) => {
     it(`should traverse ${prop}`, () => {
       const root = {
         [prop]: {
@@ -95,7 +95,7 @@ describe('traverse', () => {
     );
   });
 
-  ['object', 'interface'].forEach(kind => {
+  ['object', 'interface'].forEach((kind) => {
     it(`should switch to list mode when kind is ${kind}`, () => {
       const root = {
         entries: {

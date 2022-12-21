@@ -1,6 +1,6 @@
 const dom = require('dts-dom');
 
-const extract = s => {
+const extract = (s) => {
   return s.match(/=\s(.*);/)[1];
 };
 
@@ -12,7 +12,7 @@ module.exports = function a(def, tsParent, g) {
   } else if (Array.isArray(def.items)) {
     // hackish way of handling tuples
     // TODO - handle tuples properly when dts-dom supports it
-    subtype = def.items.map(t => extract(dom.emit(dom.create.alias('a', g.getType(t, { kind: 'array' })))));
+    subtype = def.items.map((t) => extract(dom.emit(dom.create.alias('a', g.getType(t, { kind: 'array' })))));
     return `[${subtype.join(', ')}]`;
   }
   return dom.create.array(subtype);

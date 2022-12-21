@@ -116,7 +116,7 @@ describe('check-types', () => {
       'T',
       // native
       'Math',
-    ].forEach(known => {
+    ].forEach((known) => {
       t({ a: { kind: 'interface', templates: [{ name: 'T' }], type: known } }, {}, cfg);
     });
   });

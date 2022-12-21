@@ -193,7 +193,7 @@ describe('kinds', () => {
   }
 
   describe('should validate with minimum requirements', () => {
-    Object.keys(validKinds).forEach(key => {
+    Object.keys(validKinds).forEach((key) => {
       it(key, () => {
         validate(key, validKinds[key]);
       });
@@ -201,7 +201,7 @@ describe('kinds', () => {
   });
 
   describe('should not allow unknown properties', () => {
-    Object.keys(validKinds).forEach(key => {
+    Object.keys(validKinds).forEach((key) => {
       it(key, () => {
         validate(key, extend({}, validKinds[key], { random: true }), 'fail');
       });
@@ -210,8 +210,8 @@ describe('kinds', () => {
 
   describe('should allow templates for', () => {
     Object.keys(validKinds)
-      .filter(k => ['class', 'function', 'interface', 'object'].includes(k))
-      .forEach(key => {
+      .filter((k) => ['class', 'function', 'interface', 'object'].includes(k))
+      .forEach((key) => {
         it(key, () => {
           validate(key, extend({}, validKinds[key], { templates: [] }), 'pass');
         });
@@ -220,14 +220,14 @@ describe('kinds', () => {
 
   describe('descendants', () => {
     const allKinds = [];
-    tiers.forEach(t => allKinds.push(...t));
+    tiers.forEach((t) => allKinds.push(...t));
 
-    Object.keys(validSubKinds).forEach(key => {
+    Object.keys(validSubKinds).forEach((key) => {
       describe(key, () => {
-        Object.keys(validSubKinds[key]).forEach(prop => {
+        Object.keys(validSubKinds[key]).forEach((prop) => {
           describe(prop, () => {
             const allowed = validSubKinds[key][prop];
-            allowed.forEach(s => {
+            allowed.forEach((s) => {
               it(`should allow kind '${s}'`, () => {
                 validate(
                   key,
@@ -240,8 +240,8 @@ describe('kinds', () => {
               });
             });
 
-            const notAllowed = allKinds.filter(k => validSubKinds[key][prop].indexOf(k) === -1);
-            notAllowed.forEach(s => {
+            const notAllowed = allKinds.filter((k) => validSubKinds[key][prop].indexOf(k) === -1);
+            notAllowed.forEach((s) => {
               it(`should NOT allow kind '${s}'`, () => {
                 validate(
                   key,
@@ -274,7 +274,7 @@ describe('kinds', () => {
       validate('function', value);
     });
 
-    validSubKinds.function.entries.forEach(t => {
+    validSubKinds.function.entries.forEach((t) => {
       it(`subtype - ${t}`, () => {
         const value = {
           kind: 'function',
@@ -293,7 +293,7 @@ describe('kinds', () => {
   });
 
   describe('interface', () => {
-    validSubKinds.function.entries.forEach(t => {
+    validSubKinds.function.entries.forEach((t) => {
       it(`subtype - ${t}`, () => {
         const value = {
           kind: 'interface',
@@ -316,7 +316,7 @@ describe('kinds', () => {
   });
 
   describe('array', () => {
-    validSubKinds.function.entries.forEach(t => {
+    validSubKinds.function.entries.forEach((t) => {
       it(`tuple - ${t}`, () => {
         const value = {
           kind: 'array',
@@ -326,7 +326,7 @@ describe('kinds', () => {
       });
     });
 
-    validSubKinds.function.entries.forEach(t => {
+    validSubKinds.function.entries.forEach((t) => {
       it(`type - ${t}`, () => {
         const value = {
           kind: 'array',
@@ -338,7 +338,7 @@ describe('kinds', () => {
   });
 
   describe('union', () => {
-    validSubKinds.function.entries.forEach(t => {
+    validSubKinds.function.entries.forEach((t) => {
       it(`type - ${t}`, () => {
         const value = {
           kind: 'union',

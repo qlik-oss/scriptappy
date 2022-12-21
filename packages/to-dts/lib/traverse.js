@@ -32,7 +32,7 @@ const VALID_TOP_LEVEL = [
 function traverseFn(g) {
   return (obj, { parent: tsParent, path = '', flags = '' }) => {
     const arr = [];
-    Object.keys(obj || {}).forEach(key => {
+    Object.keys(obj || {}).forEach((key) => {
       const p = `${path}/${key}`;
       const def = obj[key];
       const tsType = g.getType(

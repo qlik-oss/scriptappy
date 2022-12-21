@@ -147,7 +147,7 @@ describe('types', () => {
   });
 
   it('should return custom references', () => {
-    t = types(spec, tt => {
+    t = types(spec, (tt) => {
       if (tt === 'Animal') {
         return { url: 'the farm' };
       }

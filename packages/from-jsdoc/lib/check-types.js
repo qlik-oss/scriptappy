@@ -18,14 +18,14 @@ const GLOB = global;
 
 function checkTypes(obj, priv, cfg, scopeTypes = []) {
   let prop;
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     prop = obj[key];
     if (prop == null || typeof prop !== 'object') {
       return;
     }
     const st = scopeTypes;
     if (prop.templates && prop.kind && !['namespace', 'module'].includes(prop.kind)) {
-      st.push(...prop.templates.map(n => n.name));
+      st.push(...prop.templates.map((n) => n.name));
     }
     if (typeof prop.type === 'string') {
       const generic = prop.type.match(/<.*>/); // find generic

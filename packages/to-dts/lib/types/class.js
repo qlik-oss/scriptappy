@@ -11,7 +11,7 @@ module.exports = function klass(def, tsParent, g) {
   if (def.extends && def.extends[0]) {
     t.baseType = g.getType(def.extends[0]);
   }
-  (def.implements || []).forEach(i => {
+  (def.implements || []).forEach((i) => {
     t.implements.push(g.getType(i));
   });
   // traverse(def.staticEntries || {}, t, `${path}/staticEntries`, {

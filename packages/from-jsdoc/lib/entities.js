@@ -29,7 +29,7 @@ function tags(doc, cfg) {
     exclude = !include && Array.isArray(cfg.parse.tags.exclude) ? cfg.parse.tags.exclude : false;
   }
 
-  (doc.tags || []).forEach(tag => {
+  (doc.tags || []).forEach((tag) => {
     if (tag.title === STABILITY) {
       if (STABILITY_TAGS.indexOf(tag.value) !== -1) {
         o.stability = tag.value;
@@ -199,7 +199,7 @@ function getTypedef(doc, cfg, opts) {
   } else {
     typedef = {
       kind: 'union',
-      items: doc.type.names.map(t => parse(t)),
+      items: doc.type.names.map((t) => parse(t)),
     };
   }
   if (!typedef) {
@@ -236,7 +236,7 @@ function kindFunction(doc, cfg, opts) {
     if (doc.yields && doc.yields.length > 1) {
       f.yields = {
         kind: 'union',
-        items: doc.yields.map(y => entity(y, cfg, opts)),
+        items: doc.yields.map((y) => entity(y, cfg, opts)),
       };
     } else if (doc.yields) {
       f.yields = entity(doc.yields[0], cfg, opts);
@@ -244,11 +244,11 @@ function kindFunction(doc, cfg, opts) {
   }
 
   if (doc.exceptions) {
-    f.throws = doc.exceptions.map(xc => entity(xc, cfg, opts));
+    f.throws = doc.exceptions.map((xc) => entity(xc, cfg, opts));
   }
 
   if (doc.fires && doc.fires.length) {
-    f.emits = doc.fires.map(t => simpleType(t, cfg, opts));
+    f.emits = doc.fires.map((t) => simpleType(t, cfg, opts));
   }
 
   if (doc.this) {
@@ -311,8 +311,8 @@ function kindInterface(doc, cfg, opts) {
   };
   let numProps = 0; // number of props specific to the function kind (except params)
   Object.keys(fn)
-    .filter(key => key !== 'kind')
-    .forEach(key => {
+    .filter((key) => key !== 'kind')
+    .forEach((key) => {
       obj[key] = fn[key];
       if (key !== 'params') {
         numProps++;
@@ -332,7 +332,7 @@ function kindInterface(doc, cfg, opts) {
   return obj;
 }
 
-const inlineTags = ['since', 'deprecated', STABILITY, ...STABILITY_TAGS].map(t => ({
+const inlineTags = ['since', 'deprecated', STABILITY, ...STABILITY_TAGS].map((t) => ({
   rx: new RegExp(`\\s*\\{@${t}\\s*([^}]*)\\}`),
   tag: t,
 }));
@@ -346,7 +346,7 @@ function extractTags(doc) {
   } else if (doc.description) {
     s = doc.description;
   }
-  inlineTags.forEach(t => {
+  inlineTags.forEach((t) => {
     const m = t.rx.exec(s);
     if (m) {
       s = s.replace(m[0], '');

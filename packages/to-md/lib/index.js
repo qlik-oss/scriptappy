@@ -16,7 +16,7 @@ module.exports = function toMarkdown(spec, { templates, type } = {}) {
   const toc = [];
   const types = typesFn(spec, type);
 
-  const addToToc = s => {
+  const addToToc = (s) => {
     toc.push(s);
   };
 
@@ -58,7 +58,7 @@ module.exports = function toMarkdown(spec, { templates, type } = {}) {
     references: () =>
       `\n${types
         .getReferences()
-        .map(ref => `[${ref.key}]: ${ref.link}`)
+        .map((ref) => `[${ref.key}]: ${ref.link}`)
         .join('\n')}\n`,
   };
 };

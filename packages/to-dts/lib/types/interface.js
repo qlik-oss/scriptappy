@@ -24,7 +24,7 @@ module.exports = function fn(def, tsParent, g) {
     // optional/rest flags for params in call-signatures are NOT printed by dts-dom,
     // so hack it a bit by ammending ... or ? to the name of the param to get the same effect
     // TODO - remove this hack when dts-dom fixes this
-    cs.parameters.forEach(p => {
+    cs.parameters.forEach((p) => {
       if ((p.flags || 0) & dom.ParameterFlags.Optional) {
         p.name += '?';
       } else if (p.flags === dom.ParameterFlags.Rest) {
@@ -36,7 +36,7 @@ module.exports = function fn(def, tsParent, g) {
   }
   if (def.extends) {
     t.baseTypes = t.baseTypes || [];
-    def.extends.forEach(d => {
+    def.extends.forEach((d) => {
       t.baseTypes.push(g.getType(d));
     });
   }

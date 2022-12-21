@@ -169,7 +169,7 @@ function addToTier(ref, tier) {
     },
   });
 
-  Object.keys(common.properties).forEach(key => {
+  Object.keys(common.properties).forEach((key) => {
     // if (key === 'templates') {
     //   return;
     // }
@@ -261,7 +261,7 @@ function addKind(k, tier, excludeProps, ...props) {
   const { examples } = def;
   delete def.examples;
 
-  Object.keys(common.properties).forEach(key => {
+  Object.keys(common.properties).forEach((key) => {
     if (excludeProps.includes(key)) {
       return;
     }
@@ -459,7 +459,7 @@ function constr() {
     entityProps
   );
 
-  Object.keys(common.properties).forEach(key => {
+  Object.keys(common.properties).forEach((key) => {
     if (key === 'templates') {
       return;
     }

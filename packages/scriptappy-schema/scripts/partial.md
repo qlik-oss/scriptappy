@@ -5,17 +5,15 @@
 **Version {{SCHEMA_VERSION}}**
 
 > The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in
-[RFC 2119](https://tools.ietf.org/html/rfc2119).
+> NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
+> "OPTIONAL" in this document are to be interpreted as described in
+> [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 ## Table of Contents
 
 - [Specification](#specification)
-  - [Schema](#schema)
-    - [Root Object](#root)
-    - [Info Object](#infoObject)
-{{SCHEMA_TOC}}
+  - [Schema](#schema) - [Root Object](#root) - [Info Object](#infoObject)
+    {{SCHEMA_TOC}}
 
 ## Definitions
 
@@ -33,13 +31,13 @@ The different entities are separated into _tiers_ to make referencing easier. Wh
 
 #### <a name='root'></a> Root object
 
-Field|Type|Description
----|---|---
-spec | `const` `{{SCHEMA_VERSION}}` | **REQUIRED.** The specification version the document uses.
-info | [Info object](#infoObject) | **REQUIRED.** Metadata about the API.
-examples | Array&lt;`string`&gt; | Examples showing how to use this API.
-entries | Map&lt;`string`, [Entity Object](#entityObject)&gt; | **REQUIRED.** An object holding the entry points available for the API.
-definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional entities reachable through the entry points.
+| Field       | Type                                                | Description                                                             |
+| ----------- | --------------------------------------------------- | ----------------------------------------------------------------------- |
+| spec        | `const` `{{SCHEMA_VERSION}}`                        | **REQUIRED.** The specification version the document uses.              |
+| info        | [Info object](#infoObject)                          | **REQUIRED.** Metadata about the API.                                   |
+| examples    | Array&lt;`string`&gt;                               | Examples showing how to use this API.                                   |
+| entries     | Map&lt;`string`, [Entity Object](#entityObject)&gt; | **REQUIRED.** An object holding the entry points available for the API. |
+| definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional entities reachable through the entry points.                 |
 
 ##### Example
 
@@ -58,12 +56,12 @@ definitions | Map&lt;`string`, [Entity Object](#entityObject)&gt; | Additional e
 
 #### <a name="infoObject"></a> Info Object
 
-Field|Type|Description
----|---|---
-name | `string` | Name of the API.
-description | `string` | Description of the API.
-version | `string` | **REQUIRED.** Version of the API.
-license | `string` | **REQUIRED.** SPDX license identifier for the API.
+| Field       | Type     | Description                                        |
+| ----------- | -------- | -------------------------------------------------- |
+| name        | `string` | Name of the API.                                   |
+| description | `string` | Description of the API.                            |
+| version     | `string` | **REQUIRED.** Version of the API.                  |
+| license     | `string` | **REQUIRED.** SPDX license identifier for the API. |
 
 ##### Example
 
