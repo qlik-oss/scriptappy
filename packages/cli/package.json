@@ -20,7 +20,7 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@scriptappy/from-jsdoc": "0.11.0",
+    "@scriptappy/from-jsdoc": "0.12.0",
     "import-cwd": "3.0.0",
     "yargs": "17.6.2"
   }
