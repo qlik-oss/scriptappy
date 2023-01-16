@@ -14,6 +14,17 @@ describe('type-parser', () => {
       expect(getPropertyFromComment('pro.oo', c)).to.equal('{blapar.foopar.o}');
     });
 
+    it('color property', () => {
+      const c = `/**
+      * Color information structure. Holds the actual color and index in palette.
+      * @interface paletteColor
+      * @property {string} color - Color as hex string (mandatory if index: -1)
+      * @property {number} index - Index in palette
+      */`;
+
+      expect(getPropertyFromComment('index', c)).to.equal('number');
+    });
+
     it('return', () => {
       const c = '/**\n * @return {{blapar.foopar.o}} bla */';
       expect(getReturnFromComment(c)).to.equal('{blapar.foopar.o}');
