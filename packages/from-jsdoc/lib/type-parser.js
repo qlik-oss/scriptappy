@@ -117,12 +117,12 @@ const extractTypeFromRx = (rx, comment) => {
 };
 
 const getParamFromComment = (name, c) => {
-  const rx = new RegExp(`^\\s*\\*\\s*@param\\s+(.*)\\s*${name}`);
+  const rx = new RegExp(`^\\s*\\*\\s*@param\\s+({.*})\\s*${name}`);
   return extractTypeFromRx(rx, c);
 };
 
 const getPropertyFromComment = (name, c) => {
-  const rx = new RegExp(`^\\s*\\*\\s*@property\\s+(.*)\\s*${name}`);
+  const rx = new RegExp(`^\\s*\\*\\s*@property\\s+({.*})\\s*${name}`);
   return extractTypeFromRx(rx, c);
 };
 
