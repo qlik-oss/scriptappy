@@ -33,7 +33,7 @@ const generateJSDoc = (jsDocConfig) => {
   try {
     s = cp.execSync(`npx jsdoc -c ./${jsdocConfigFilename}.json -p -X`, {
       cwd: __dirname,
-      maxBuffer: 1024 * 1024 * 10,
+      maxBuffer: 1024 * 1024 * 20,
     });
   } catch (e) {
     throw new Error(e.stderr.toString());
