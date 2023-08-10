@@ -5,3 +5,33 @@ updates:
     schedule:
       interval: 'weekly'
       day: 'monday'
+  - package-ecosystem: 'npm'
+    directory: '/packages/scriptappy-tools'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+  - package-ecosystem: 'npm'
+    directory: '/packages/scriptappy-schema'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+  - package-ecosystem: 'npm'
+    directory: '/packages/cli'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+  - package-ecosystem: 'npm'
+    directory: '/packages/from-jsdoc'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+  - package-ecosystem: 'npm'
+    directory: '/packages/to-dts'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+  - package-ecosystem: 'npm'
+    directory: '/packages/to-md'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
