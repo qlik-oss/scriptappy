@@ -1,6 +1,6 @@
 {
-  "name": "scriptappy-tools",
-  "version": "0.5.0",
+  "name": "@scriptappy/tools",
+  "version": "0.6.0",
   "description": "Scriptappy tools",
   "repository": {
     "type": "git",
