@@ -1,7 +1,7 @@
 const Ajv = require('ajv');
 const extend = require('extend');
 const schema6 = require('ajv/lib/refs/json-schema-draft-06.json');
-const vv = require('scriptappy-tools');
+const vv = require('@scriptappy/tools');
 
 const schema = require('../schema.json');
 const pkg = require('../package.json');

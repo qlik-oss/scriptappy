@@ -26,8 +26,8 @@
     "version": "npm run generate && git add ."
   },
   "devDependencies": {
+    "@scriptappy/tools": "0.6.0",
     "ajv": "6.12.3",
-    "extend": "3.0.2",
-    "scriptappy-tools": "0.5.0"
+    "extend": "3.0.2"
   }
 }
