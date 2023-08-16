@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@scriptappy/tools": "0.7.0",
-    "ajv": "6.12.3",
+    "ajv": "8.12.0",
     "extend": "3.0.2"
   }
 }
