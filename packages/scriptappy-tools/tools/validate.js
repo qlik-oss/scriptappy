@@ -8,6 +8,7 @@ const jsonpatch = require('fast-json-patch');
 const ajv = new Ajv({
   allErrors: true,
   verbose: true,
+  strict: false,
 });
 ajv.addMetaSchema(schema6);
 
@@ -49,7 +50,7 @@ function message(err, { s = '' } = {}) {
 function subValidateKind(spec, schema, jsonPointer) {
   const value = jsonpatch.getValueByPointer(spec, jsonPointer);
   const kind = value.kind || 'object';
-  const subajv = new Ajv({ allErrors: true, verbose: true, jsonPointers: true });
+  const subajv = new Ajv({ allErrors: true, verbose: true, jsonPointers: true, strict: false });
   subajv.addMetaSchema(schema6);
 
   const subschema = {
