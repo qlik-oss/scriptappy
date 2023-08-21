@@ -41,7 +41,7 @@
     "@scriptappy/tools": "0.7.0",
     "chokidar": "3.5.3",
     "extend": "3.0.2",
-    "globby": "11.0.4",
+    "globby": "13.2.2",
     "jsdoc": "4.0.2",
     "yargs": "17.7.2"
   }
