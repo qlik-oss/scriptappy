@@ -19,6 +19,12 @@ module.exports = function top(spec, { umd = '', export: exp, includeDisclaimer, 
     });
   }
 
+  if (Array.isArray(dependencies.imports)) {
+    dependencies.imports.forEach((imp) => {
+      types.push(`import ${imp.type} from ${imp.package};`);
+    });
+  }
+
   const entries = Object.keys(spec.entries || {});
   const definitions = Object.keys(spec.definitions || {});
   if (entries.length === 1) {
