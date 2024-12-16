@@ -36,21 +36,21 @@ function toJSONPointer(path) {
 function message(err, { s = '' } = {}) {
   switch (err.keyword) {
     case 'additionalProperties':
-      return chalk.red(`    ${s}${err.dataPath} ${err.message}: '${err.params.additionalProperty}'`);
+      return chalk.red(`    ${s}${err.instancePath} ${err.message}: '${err.params.additionalProperty}'`);
     // case 'required':
     // case 'pattern':
-    //   return chalk.red(`    ${path}${err.dataPath} ${err.message}`);
+    //   return chalk.red(`    ${path}${err.instancePath} ${err.message}`);
     case 'enum':
-      return chalk.red(`    ${s}${err.dataPath} ${err.message}: ${err.params.allowedValues}`);
+      return chalk.red(`    ${s}${err.instancePath} ${err.message}: ${err.params.allowedValues}`);
     default:
-      return chalk.red(`    ${s}${err.dataPath} ${err.message}`);
+      return chalk.red(`    ${s}${err.instancePath} ${err.message}`);
   }
 }
 
 function subValidateKind(spec, schema, jsonPointer) {
   const value = jsonpatch.getValueByPointer(spec, jsonPointer);
   const kind = value.kind || 'object';
-  const subajv = new Ajv({ allErrors: true, verbose: true, jsonPointers: true, strict: false });
+  const subajv = new Ajv({ allErrors: true, verbose: true, strict: false });
   subajv.addMetaSchema(schema6);
 
   const subschema = {
@@ -96,12 +96,12 @@ function validateSpec(ss, schema) {
   console.log('\n');
   if (!valid) {
     const sorted = validate.errors
-      .map((err) => ({ depth: err.dataPath.split('.').length, e: err }))
+      .map((err) => ({ depth: err.instancePath.split('.').length, e: err }))
       .sort((a, b) => b.depth - a.depth);
 
     // subschema validation
     const top = sorted[0];
-    const s = top.e.dataPath;
+    const s = top.e.instancePath;
 
     let isSubValid = true;
 
