@@ -39,7 +39,7 @@
   "dependencies": {
     "@scriptappy/schema": "1.1.1",
     "@scriptappy/tools": "0.7.0",
-    "chokidar": "3.5.3",
+    "chokidar": "4.0.3",
     "extend": "3.0.2",
     "globby": "11.0.4",
     "jsdoc": "4.0.2",
