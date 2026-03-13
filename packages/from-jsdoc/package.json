@@ -29,9 +29,6 @@
     "type": "git",
     "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
-  "engines": {
-    "node": ">=7.6.0"
-  },
   "bugs": {
     "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
