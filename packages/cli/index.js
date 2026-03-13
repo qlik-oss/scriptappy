@@ -2,9 +2,7 @@
 /* eslint no-unused-expressions: 0 */
 
 const importCwd = require('import-cwd');
-const yargs = require('yargs');
-
-yargs.usage('sy <command> [options]');
+const yargs = require('yargs/yargs')(process.argv.slice(2));
 
 const tryAddCommand = (m) => {
   let c;
@@ -31,4 +29,4 @@ const tryAddCommand = (m) => {
 
 ['@scriptappy/from-jsdoc', '@scriptappy/to-md', '@scriptappy/to-dts'].forEach(tryAddCommand);
 
-yargs.demandCommand().alias('h', 'help').wrap(Math.min(80, yargs.terminalWidth())).argv;
+yargs.usage('sy <command> [options]').demandCommand().alias('h', 'help').wrap(Math.min(80, yargs.terminalWidth())).argv;

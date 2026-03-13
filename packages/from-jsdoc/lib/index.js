@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const extend = require('extend');
-const globby = require('globby');
+const fg = require('fast-glob');
 const chokidar = require('chokidar');
 const cp = require('child_process');
 
@@ -59,13 +59,7 @@ const generateJSDoc = (jsDocConfig) => {
 const withJSDoc = async (config) => {
   const cwd = process.cwd();
   const pkg = config.package ? path.resolve(cwd, config.package) : [];
-  const files = (
-    await globby(config.glob, {
-      gitignore: false,
-    })
-  )
-    .concat(pkg)
-    .map((f) => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
+  const files = (await fg(config.glob)).concat(pkg).map((f) => path.resolve(cwd, f)); // need actual filenames since jsdoc does not support glob patterns
 
   const jsDocConfig = getJsDocConfig(files, config);
   let jsdoc;

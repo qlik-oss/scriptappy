@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint import/no-dynamic-require: 0, global-require: 0 */
 
-const yargs = require('yargs');
+const yargs = require('yargs/yargs')(process.argv.slice(2));
 const path = require('path');
 const fs = require('fs');
 const validate = require('./validate');
