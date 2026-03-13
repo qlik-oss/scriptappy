@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/qlik-oss/scriptappy/compare/@scriptappy/tools@0.7.1...@scriptappy/tools@0.7.2) (2026-03-13)
+
+**Note:** Version bump only for package @scriptappy/tools
+
 ## [0.7.1](https://github.com/qlik-oss/scriptappy/compare/@scriptappy/tools@0.7.0...@scriptappy/tools@0.7.1) (2026-03-13)
 
 ### Bug Fixes
