@@ -1,8 +1,6 @@
 const dom = require('dts-dom');
 
-const extract = (s) => {
-  return s.match(/=\s(.*);/)[1];
-};
+const extract = (s) => s.match(/=\s(.*);/)[1];
 
 module.exports = function a(def, tsParent, g) {
   let subtype = dom.type.any;
