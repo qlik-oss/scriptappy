@@ -33,9 +33,6 @@
     "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
   "homepage": "https://github.com/qlik-oss/scriptappy#readme",
-  "engines": {
-    "node": ">=24"
-  },
   "dependencies": {
     "@scriptappy/schema": "1.1.0",
     "chokidar": "3.5.3",

@@ -24,9 +24,6 @@
     "/lib",
     "/tools"
   ],
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
     "lint": "eslint lib tools"
   },

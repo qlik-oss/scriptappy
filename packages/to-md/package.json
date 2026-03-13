@@ -26,9 +26,6 @@
     "/lib"
   ],
   "main": "lib/index.js",
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
     "lint": "eslint lib test"
   },

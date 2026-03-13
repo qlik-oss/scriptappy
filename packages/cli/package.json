@@ -19,9 +19,6 @@
     "index.js"
   ],
   "scripts": {},
-  "engines": {
-    "node": ">=24"
-  },
   "dependencies": {
     "@scriptappy/from-jsdoc": "0.13.0",
     "import-cwd": "3.0.0",

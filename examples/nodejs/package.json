@@ -2,9 +2,6 @@
   "private": true,
   "name": "sy-example-nodejs",
   "version": "8.0.0",
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
     "lint": "exit 0",
     "jsd": "node ../../node_modules/.bin/jsdoc ./src -r -p ./package.json -X > jsdoc.json",
