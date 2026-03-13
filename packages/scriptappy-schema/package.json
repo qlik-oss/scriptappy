@@ -1,6 +1,6 @@
 {
   "name": "@scriptappy/schema",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A specification for Javascript APIs",
   "license": "MIT",
   "author": "QLIK",
@@ -26,7 +26,7 @@
     "version": "npm run generate && git add ."
   },
   "devDependencies": {
-    "@scriptappy/tools": "0.7.0",
+    "@scriptappy/tools": "^0.7.1",
     "ajv": "6.14.0",
     "extend": "3.0.2"
   }
