@@ -2,10 +2,10 @@ function collectAndNest({ list, asArray }, cfg, opts, entity) {
   const paramMap = {};
   const res = [];
   (list || [])
-    .sort((a, b) => {
+    .sort((a, b) =>
       // sort the list by "parents" first
-      return a && b ? a.name.split('.').length - b.name.split('.').length : 0;
-    })
+      a && b ? a.name.split('.').length - b.name.split('.').length : 0
+    )
     .forEach((par) => {
       const s = par.name.split('.');
       let parent = paramMap;

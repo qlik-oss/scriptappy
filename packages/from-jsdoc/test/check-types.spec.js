@@ -1,8 +1,6 @@
 const t = require('../lib/check-types');
 
-jest.mock('../lib/types', () => {
-  return ['mine'];
-});
+jest.mock('../lib/types', () => ['mine']);
 
 describe('check-types', () => {
   let sandbox;
