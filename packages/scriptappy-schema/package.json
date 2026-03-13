@@ -21,6 +21,9 @@
     "specification"
   ],
   "main": "./schema.json",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "generate": "./scripts/generate-schema.js && ./scripts/generate-spec.js",
     "version": "npm run generate && git add ."
