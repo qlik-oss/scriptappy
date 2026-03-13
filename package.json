@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "engines": {
-    "node": ">=24"
+    "node": ">=22"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
