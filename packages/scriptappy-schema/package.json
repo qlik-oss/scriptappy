@@ -1,6 +1,6 @@
 {
   "name": "@scriptappy/schema",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A specification for Javascript APIs",
   "license": "MIT",
   "author": "QLIK",

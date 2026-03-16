@@ -3,7 +3,11 @@
   "title": "A JSON Schema for JavaScript API specification",
   "description": "API specification",
   "type": "object",
-  "required": ["scriptappy", "info", "entries"],
+  "required": [
+    "scriptappy",
+    "info",
+    "entries"
+  ],
   "additionalProperties": false,
   "patternProperties": {
     "^x-": {
@@ -13,7 +17,7 @@
   "properties": {
     "scriptappy": {
       "type": "string",
-      "const": "1.1.2",
+      "const": "1.1.3",
       "description": "The specification version the document uses"
     },
     "info": {
@@ -38,7 +42,10 @@
           "$ref": "#/definitions/stability"
         }
       },
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^x-": {
@@ -115,7 +122,9 @@
         }
       },
       "additionalProperties": false,
-      "examples": ["\n  \"since\": \"1.0.0\",\n  \"deprecated\": false\n"]
+      "examples": [
+        "\n  \"since\": \"1.0.0\",\n  \"deprecated\": false\n"
+      ]
     },
     "deprecated": {
       "type": "object",
@@ -129,7 +138,9 @@
           "type": "string"
         }
       },
-      "required": ["since"],
+      "required": [
+        "since"
+      ],
       "additionalProperties": false,
       "examples": [
         "\n  \"since\": \"1.4.5\",\n  \"description\": \"Deprecated since 1.4.5, use something else instead :P.\"\n"
@@ -138,7 +149,11 @@
     "stability": {
       "description": "Stability of the entity",
       "type": "string",
-      "enum": ["experimental", "stable", "locked"]
+      "enum": [
+        "experimental",
+        "stable",
+        "locked"
+      ]
     },
     "common": {
       "type": "object",
@@ -316,9 +331,13 @@
             "defaultValue": true,
             "templates": true
           },
-          "required": ["type"],
+          "required": [
+            "type"
+          ],
           "not": {
-            "required": ["kind"]
+            "required": [
+              "kind"
+            ]
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -345,9 +364,13 @@
             "generics": true,
             "defaultValue": true
           },
-          "required": ["name"],
+          "required": [
+            "name"
+          ],
           "not": {
-            "required": ["type"]
+            "required": [
+              "type"
+            ]
           },
           "additionalProperties": false,
           "patternProperties": {
@@ -391,7 +414,10 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind", "items"]
+          "required": [
+            "kind",
+            "items"
+          ]
         }
       ],
       "examples": [
@@ -432,7 +458,10 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind", "entries"]
+          "required": [
+            "kind",
+            "entries"
+          ]
         }
       ],
       "examples": [
@@ -479,10 +508,15 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind", "value"]
+          "required": [
+            "kind",
+            "value"
+          ]
         }
       ],
-      "examples": ["\n  \"kind\": \"literal\",\n  \"value\": 13\n"]
+      "examples": [
+        "\n  \"kind\": \"literal\",\n  \"value\": 13\n"
+      ]
     },
     "kind.module": {
       "allOf": [
@@ -553,7 +587,9 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
       "examples": [
@@ -632,10 +668,14 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
-      "examples": ["\n  \"kind\": \"object\",\n  \"entries\": {\n    \"prop\": { /* entity */ }\n  }\n"]
+      "examples": [
+        "\n  \"kind\": \"object\",\n  \"entries\": {\n    \"prop\": { /* entity */ }\n  }\n"
+      ]
     },
     "kind.namespace": {
       "allOf": [
@@ -706,10 +746,14 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
-      "examples": ["\n  \"kind\": \"namespace\",\n  \"entries\": {\n    \"subspace\": { /* entity */ }\n  }\n"]
+      "examples": [
+        "\n  \"kind\": \"namespace\",\n  \"entries\": {\n    \"subspace\": { /* entity */ }\n  }\n"
+      ]
     },
     "kind.function": {
       "allOf": [
@@ -813,7 +857,10 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind", "params"]
+          "required": [
+            "kind",
+            "params"
+          ]
         }
       ],
       "examples": [
@@ -909,7 +956,9 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
       "examples": [
@@ -956,7 +1005,9 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ]
     },
@@ -1054,10 +1105,14 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
-      "examples": ["\n  \"kind\": \"interface\",\n  \"entries\": {\n    \"a\": { /* entity */ }\n  }\n"]
+      "examples": [
+        "\n  \"kind\": \"interface\",\n  \"entries\": {\n    \"a\": { /* entity */ }\n  }\n"
+      ]
     },
     "kind.event": {
       "allOf": [
@@ -1129,10 +1184,14 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
-      "examples": ["\n  \"kind\": \"event\",\n  \"params\": []\n"]
+      "examples": [
+        "\n  \"kind\": \"event\",\n  \"params\": []\n"
+      ]
     },
     "kind.array": {
       "allOf": [
@@ -1187,7 +1246,9 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
       "examples": [
@@ -1241,10 +1302,14 @@
               "$ref": "#/definitions/vendor"
             }
           },
-          "required": ["kind"]
+          "required": [
+            "kind"
+          ]
         }
       ],
-      "examples": ["\n  \"kind\": \"union\",\n  \"items\": [{ /* entity */ }, { /* entity */ }]\n"]
+      "examples": [
+        "\n  \"kind\": \"union\",\n  \"items\": [{ /* entity */ }, { /* entity */ }]\n"
+      ]
     }
   }
 }
