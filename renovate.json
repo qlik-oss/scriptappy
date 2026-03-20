@@ -1,0 +1,3 @@
+{
+  "extends": ["github>qlik-oss/renovate-config"]
+}
