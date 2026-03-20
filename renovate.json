@@ -1,0 +1,3 @@
+{
+  "extends": ["local>qlik-oss/renovate-config"]
+}
