@@ -30,6 +30,7 @@ describe('class', () => {
       baseTypes: [],
       kind: 'interface',
       name: 'foo',
+      typeParameters: [],
       flags: 0,
       members: [],
     });
@@ -47,6 +48,7 @@ describe('class', () => {
       baseTypes: [],
       kind: 'interface',
       name: 'foo',
+      typeParameters: [],
       flags: 0,
       members: [
         {
@@ -79,6 +81,7 @@ describe('class', () => {
       baseTypes: [],
       kind: 'interface',
       name: 'foo',
+      typeParameters: [],
       flags: 0,
       members: [
         {
@@ -105,6 +108,7 @@ describe('class', () => {
     expect(v).to.eql({
       kind: 'interface',
       name: 'Dog',
+      typeParameters: [],
       flags: 0,
       members: [],
       baseTypes: ['Anim', 'Mam'],
@@ -132,7 +136,19 @@ describe('class', () => {
     expect(v).to.eql({
       baseTypes: [],
       kind: 'interface',
-      name: 'foo<T, K extends U<S> = P>',
+      name: 'foo',
+      typeParameters: [
+        {
+          kind: 'type-parameter',
+          name: 'T',
+        },
+        {
+          kind: 'type-parameter',
+          name: 'K',
+          baseType: 'U<S>',
+          defaultType: 'P',
+        },
+      ],
       members: [],
       flags: 0,
     });
