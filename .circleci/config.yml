@@ -22,8 +22,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore_yarn_cache
-      - run: corepack enable
-      - run: yarn install --immutable
+      - run: corepack yarn install --immutable
       - save_cache: *save_yarn_cache
-      - run: yarn run lint
-      - run: yarn run test
+      - run: corepack yarn run lint
+      - run: corepack yarn run test
