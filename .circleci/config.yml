@@ -1,14 +1,15 @@
-version: 2
+version: 2.1
 
 aliases:
   - &restore_yarn_cache
     keys:
-      - v1-yarn-deps-{{ checksum "yarn.lock" }}
-      - v1-yarn-deps-
+      - v2-yarn-4-deps-{{ checksum "yarn.lock" }}
+      - v2-yarn-4-deps-
   - &save_yarn_cache
     paths:
-      - ~/.cache/yarn
-    key: v1-yarn-deps-{{ checksum "yarn.lock" }}
+      - ~/.yarn/berry/cache
+      - .yarn/install-state.gz
+    key: v2-yarn-4-deps-{{ checksum "yarn.lock" }}
 
 setup: &setup
   working_directory: ~/scriptappy
@@ -21,7 +22,8 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore_yarn_cache
-      - run: yarn install --frozen-lockfile
+      - run: corepack enable
+      - run: yarn install --immutable
       - save_cache: *save_yarn_cache
       - run: yarn run lint
       - run: yarn run test
