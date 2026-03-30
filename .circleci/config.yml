@@ -22,7 +22,10 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore_yarn_cache
-      - run: corepack yarn install --immutable
+      - run:
+          name: Enable Corepack
+          command: sudo corepack enable
+      - run: yarn install --immutable
       - save_cache: *save_yarn_cache
-      - run: corepack yarn run lint
-      - run: corepack yarn run test
+      - run: yarn run lint
+      - run: yarn run test
