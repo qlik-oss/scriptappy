@@ -38,7 +38,7 @@
     "prepublishOnly": "yarn run spec && yarn run dts"
   },
   "dependencies": {
-    "dts-dom": "^3.7.0",
+    "dts-dom": "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch",
     "extend": "3.0.2"
   }
 }

@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`to-dts integration class should emit class with constructor, extends and implements 1`] = `
+"export = EventEmitter;
+
+declare class EventEmitter extends BaseEmitter implements Disposable {
+    constructor(name: string);
+
+    /**
+     * @param event
+     */
+    emit(event: string): boolean;
+
+}
+
+"
+`;
+
+exports[`to-dts integration config should emit disclaimer and triple-slash reference headers 1`] = `
+"// File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.
+/// <reference types="qlik-engineapi" />
+export = MyLib;
+
+declare interface MyLib {
+}
+
+"
+`;
+
+exports[`to-dts integration config should emit umd namespace header 1`] = `
+"export as namespace myChart
+export = MyChart;
+
+declare interface MyChart {
+}
+
+"
+`;
+
+exports[`to-dts integration definitions should emit definitions as a namespace with cross-reference 1`] = `
+"export = createWidget;
+
+/**
+ * @param options
+ */
+declare function createWidget(options: createWidget.WidgetOptions): void;
+
+declare namespace createWidget {
+    interface WidgetOptions {
+        width: number;
+        height: number;
+    }
+
+}
+
+"
+`;
+
+exports[`to-dts integration should emit both interface extends and generic constraint extends 1`] = `
+"export = ConstrainedToolbarElement;
+
+declare interface ConstrainedToolbarElement<T extends HTMLElement> extends BaseToolbar<T> {
+    className: "njs-action-toolbar-popover";
+}
+
+"
+`;
+
+exports[`to-dts integration should emit generic constraints with extends 1`] = `
+"export = GenericToolbarElement;
+
+declare interface GenericToolbarElement<T extends HTMLElement> {
+    className: "njs-action-toolbar-popover";
+}
+
+"
+`;
+
+exports[`to-dts integration should emit interface with extends clause 1`] = `
+"export = ActionToolbarElement;
+
+declare interface ActionToolbarElement extends HTMLElement {
+    className: "njs-action-toolbar-popover";
+}
+
+"
+`;
+
+exports[`to-dts integration should emit interface with multiple extends clauses 1`] = `
+"export = ActionToolbarElement;
+
+declare interface ActionToolbarElement extends HTMLElement, EventTarget {
+    className: "njs-action-toolbar-popover";
+}
+
+"
+`;
