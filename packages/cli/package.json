@@ -18,7 +18,6 @@
   "files": [
     "index.js"
   ],
-  "scripts": {},
   "dependencies": {
     "@scriptappy/from-jsdoc": "^0.19.4",
     "import-cwd": "3.0.0",
