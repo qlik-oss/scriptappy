@@ -8306,7 +8306,7 @@ __metadata:
     lerna: "npm:9.0.7"
     prettier: "npm:3.8.1"
     sinon: "npm:21.0.3"
-    sinon-chai: "npm:3.7.0"
+    sinon-chai: "npm:4.0.1"
   languageName: unknown
   linkType: soft
 
@@ -8555,13 +8555,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon-chai@npm:3.7.0":
-  version: 3.7.0
-  resolution: "sinon-chai@npm:3.7.0"
+"sinon-chai@npm:4.0.1":
+  version: 4.0.1
+  resolution: "sinon-chai@npm:4.0.1"
   peerDependencies:
-    chai: ^4.0.0
+    chai: ^5.0.0 || ^6.0.0
     sinon: ">=4.0.0"
-  checksum: 10c0/9bbb0494be89c313f5287c2a0c9890104e3070ad6bf06c359b0c3cd776ea6273f7846ee1ab01fa2e0328e741f8717348669ee232e83b94b193676a56f48d2c63
+  checksum: 10c0/3d49a66151143f05636b732d4cb3ed078703dac19c8f32dd422c6b207a5eeb8f3208fe770853cb01f183190af79cdc8b83ccd07ef85c3d1b932222cd2c18fcd3
   languageName: node
   linkType: hard
 
