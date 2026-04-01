@@ -1681,7 +1681,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@scriptappy/cli@workspace:packages/cli"
   dependencies:
-    "@scriptappy/from-jsdoc": "npm:^0.19.4"
+    "@scriptappy/from-jsdoc": "npm:^0.19.5"
     import-cwd: "npm:3.0.0"
     yargs: "npm:18.0.0"
   bin:
@@ -1689,7 +1689,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@scriptappy/from-jsdoc@npm:^0.19.4, @scriptappy/from-jsdoc@workspace:packages/from-jsdoc":
+"@scriptappy/from-jsdoc@npm:^0.19.5, @scriptappy/from-jsdoc@workspace:packages/from-jsdoc":
   version: 0.0.0-use.local
   resolution: "@scriptappy/from-jsdoc@workspace:packages/from-jsdoc"
   dependencies:
