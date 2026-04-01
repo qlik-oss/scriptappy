@@ -1738,7 +1738,7 @@ __metadata:
   resolution: "@scriptappy/tools@workspace:packages/scriptappy-tools"
   dependencies:
     ajv: "npm:8.18.0"
-    chalk: "npm:^4"
+    chalk: "npm:^5"
     extend: "npm:3.0.2"
     fast-json-patch: "npm:3.1.1"
     yargs: "npm:18.0.0"
@@ -2908,13 +2908,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4, chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
+"chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
     ansi-styles: "npm:^4.1.0"
     supports-color: "npm:^7.1.0"
   checksum: 10c0/4a3fef5cc34975c898ffe77141450f679721df9dde00f6c304353fa9c8b571929123b26a0e4617bde5018977eb655b31970c297b91b63ee83bb82aeb04666880
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5":
+  version: 5.6.2
+  resolution: "chalk@npm:5.6.2"
+  checksum: 10c0/99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
   languageName: node
   linkType: hard
 
