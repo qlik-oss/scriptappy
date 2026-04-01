@@ -1677,7 +1677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scriptappy/cli@workspace:packages/cli":
+"@scriptappy/cli@workspace:*, @scriptappy/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@scriptappy/cli@workspace:packages/cli"
   dependencies:
@@ -1718,6 +1718,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@scriptappy/to-dts@workspace:packages/to-dts"
   dependencies:
+    "@scriptappy/cli": "workspace:*"
     dts-dom: "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch"
     extend: "npm:3.0.2"
   languageName: unknown
@@ -8937,6 +8938,8 @@ __metadata:
 "sy-example-nodejs@workspace:examples/nodejs":
   version: 0.0.0-use.local
   resolution: "sy-example-nodejs@workspace:examples/nodejs"
+  dependencies:
+    "@scriptappy/cli": "workspace:*"
   languageName: unknown
   linkType: soft
 
