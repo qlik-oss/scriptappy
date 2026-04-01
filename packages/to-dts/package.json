@@ -37,6 +37,9 @@
     "test": "aw node --glob 'test/**/*.spec.js' --src 'lib/**/*.js' --coverage",
     "prepublishOnly": "yarn run spec && yarn run dts"
   },
+  "devDependencies": {
+    "@scriptappy/cli": "workspace:*"
+  },
   "dependencies": {
     "dts-dom": "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch",
     "extend": "3.0.2"

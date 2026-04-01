@@ -6,5 +6,8 @@
     "lint": "exit 0",
     "jsd": "node ../../node_modules/.bin/jsdoc ./src -r -p ./package.json -X > jsdoc.json",
     "spec": "sy from-jsdoc"
+  },
+  "devDependencies": {
+    "@scriptappy/cli": "workspace:*"
   }
 }
