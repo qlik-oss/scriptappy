@@ -41,7 +41,7 @@
     "@scriptappy/cli": "workspace:*"
   },
   "dependencies": {
-    "dts-dom": "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch",
+    "dts-dom": "3.7.0",
     "extend": "3.0.2"
   }
 }
