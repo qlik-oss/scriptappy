@@ -64,6 +64,12 @@ function toDts(specification, config) {
 
   dts += toEmit.map((t) => dom.emit(t)).join('');
 
+  // dts-dom@3.7.0 omits the leading space before "extends" in interface/class
+  // declarations (e.g. `interface Fooextends Bar`). The lookahead (?=[A-Za-z_$])
+  // ensures we only fix cases where "extends" introduces a type name, avoiding
+  // false positives on interface names that happen to end with "extends".
+  dts = dts.replace(/(\S)extends (?=[A-Za-z_$])/g, '$1 extends ');
+
   return dts;
 }
 

@@ -1712,7 +1712,7 @@ __metadata:
   resolution: "@scriptappy/to-dts@workspace:packages/to-dts"
   dependencies:
     "@scriptappy/cli": "workspace:*"
-    dts-dom: "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch"
+    dts-dom: "npm:3.7.0"
     extend: "npm:3.0.2"
   languageName: unknown
   linkType: soft
@@ -3592,13 +3592,6 @@ __metadata:
   version: 3.7.0
   resolution: "dts-dom@npm:3.7.0"
   checksum: 10c0/8fc5206de7bb92c653026b245e568013c0f6f4c2918981b55b306caebe1e4b9a892c5cc6265e90d946938a3dae9e9131f9f6cfdd255db67d242282162bed8027
-  languageName: node
-  linkType: hard
-
-"dts-dom@patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch":
-  version: 3.7.0
-  resolution: "dts-dom@patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch::version=3.7.0&hash=cc2b11"
-  checksum: 10c0/b4e68f5e50850e04968a837a9716920386c10e9d3bb36d0b170e989a3735152703c893bdfab8475d717c59722fc98e53e06e67491340c8424092456e3c6f393e
   languageName: node
   linkType: hard
 
