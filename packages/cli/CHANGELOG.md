@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.6](https://github.com/qlik-oss/scriptappy/compare/@scriptappy/cli@0.10.5...@scriptappy/cli@0.10.6) (2026-04-15)
+
+**Note:** Version bump only for package @scriptappy/cli
+
+
+
+
+
 ## [0.10.5](https://github.com/qlik-oss/scriptappy/compare/@scriptappy/cli@0.10.4...@scriptappy/cli@0.10.5) (2026-04-01)
 
 

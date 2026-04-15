@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/qlik-oss/scriptappy/compare/@scriptappy/to-dts@1.0.3...@scriptappy/to-dts@1.0.4) (2026-04-15)
+
+
+### Bug Fixes
+
+* **to-dts:** fix missing space before 'extends' in emitted output ([#267](https://github.com/qlik-oss/scriptappy/issues/267)) ([e424904](https://github.com/qlik-oss/scriptappy/commit/e4249049398d46204d7fc0dd1109a4c6da968f8e))
+
+
+
+
+
 ## [1.0.3](https://github.com/qlik-oss/scriptappy/compare/@scriptappy/to-dts@1.0.2...@scriptappy/to-dts@1.0.3) (2026-04-01)
 
 

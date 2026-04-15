@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.1](https://github.com/qlik-oss/scriptappy/compare/sy-example-nodejs@8.1.0...sy-example-nodejs@8.1.1) (2026-04-15)
+
+**Note:** Version bump only for package sy-example-nodejs
+
+
+
+
+
 # 8.1.0 (2026-04-01)
 
 

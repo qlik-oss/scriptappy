@@ -1,6 +1,6 @@
 {
   "name": "@scriptappy/from-jsdoc",
-  "version": "0.19.5",
+  "version": "0.19.6",
   "description": "",
   "main": "publish.js",
   "files": [
