@@ -24,31 +24,24 @@
     "type": "git",
     "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+  "main": "lib/index.js",
   "files": [
-    "dist/",
     "lib/",
     "index.d.ts",
     "spec.config.js"
   ],
   "typings": "index.d.ts",
   "scripts": {
-    "build": "rollup -c",
     "dts": "lib/cli.js to-dts",
     "spec": "sy from-jsdoc --glob 'lib/**/*.js'",
     "test": "aw node --glob 'test/**/*.spec.js' --src 'lib/**/*.js' --coverage",
-    "prepare": "yarn build",
     "prepublishOnly": "yarn run spec && yarn run dts"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.0",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "@scriptappy/cli": "workspace:*",
-    "rollup": "^3.29.0"
+    "@scriptappy/cli": "workspace:*"
   },
   "dependencies": {
-    "dts-dom": "3.7.0",
+    "dts-dom": "patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch",
     "extend": "3.0.2"
   }
 }
