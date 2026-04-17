@@ -9,7 +9,7 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qlik-oss/scriptappy"
+    "url": "https://github.com/qlik-oss/scriptappy"
   },
   "bugs": {
     "url": "https://github.com/qlik-oss/scriptappy/issues"
