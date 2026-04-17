@@ -4,7 +4,7 @@
   "description": "Scriptappy tools",
   "repository": {
     "type": "git",
-    "url": "https://github.com/qlik-oss/scriptappy.git"
+    "url": "https://github.com/qlik-oss/scriptappy"
   },
   "keywords": [
     "jsdoc",
