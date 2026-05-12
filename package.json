@@ -32,7 +32,7 @@
     "jest": "30.3.0",
     "lerna": "9.0.7",
     "prettier": "3.8.3",
-    "sinon": "21.1.2",
+    "sinon": "22.0.0",
     "sinon-chai": "3.7.0"
   },
   "scripts": {
