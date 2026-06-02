@@ -19,20 +19,20 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.7",
     "babel-eslint": "10.1.0",
     "babel-plugin-istanbul": "8.0.0",
     "chai": "4.5.0",
     "eslint": "7.32.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "10.1.8",
-    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-import-resolver-node": "^0.4.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "5.5.5",
-    "jest": "30.3.0",
+    "jest": "30.4.2",
     "lerna": "9.0.7",
     "prettier": "3.8.3",
-    "sinon": "21.1.2",
+    "sinon": "22.0.0",
     "sinon-chai": "3.7.0"
   },
   "scripts": {
@@ -46,5 +46,5 @@
     "packages/*",
     "examples/*"
   ],
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.15.0"
 }
