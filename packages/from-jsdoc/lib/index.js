@@ -48,7 +48,7 @@ const generateJSDoc = (jsDocConfig) => {
   } else {
     try {
       parsed = JSON.parse(s);
-    } catch (e) {
+    } catch {
       throw new Error(s);
     }
   }

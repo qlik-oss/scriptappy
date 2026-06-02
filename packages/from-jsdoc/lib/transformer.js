@@ -217,7 +217,7 @@ function transform({ ids, priv }, cfg) {
           // TODO - add multiple signatures if kind === 'function' ?
           parent[memberProperty][scopeName] = parent[memberProperty][scopeName] || {};
           extend(true, parent[memberProperty][scopeName], d);
-          ids[longname][idx] = parent[memberProperty][scopeName]; // eslint-disable-line no-param-reassign
+          ids[longname][idx] = parent[memberProperty][scopeName];
           pr.__ref = ref;
         } else {
           parent[memberProperty][scopeName] = d;

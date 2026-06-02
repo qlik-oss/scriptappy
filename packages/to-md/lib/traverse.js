@@ -33,7 +33,6 @@ function traverse(
 ) {
   let ss = '';
   if (Object.prototype.hasOwnProperty.call(entry, 'constructor')) {
-    // eslint-disable-line
     const n = {
       ...entry.constructor,
       ...{ kind: 'constructor' },

@@ -12,7 +12,7 @@ const defaultConfig = {
 };
 
 function doIt(specFile, config) {
-  const spec = require(specFile); // eslint-disable-line
+  const spec = require(specFile);
   const md = toMd(spec, config);
 
   const generated = `
@@ -72,7 +72,7 @@ const toMdCommand = {
       const c = require(p);
       try {
         specPath = c.fromJsdoc.output.file;
-      } catch (e) {
+      } catch {
         specPath = 'scriptappy.json';
       }
       configs.push(c.toMd);

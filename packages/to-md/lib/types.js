@@ -76,7 +76,7 @@ function types(spec, customType) {
     if (entry.kind) {
       let { name } = entry;
       if (internal.names[name]) {
-        name += ++internal.names[name]; // eslint-disable-line
+        name += ++internal.names[name];
       } else {
         internal.names[name] = 1;
       }
