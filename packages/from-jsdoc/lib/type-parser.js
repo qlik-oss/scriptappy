@@ -1,4 +1,4 @@
-const catharsis = require('catharsis'); // eslint-disable-line
+const catharsis = require('catharsis');
 
 function modifiers(cath) {
   const mods = {};
