@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const dom = require('dts-dom');
 const params = require('./params');
 

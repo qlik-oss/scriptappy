@@ -10,7 +10,7 @@ describe('log', () => {
     });
 
     it('slugify', () => {
-      expect(d.slugify('aB-c (d_e1)	  f')).to.equal('#ab-c-de1-f'); // eslint-disable-line no-tabs
+      expect(d.slugify('aB-c (d_e1)	  f')).to.equal('#ab-c-de1-f');
     });
 
     describe('type', () => {
