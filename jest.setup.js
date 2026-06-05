@@ -1,6 +1,6 @@
-const chai = require('chai');
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
+import * as chai from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 
 global.jestExpect = expect
 global.expect = chai.expect;
