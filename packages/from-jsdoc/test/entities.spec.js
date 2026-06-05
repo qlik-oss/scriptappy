@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 const typeParser = require('../lib/type-parser');
 const types = require('../lib/entities');
 

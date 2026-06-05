@@ -1,4 +1,3 @@
-/* global jestExpect */
 const toDts = require('../lib');
 
 describe('to-dts integration', () => {

@@ -8,7 +8,7 @@ const tryAddCommand = (m) => {
   let c;
   try {
     c = require(`${m}/lib/cli`); // eslint-disable-line
-  } catch (e) {
+  } catch {
     c = importCwd.silent(`${m}/lib/cli`);
   }
 
