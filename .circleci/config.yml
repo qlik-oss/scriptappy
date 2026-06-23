@@ -14,7 +14,7 @@ aliases:
 setup: &setup
   working_directory: ~/scriptappy
   docker:
-    - image: cimg/node:22.22.3-browsers
+    - image: cimg/node:24.16.0-browsers
 
 jobs:
   build:
