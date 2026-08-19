@@ -4,7 +4,4 @@
 *.tmp
 *.log
 node_modules
-package-lock.json
 coverage
-.pnp.cjs
-.pnp.loader.mjs
