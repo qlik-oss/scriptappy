@@ -1,0 +1,7 @@
+packages:
+  - packages/*
+  - examples/*
+
+allowBuilds:
+  nx: false
+  unrs-resolver: false

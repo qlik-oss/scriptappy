@@ -4,9 +4,4 @@
 *.tmp
 *.log
 node_modules
-package-lock.json
 coverage
-.yarn/unplugged
-.yarn/install-state.gz
-.pnp.cjs
-.pnp.loader.mjs

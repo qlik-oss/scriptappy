@@ -35,7 +35,7 @@
     "dts": "lib/cli.js to-dts",
     "spec": "sy from-jsdoc --glob 'lib/**/*.js'",
     "test": "aw node --glob 'test/**/*.spec.js' --src 'lib/**/*.js' --coverage",
-    "prepublishOnly": "yarn run spec && yarn run dts"
+    "prepublishOnly": "pnpm run spec && pnpm run dts"
   },
   "devDependencies": {
     "@scriptappy/cli": "workspace:*"
