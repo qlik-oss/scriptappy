@@ -2,30 +2,30 @@
   "name": "@scriptappy/tools",
   "version": "0.7.2",
   "description": "Scriptappy tools",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/qlik-oss/scriptappy.git"
-  },
   "keywords": [
     "jsdoc",
     "schema"
   ],
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
+  "bugs": {
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
+  },
+  "license": "MIT",
   "author": "QLIK",
   "contributors": [
     "miralemd"
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/qlik-oss/scriptappy/issues"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
-  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
-  "main": "lib/index.js",
   "files": [
     "/lib",
     "/tools"
   ],
+  "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint lib tools"
+    "lint": "oxlint -c ../../oxlint.config.js lib tools"
   },
   "dependencies": {
     "ajv": "8.20.0",

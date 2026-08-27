@@ -1,6 +1,4 @@
-/* eslint no-use-before-define: 0 */
-/* eslint no-param-reassign: 0 */
-/* eslint prefer-destructuring: 0 */
+/* oxlint-disable no-use-before-define, no-param-reassign, prefer-destructuring */
 
 // TODO
 // meta - see, links

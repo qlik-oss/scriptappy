@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint no-unused-expressions: 0, import/no-dynamic-require: 0, global-require: 0 */
+/* oxlint-disable no-unused-expressions, import/no-dynamic-require */
 
 const path = require('path');
 const fs = require('fs');

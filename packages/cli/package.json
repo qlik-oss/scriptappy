@@ -3,15 +3,15 @@
   "version": "0.10.6",
   "description": "Scriptappy CLI",
   "keywords": [
-    "jsdoc",
+    "documentation",
     "generator",
-    "documentation"
+    "jsdoc"
   ],
+  "license": "MIT",
   "author": "QLIK",
   "contributors": [
     "miralemd"
   ],
-  "license": "MIT",
   "bin": {
     "sy": "index.js"
   },

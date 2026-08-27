@@ -14,9 +14,7 @@ npm install scriptappy-tools
 const schema = require('scriptappy-schema');
 const tools = require('scriptappy-tools');
 
-const spec = {
-  /* ... */
-};
+const spec = {/* ... */};
 
 tools.validate(schema, spec);
 ```

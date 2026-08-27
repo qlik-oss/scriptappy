@@ -2,7 +2,7 @@ const dom = require('dts-dom');
 const params = require('./params');
 const typeParams = require('./type-params');
 
-/* eslint no-param-reassign: 0 */
+/* oxlint-disable no-param-reassign */
 
 module.exports = function fn(def, tsParent, g) {
   const t = dom.create.interface(def.name);

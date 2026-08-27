@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint import/no-dynamic-require: 0, global-require: 0 */
+/* oxlint-disable import/no-dynamic-require */
 const fs = require('fs-extra');
 const path = require('path');
 const chokidar = require('chokidar');

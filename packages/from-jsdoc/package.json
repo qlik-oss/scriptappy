@@ -2,37 +2,37 @@
   "name": "@scriptappy/from-jsdoc",
   "version": "0.19.6",
   "description": "",
-  "main": "publish.js",
+  "keywords": [
+    "api",
+    "jsdoc",
+    "spec",
+    "specification"
+  ],
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
+  "bugs": {
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
+  },
+  "license": "MIT",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qlik-oss/scriptappy.git"
+  },
   "files": [
     "/lib",
     "/plugins",
     "spec.config.js"
   ],
+  "main": "publish.js",
   "scripts": {
-    "lint": "eslint lib test",
+    "lint": "oxlint -c ../../oxlint.config.js lib test",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
-  "keywords": [
-    "jsdoc",
-    "api",
-    "spec",
-    "specification"
-  ],
-  "author": "QLIK",
-  "contributors": [
-    "miralemd"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/qlik-oss/scriptappy.git"
-  },
-  "bugs": {
-    "url": "https://github.com/qlik-oss/scriptappy/issues"
-  },
-  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "dependencies": {
     "@scriptappy/schema": "^1.1.3",
     "@scriptappy/tools": "^0.7.2",

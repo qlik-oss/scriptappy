@@ -1,4 +1,4 @@
-/* eslint no-useless-catch: 0 */
+/* oxlint-disable no-useless-catch */
 const { templates } = require('../lib/log');
 
 describe('log', () => {
