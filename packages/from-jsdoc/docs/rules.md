@@ -156,11 +156,13 @@ Disallow untreated kinds.
 Examples of **incorrect** jsdoc for this rule:
 
 ```js
+
 ```
 
 Examples of **correct** jsdoc for this rule:
 
 ```js
+
 ```
 
 ### `'no-default-exports-wo-name'`

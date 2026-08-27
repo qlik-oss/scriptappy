@@ -1,53 +1,47 @@
 {
   "private": true,
   "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
+  "bugs": {
+    "url": "https://github.com/qlik-oss/scriptappy/issues"
+  },
+  "license": "MIT",
   "author": "QLIK",
   "contributors": [
     "miralemd"
   ],
-  "license": "MIT",
-  "keywords": [],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qlik-oss/scriptappy"
-  },
-  "bugs": {
-    "url": "https://github.com/qlik-oss/scriptappy/issues"
-  },
-  "homepage": "https://github.com/qlik-oss/scriptappy#readme",
-  "engines": {
-    "node": ">=22"
-  },
-  "devDependencies": {
-    "@babel/core": "8.0.1",
-    "@babel/eslint-parser": "8.0.1",
-    "@babel/preset-env": "8.0.2",
-    "@eslint/compat": "2.1.0",
-    "@eslint/eslintrc": "3.3.6",
-    "@eslint/js": "10.0.1",
-    "babel-plugin-istanbul": "8.0.0",
-    "chai": "6.2.2",
-    "eslint": "10.8.0",
-    "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "10.1.8",
-    "eslint-import-resolver-node": "^0.4.0",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "5.5.6",
-    "globals": "17.8.0",
-    "jest": "30.4.2",
-    "prettier": "3.9.6",
-    "sinon": "22.1.0",
-    "sinon-chai": "4.0.1"
-  },
-  "scripts": {
-    "lint": "eslint packages",
-    "test": "jest",
-    "spec": "pnpm -r spec",
-    "dts": "pnpm -r dts"
   },
   "workspaces": [
     "packages/*",
     "examples/*"
   ],
+  "scripts": {
+    "lint": "oxlint -c oxlint.config.js packages",
+    "format:check": "oxfmt --check --config oxfmt.config.mjs",
+    "format:write": "oxfmt --config oxfmt.config.mjs",
+    "test": "jest",
+    "spec": "pnpm -r spec",
+    "dts": "pnpm -r dts"
+  },
+  "devDependencies": {
+    "@babel/core": "8.0.1",
+    "@babel/preset-env": "8.0.2",
+    "@qlik/oxfmt-config": "0.2.0",
+    "@qlik/oxlint-config": "0.8.0",
+    "babel-plugin-istanbul": "8.0.0",
+    "chai": "6.2.2",
+    "jest": "30.4.2",
+    "oxfmt": "0.64.0",
+    "oxlint": "1.79.0",
+    "sinon": "22.1.0",
+    "sinon-chai": "4.0.1"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "packageManager": "pnpm@11.20.0"
 }

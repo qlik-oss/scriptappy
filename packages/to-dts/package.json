@@ -3,45 +3,45 @@
   "version": "1.0.4",
   "description": "Generate TypeScript definitions from a scriptappy specification",
   "keywords": [
-    "jsdoc",
-    "typescript",
+    "definitions",
     "generator",
-    "definitions"
+    "jsdoc",
+    "typescript"
   ],
-  "author": "QLIK",
-  "contributors": [
-    "miralemd"
-  ],
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "bugs": {
     "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
+  "license": "MIT",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
-  "main": "lib/index.js",
   "files": [
     "lib/",
     "index.d.ts",
     "spec.config.js"
   ],
+  "main": "lib/index.js",
   "typings": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dts": "lib/cli.js to-dts",
     "spec": "sy from-jsdoc --glob 'lib/**/*.js'",
     "test": "aw node --glob 'test/**/*.spec.js' --src 'lib/**/*.js' --coverage",
     "prepublishOnly": "pnpm run spec && pnpm run dts"
   },
-  "devDependencies": {
-    "@scriptappy/cli": "workspace:*"
-  },
   "dependencies": {
     "dts-dom": "3.7.0",
     "extend": "3.0.2"
+  },
+  "devDependencies": {
+    "@scriptappy/cli": "workspace:*"
   }
 }

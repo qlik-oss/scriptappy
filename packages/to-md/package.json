@@ -1,33 +1,33 @@
 {
   "name": "@scriptappy/to-md",
   "version": "0.2.0",
-  "author": "QLIK",
-  "contributors": [
-    "miralemd"
+  "keywords": [
+    "documentation",
+    "jsdoc",
+    "markdown"
   ],
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "homepage": "https://github.com/qlik-oss/scriptappy#readme",
   "bugs": {
     "url": "https://github.com/qlik-oss/scriptappy/issues"
   },
+  "license": "MIT",
+  "author": "QLIK",
+  "contributors": [
+    "miralemd"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qlik-oss/scriptappy.git"
   },
-  "keywords": [
-    "jsdoc",
-    "markdown",
-    "documentation"
-  ],
   "files": [
     "/lib"
   ],
   "main": "lib/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "lint": "eslint lib test"
+    "lint": "oxlint -c ../../oxlint.config.js lib test"
   },
   "dependencies": {
     "chokidar": "5.0.0",

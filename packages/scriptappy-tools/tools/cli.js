@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint import/no-dynamic-require: 0, global-require: 0 */
+/* oxlint-disable import/no-dynamic-require */
 
 const yargs = require('yargs/yargs')(process.argv.slice(2));
 const path = require('path');

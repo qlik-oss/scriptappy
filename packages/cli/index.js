@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint no-unused-expressions: 0 */
+/* oxlint-disable no-unused-expressions */
 
 const importCwd = require('import-cwd');
 const yargs = require('yargs/yargs')(process.argv.slice(2));

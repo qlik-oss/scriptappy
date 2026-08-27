@@ -1,4 +1,4 @@
-/* eslint no-param-reassign: 0 */
+/* oxlint-disable no-param-reassign */
 
 const fs = require('fs');
 const extend = require('extend');
