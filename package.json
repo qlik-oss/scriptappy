@@ -34,7 +34,7 @@
     "@qlik/oxlint-config": "0.8.0",
     "babel-plugin-istanbul": "8.0.0",
     "chai": "6.2.2",
-    "jest": "30.4.2",
+    "jest": "30.5.0",
     "oxfmt": "0.64.0",
     "oxlint": "1.79.0",
     "sinon": "22.1.0",
