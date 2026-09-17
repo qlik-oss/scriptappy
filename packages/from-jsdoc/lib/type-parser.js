@@ -66,7 +66,13 @@ function deconstruct(cath) {
   if (cath.type === catharsis.Types.NameExpression) {
     const lit = literal(cath.name);
     if (lit) {
-      return { ...mods, kind: 'literal', value: lit === 'number' ? +cath.name : cath.name };
+      let value = cath.name;
+      if (lit === 'number') {
+        value = +cath.name;
+      } else if (lit === 'boolean') {
+        value = cath.name === 'true';
+      }
+      return { ...mods, kind: 'literal', value };
     }
     return { ...mods, type: cath.name };
   }

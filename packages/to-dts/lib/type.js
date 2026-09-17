@@ -71,11 +71,14 @@ function typeFn(g) {
     }
 
     if (def.kind === 'literal') {
-      let { value } = def;
-      if (typeof value === 'string') {
-        value = value.replace(/'/g, '');
+      const { value } = def;
+      if (typeof value === 'boolean') {
+        return value ? dom.type.true : dom.type.false;
       }
-      return dom.type.stringLiteral(value);
+      if (typeof value === 'number') {
+        return dom.type.numberLiteral(value);
+      }
+      return dom.type.stringLiteral(value.replace(/'/g, ''));
     }
 
     // ====== types ===========
