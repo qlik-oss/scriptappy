@@ -179,6 +179,19 @@ describe('type', () => {
     expect(getType(def, 'p')).to.eql({ kind: 'string-literal', value: 'v' });
   });
 
+  it('should create boolean literal', () => {
+    expect(getType({ kind: 'literal', value: false }, 'p')).to.eql('false');
+    expect(getType({ kind: 'literal', value: true }, 'p')).to.eql('true');
+  });
+
+  it('should create number literal', () => {
+    const def = { kind: 'literal', value: 3 };
+    expect(getType(def, 'p')).to.eql({
+      kind: 'number-literal',
+      value: 3,
+    });
+  });
+
   it('should create function type', () => {
     const def = { type: 'function' };
     g.getType.withArgs('ret').returns('r');

@@ -130,11 +130,11 @@ describe('type-parser', () => {
     it('literal boolean', () => {
       expect(parse('false')).to.eql({
         kind: 'literal',
-        value: 'false',
+        value: false,
       });
       expect(parse('true')).to.eql({
         kind: 'literal',
-        value: 'true',
+        value: true,
       });
     });
 
