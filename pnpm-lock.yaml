@@ -15,8 +15,8 @@ importers:
         specifier: 8.0.2
         version: 8.0.2(@babel/core@8.0.1)
       '@qlik/oxfmt-config':
-        specifier: 0.2.0
-        version: 0.2.0(oxfmt@0.64.0)
+        specifier: 0.2.2
+        version: 0.2.2(oxfmt@0.64.0)
       '@qlik/oxlint-config':
         specifier: 0.8.0
         version: 0.8.0(oxlint-tsgolint@7.0.2001)(oxlint@1.79.0(oxlint-tsgolint@7.0.2001))
@@ -1209,8 +1209,8 @@ packages:
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  '@qlik/oxfmt-config@0.2.0':
-    resolution: {integrity: sha512-0nE/R/YUCQCCOdV/UpSNv6ld4faaUJiFu6wVs/Ri/1FsfEaPFc89T0RY/JhGKfTYm+4T9C2vkICWFi001G4tvw==}
+  '@qlik/oxfmt-config@0.2.2':
+    resolution: {integrity: sha512-LgsG1RCXgPo0pko2mapze1v7OokYIDCbyhGo8euIp0gZT7d87I7DZpZQBCbUNap0PvPRXU7z48JPC4f9ebDPTg==}
     engines: {node: '>=22.18.0'}
     peerDependencies:
       oxfmt: '>=0.38.0'
@@ -2601,11 +2601,11 @@ snapshots:
       '@babel/helpers': 7.29.7
       '@babel/parser': 7.29.8
       '@babel/template': 7.29.7
-      '@babel/traverse': 7.29.8(supports-color@7.2.0)
+      '@babel/traverse': 7.29.8(supports-color@8.1.1)
       '@babel/types': 7.29.8
       '@jridgewell/remapping': 2.3.5
       convert-source-map: 2.0.0
-      debug: 4.4.3(supports-color@7.2.0)
+      debug: 4.4.3(supports-color@8.1.1)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -3293,18 +3293,6 @@ snapshots:
       '@babel/parser': 8.0.4
       '@babel/types': 8.0.4
 
-  '@babel/traverse@7.29.8(supports-color@7.2.0)':
-    dependencies:
-      '@babel/code-frame': 7.29.7
-      '@babel/generator': 7.29.8
-      '@babel/helper-globals': 7.29.7
-      '@babel/parser': 7.29.8
-      '@babel/template': 7.29.7
-      '@babel/types': 7.29.8
-      debug: 4.4.3(supports-color@7.2.0)
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/traverse@7.29.8(supports-color@8.1.1)':
     dependencies:
       '@babel/code-frame': 7.29.7
@@ -3387,7 +3375,7 @@ snapshots:
     dependencies:
       '@jest/console': 30.4.1
       '@jest/pattern': 30.4.0
-      '@jest/reporters': 30.4.1(supports-color@7.2.0)
+      '@jest/reporters': 30.4.1(supports-color@8.1.1)
       '@jest/test-result': 30.4.1
       '@jest/transform': 30.4.1(supports-color@8.1.1)
       '@jest/types': 30.4.1
@@ -3464,7 +3452,7 @@ snapshots:
       '@types/node': 26.2.0
       jest-regex-util: 30.4.0
 
-  '@jest/reporters@30.4.1(supports-color@7.2.0)':
+  '@jest/reporters@30.4.1(supports-color@8.1.1)':
     dependencies:
       '@bcoe/v8-coverage': 0.2.3
       '@jest/console': 30.4.1
@@ -3481,7 +3469,7 @@ snapshots:
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-instrument: 6.0.3(supports-color@8.1.1)
       istanbul-lib-report: 3.0.1
-      istanbul-lib-source-maps: 5.0.6(supports-color@7.2.0)
+      istanbul-lib-source-maps: 5.0.6(supports-color@8.1.1)
       istanbul-reports: 3.2.0
       jest-message-util: 30.4.1
       jest-util: 30.4.1
@@ -3731,7 +3719,7 @@ snapshots:
 
   '@pkgr/core@0.3.6': {}
 
-  '@qlik/oxfmt-config@0.2.0(oxfmt@0.64.0)':
+  '@qlik/oxfmt-config@0.2.2(oxfmt@0.64.0)':
     dependencies:
       oxfmt: 0.64.0
 
@@ -4128,12 +4116,6 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  debug@4.4.3(supports-color@7.2.0):
-    dependencies:
-      ms: 2.1.3
-    optionalDependencies:
-      supports-color: 7.2.0
-
   debug@4.4.3(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
@@ -4352,10 +4334,10 @@ snapshots:
       make-dir: 4.0.0
       supports-color: 7.2.0
 
-  istanbul-lib-source-maps@5.0.6(supports-color@7.2.0):
+  istanbul-lib-source-maps@5.0.6(supports-color@8.1.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
-      debug: 4.4.3(supports-color@7.2.0)
+      debug: 4.4.3(supports-color@8.1.1)
       istanbul-lib-coverage: 3.2.2
     transitivePeerDependencies:
       - supports-color
