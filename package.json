@@ -28,8 +28,8 @@
     "dts": "pnpm -r dts"
   },
   "devDependencies": {
-    "@babel/core": "8.0.1",
-    "@babel/preset-env": "8.0.2",
+    "@babel/core": "8.0.7",
+    "@babel/preset-env": "8.0.7",
     "@qlik/oxfmt-config": "0.2.2",
     "@qlik/oxlint-config": "0.8.3",
     "babel-plugin-istanbul": "8.0.0",
