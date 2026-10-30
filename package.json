@@ -28,7 +28,7 @@
     "dts": "pnpm -r dts"
   },
   "devDependencies": {
-    "@babel/core": "8.0.7",
+    "@babel/core": "8.0.9",
     "@babel/preset-env": "8.0.7",
     "@qlik/oxfmt-config": "0.2.3",
     "@qlik/oxlint-config": "0.8.4",
