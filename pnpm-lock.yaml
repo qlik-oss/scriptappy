@@ -15,8 +15,8 @@ importers:
         specifier: 8.0.7
         version: 8.0.7(@babel/core@8.1.0)
       '@qlik/oxfmt-config':
-        specifier: 0.2.4
-        version: 0.2.4(oxfmt@0.75.0)
+        specifier: 0.2.5
+        version: 0.2.5(oxfmt@0.75.0)
       '@qlik/oxlint-config':
         specifier: 0.8.5
         version: 0.8.5(oxlint-tsgolint@7.0.2006)(oxlint@1.90.0(oxlint-tsgolint@7.0.2006))
@@ -1196,8 +1196,8 @@ packages:
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  '@qlik/oxfmt-config@0.2.4':
-    resolution: {integrity: sha512-A54aKjhqyjIapqp6Ano0+Z+QJZ/PTO+ITi9xQMRkcM07bZN4GNKb5bfJtsCJEIrp8a/9vD6hn89OVZsHznnB8Q==}
+  '@qlik/oxfmt-config@0.2.5':
+    resolution: {integrity: sha512-iMg2LMprcdjyIrlss0rc+NDJwi2bCwmk+NUa1H88XjA+fHXQqEaKXKlSo+TPMZK0ghoiD2hzMOYw++sTiDVTkw==}
     engines: {node: '>=22.18.0'}
     peerDependencies:
       oxfmt: '>=0.38.0'
@@ -3684,7 +3684,7 @@ snapshots:
 
   '@pkgr/core@0.3.6': {}
 
-  '@qlik/oxfmt-config@0.2.4(oxfmt@0.75.0)':
+  '@qlik/oxfmt-config@0.2.5(oxfmt@0.75.0)':
     dependencies:
       oxfmt: 0.75.0
 
