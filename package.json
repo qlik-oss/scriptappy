@@ -30,7 +30,7 @@
   "devDependencies": {
     "@babel/core": "8.1.0",
     "@babel/preset-env": "8.0.7",
-    "@qlik/oxfmt-config": "0.2.4",
+    "@qlik/oxfmt-config": "0.2.5",
     "@qlik/oxlint-config": "0.8.5",
     "babel-plugin-istanbul": "8.0.0",
     "chai": "6.3.0",
