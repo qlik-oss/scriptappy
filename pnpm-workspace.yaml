@@ -3,5 +3,6 @@ packages:
   - examples/*
 
 allowBuilds:
+  '@parcel/watcher': true
   nx: false
   unrs-resolver: false
