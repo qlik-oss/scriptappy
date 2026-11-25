@@ -30,7 +30,7 @@
     "lint": "oxlint -c ../../oxlint.config.js lib test"
   },
   "dependencies": {
-    "chokidar": "5.0.0",
+    "chokidar": "6.0.0",
     "extend": "3.0.2",
     "fs-extra": "^11.1.1"
   }
